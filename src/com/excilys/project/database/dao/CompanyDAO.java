@@ -6,11 +6,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.excilys.project.database.controller.ConditionControl;
 import com.excilys.project.database.datatype.Company;
 import com.excilys.project.database.mapper.CompanyMapper;
 
 public class CompanyDAO {
-	
+	static Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
+
 	private final static String selectAllCompany= "SELECT * FROM company ";
 	/**
 	 * 
@@ -25,10 +30,8 @@ public class CompanyDAO {
 			while (rs.next()){
 				listCompany.add(CompanyMapper.rsToCompany(rs));
 			}
-			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return listCompany;
 	

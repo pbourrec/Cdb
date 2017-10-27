@@ -6,10 +6,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.project.database.datatype.Computer;
 import com.excilys.project.database.mapper.ComputerMapper;
 
 public class ComputerDAO {
+	static Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 
 	public static final String url = "jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull";
 	public static final String username = "root";
@@ -18,6 +22,9 @@ public class ComputerDAO {
 	private final static String updateComputer = "UPDATE computer SET name =?,introduced= ?, discontinued= ?, company_id = ? WHERE id=?";
 	final static String deleteComputer = "DELETE FROM computer  WHERE id=?";
 	private final static String queryComputer = "SELECT * FROM computer WHERE id=?";
+
+	final static String selectAllComputer= "SELECT * FROM computer ";
+	final static String selectCount= "SELECT count(*)FROM c ";
 
 	/**
 	 * 
@@ -32,11 +39,11 @@ public class ComputerDAO {
 			prepstmt.setDate(2,computer.getDateIntroduced());
 			prepstmt.setDate(3,computer.getDateDiscontinued());
 			prepstmt.setLong(4, computer.getComputerManufacturer());
+			logger.debug(prepstmt.toString());
 			prepstmt.execute();
 			return true;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			return false;
 		}
 	}
@@ -56,10 +63,12 @@ public class ComputerDAO {
 			prepstmt.setDate(3,newComputer.getDateDiscontinued());
 			prepstmt.setLong(4, newComputer.getComputerManufacturer());
 			prepstmt.setLong(5,idComputer);
+			logger.debug(prepstmt.toString());
+
 			prepstmt.execute();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
+
 		}
 	}
 
@@ -69,14 +78,16 @@ public class ComputerDAO {
 	 * @param idComputer ID de l'ordinateur a supprimer
 	 */
 	public static void databaseDelete(Long idComputer) {
-		
+
 		//Try with ressource avec création d'un statement qui sera close a la fin du try
 		try (PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(deleteComputer)) {
 			prepstmt.setLong(1,idComputer);
+
+			logger.debug(prepstmt.toString());
 			prepstmt.execute();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
+
 		}
 	}
 
@@ -86,21 +97,22 @@ public class ComputerDAO {
 	 * @param computerID Id de l'ordinateur a rechercher
 	 * @return ResultSet rs resultat de la query sur la table 'computer avec l'ID voulu
 	 */
-	public static ResultSet databaseQueryOne(Long computerID){
+	public static Computer databaseQueryOne(Long computerID){
 		ResultSet rs = null;
+		Computer computerQueried = new Computer();
 		try (PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(queryComputer)){
 			prepstmt.setLong(1,computerID);
-	
+			rs = prepstmt.executeQuery();
+			rs.next();
+			computerQueried = ComputerMapper.rsToComputer(rs);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
+
 		}
-		return rs;
-	
+		return computerQueried;
+
 	}
 
-	final static String selectAllComputer= "SELECT * FROM computer ";
-	final static String selectCount= "SELECT count(*)FROM c ";
 
 	/**
 	 * 
@@ -112,15 +124,15 @@ public class ComputerDAO {
 		List<Computer> listComputer = new ArrayList<>(); 
 		try(PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(selectAllComputer)) {
 			rs = prepstmt.executeQuery();
+			logger.debug(prepstmt.toString());
 			while(rs.next()){
-				listComputer.add(ComputerMapper.rsToCompany(rs));
+				listComputer.add(ComputerMapper.rsToComputer(rs));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		return listComputer;
-	
+
 	}
 
 	/**
@@ -134,12 +146,13 @@ public class ComputerDAO {
 		try(PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(selectCount)) {
 			rs = prepstmt.executeQuery();
 			sizeTable = rs.getInt(1);
+			prepstmt.execute();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
+
 		}
 		return sizeTable;
-		
+
 	}
 
 }

@@ -9,7 +9,7 @@ import com.excilys.project.database.datatype.Computer;
 public class ComputerMapper {
 
 	
-	public static Computer rsToCompany(ResultSet rsComputer){
+	public static Computer rsToComputer(ResultSet rsComputer){
 		Computer computerConvert = new Computer();
 		try {
 			

@@ -16,8 +16,6 @@ public class Main {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Bonjour utilisateur");
-		System.out.println("Veuillez attendre la connexion au serveur...");
-		// ******************* CONNEXION A BDD SQL A FAIRE*************************
 
 		//String qui nous donnera l'autorisation de quitter le programme
 		String endOfSession = "";

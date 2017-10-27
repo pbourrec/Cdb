@@ -5,11 +5,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.excilys.project.database.controller.ConditionControl;
+
 public class DatabaseVerify {
 
 
 	private final static String selectCountCompany ="SELECT COUNT(*) from company WHERE id=?";
 	private final static String selectCountComputer ="SELECT COUNT(*) from computer WHERE id=?";
+	static Logger logger = LoggerFactory.getLogger(DatabaseVerify.class);
+
 	/**
 	 * 
 	 * @param stmt Statement
@@ -19,7 +26,7 @@ public class DatabaseVerify {
 	public static boolean isIdOkCompany(Long computerManufacturer){
 		boolean isOK = false;
 		// si computerManufacturer est null, on considère que l'utilisateur ne veut pas déclarer le fabricant de l'ordinateur
-		if(!computerManufacturer.equals("")){
+		if(computerManufacturer != null){
 			try (PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(selectCountCompany)){
 				//On regarde la TAILLE de la query. Si on a 1 résultat, alors l'ID est bon
 				prepstmt.setLong(1,computerManufacturer);
@@ -29,7 +36,7 @@ public class DatabaseVerify {
 					isOK = true;
 				}	
 			} catch ( SQLException e2) {
-				e2.printStackTrace();
+				logger.error(e2.getMessage());
 			}
 		} else{
 			isOK=true;

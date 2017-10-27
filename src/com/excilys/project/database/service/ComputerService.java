@@ -128,67 +128,55 @@ public class ComputerService {
 	
 		Long idComputer = DataControl.stringToLongIDCompany(computerID, sc);
 	
-		try {
-			ResultSet computerToEdit = ComputerDAO.databaseQueryOne( idComputer);
-			while(computerToEdit.next()){
-				System.out.println("Modification de cet ordinateur ");
-				System.out.print(computerToEdit.getLong(1)+" =>");
-				System.out.print(computerToEdit.getString(2)+"     ");
-				System.out.print(computerToEdit.getDate(3)+"     ");
-				System.out.print(computerToEdit.getDate(4)+"     ");
-				System.out.println(computerToEdit.getInt(5)+"     ");
-			}
-			System.out.println("Nouveau nom ?");
-			String computerNewName = sc.nextLine();
-			while(computerNewName.isEmpty()){
-				System.out.println("Le nom de l'ordinateur ne peut être vide, merci de remplir ce champ");
-				computerNewName=sc.nextLine();
-			}
-			for (Company company: listCompany){
-				System.out.println(company.toString());
-			}
-			System.out.println("Quel sera le nouveau constructeur de l'ordinateur (choisir un ID)" );
-			String computerNewManufacturer = sc.nextLine();
-			Long idNewCompany = DataControl.stringToLongIDCompany(computerNewManufacturer, sc);
-	
-	
-			System.out.println("Nouvelle Date de mise en service de l'ordinateur (format dd/MM/yyyy)");
-			Date newDateStart = null;
-			while(newDateStart==null) {
-				String computerNewStartingDate = sc.nextLine();
-	
-				if(!computerNewStartingDate.equals("")){
-	
-					newDateStart= DataControl.convertStringToTimestamp(computerNewStartingDate);
-				}else{break;}
-			}
-	
-			System.out.println("Nouvelle Date de mise en retraite de l'ordinateur (format dd/MM/yyyy)");
-			Date newDateEnd= null;
-			while(newDateEnd==null) {
-				String computerNewEndDate = sc.nextLine();
-	
-				if (!computerNewEndDate.equals("")){
-	
-					newDateEnd= DataControl.convertStringToTimestamp(computerNewEndDate);
-				}else {break;}
-			}
-			// Creation d'un nouvel ordinateur et confirmation des données
-			Computer newComputerUpdate = new Computer(computerNewName, idNewCompany, newDateStart, newDateEnd);
-			System.out.println("Voulez vous bien créer l'ordinateur suivant : Y/N");
-			System.out.println("Nom : " + newComputerUpdate.getComputerName());
-			System.out.println("Nom du constructeur : "+ newComputerUpdate.getComputerManufacturer());
-			System.out.println("Mise en service: "+ newComputerUpdate.getDateIntroduced());
-			System.out.println("Mise en retraite: "+ newComputerUpdate.getDateDiscontinued());
-			String updateComputer = sc.nextLine();
-			if(updateComputer.equals("Y")|| updateComputer.equals("y")){
-				ComputerDAO.databaseUpdate(newComputerUpdate, idComputer);
-			} else {
-				System.out.println("Abandon de la modification");
-			}
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		Computer computerToEdit = ComputerDAO.databaseQueryOne( idComputer);
+		System.out.println(computerToEdit.toString());
+		System.out.println("Nouveau nom ?");
+		String computerNewName = sc.nextLine();
+		while(computerNewName.isEmpty()){
+			System.out.println("Le nom de l'ordinateur ne peut être vide, merci de remplir ce champ");
+			computerNewName=sc.nextLine();
+		}
+		for (Company company: listCompany){
+			System.out.println(company.toString());
+		}
+		System.out.println("Quel sera le nouveau constructeur de l'ordinateur (choisir un ID)" );
+		String computerNewManufacturer = sc.nextLine();
+		Long idNewCompany = DataControl.stringToLongIDCompany(computerNewManufacturer, sc);
+
+
+		System.out.println("Nouvelle Date de mise en service de l'ordinateur (format dd/MM/yyyy)");
+		Date newDateStart = null;
+		while(newDateStart==null) {
+			String computerNewStartingDate = sc.nextLine();
+
+			if(!computerNewStartingDate.equals("")){
+
+				newDateStart= DataControl.convertStringToTimestamp(computerNewStartingDate);
+			}else{break;}
+		}
+
+		System.out.println("Nouvelle Date de mise en retraite de l'ordinateur (format dd/MM/yyyy)");
+		Date newDateEnd= null;
+		while(newDateEnd==null) {
+			String computerNewEndDate = sc.nextLine();
+
+			if (!computerNewEndDate.equals("")){
+
+				newDateEnd= DataControl.convertStringToTimestamp(computerNewEndDate);
+			}else {break;}
+		}
+		// Creation d'un nouvel ordinateur et confirmation des données
+		Computer newComputerUpdate = new Computer(computerNewName, idNewCompany, newDateStart, newDateEnd);
+		System.out.println("Voulez vous bien créer l'ordinateur suivant : Y/N");
+		System.out.println("Nom : " + newComputerUpdate.getComputerName());
+		System.out.println("Nom du constructeur : "+ newComputerUpdate.getComputerManufacturer());
+		System.out.println("Mise en service: "+ newComputerUpdate.getDateIntroduced());
+		System.out.println("Mise en retraite: "+ newComputerUpdate.getDateDiscontinued());
+		String updateComputer = sc.nextLine();
+		if(updateComputer.equals("Y")|| updateComputer.equals("y")){
+			ComputerDAO.databaseUpdate(newComputerUpdate, idComputer);
+		} else {
+			System.out.println("Abandon de la modification");
 		}
 	
 		return false;
@@ -219,19 +207,8 @@ public class ComputerService {
 		Long idComputerToSee = DataControl.stringToLongIDComputer(computerIDToSee, sc);
 	
 		//Recherche d'UN ordinateur
-		ResultSet computerToShow = ComputerDAO.databaseQueryOne( idComputerToSee);
-		try {
-			while(computerToShow.next()){
-				System.out.print(computerToShow.getLong(1)+" =>");
-				System.out.print(computerToShow.getString(2)+"    ");
-				System.out.print(computerToShow.getDate(3)+"     ");
-				System.out.print(computerToShow.getDate(4)+"     ");
-				System.out.println(computerToShow.getInt(5)+"     ");
-			}
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		Computer computerToShow = ComputerDAO.databaseQueryOne( idComputerToSee);
+		System.out.println(computerToShow.toString());
 		System.out.println("Voulez vous en voir un autre ? Y/N");
 		String choice=sc.nextLine();
 		if(choice.equals("Y")){
@@ -263,20 +240,8 @@ public class ComputerService {
 		String computerIDToDelete= sc.nextLine();
 		if(computerIDToDelete.equals("exit") || computerIDToDelete.equals("quit")){return repeat =false;}
 		Long idComputerToDelete = DataControl.stringToLongIDComputer(computerIDToDelete, sc);
-		ResultSet computerToDelete = ComputerDAO.databaseQueryOne( idComputerToDelete);
-		try {
-			while(computerToDelete.next()){
-				System.out.println("Suppression de cet ordinateur ");
-				System.out.print(computerToDelete.getLong(1)+" =>");
-				System.out.print(computerToDelete.getString(2)+"     ");
-				System.out.print(computerToDelete.getDate(3)+"     ");
-				System.out.print(computerToDelete.getDate(4)+"     ");
-				System.out.println(computerToDelete.getInt(5)+"     ");
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Computer computerToDelete = ComputerDAO.databaseQueryOne( idComputerToDelete);
+		System.out.println(computerToDelete.toString());
 		System.out.println("Voulez vous supprimer cet ordinateur ?");
 		String areYouSure = sc.nextLine();
 		if(areYouSure.equals("Y")|| areYouSure.equals("y")){

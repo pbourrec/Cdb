@@ -9,10 +9,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
+import javax.xml.crypto.Data;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.project.database.dao.DatabaseConn;
 import com.excilys.project.database.dao.DatabaseVerify;
 
 public class DataControl {
+	static Logger logger = LoggerFactory.getLogger(DataControl.class);
 
 	/**
 	 * 
@@ -22,6 +28,7 @@ public class DataControl {
 	 * @return Long ValueOf ID du fabricant
 	 */
 	public static Long stringToLongIDCompany(String computerManufacturer, Scanner sc ){
+		logger.debug("Conversion String vers id");
 		//dans le cas ou l'entrée est nulle, on ne prendra pas de constructeur
 		if(!computerManufacturer.equals("")){
 			//tant que l'ID n'existe pas ou n'est pas valide
@@ -43,7 +50,7 @@ public class DataControl {
 	public static Long stringToLongIDComputer(String computerID, Scanner sc ){
 
 		//tant que l'ID n'existe pas ou n'est pas valide
-		while (ConditionControl.isIdCompanyValid(computerID)) {
+		while (!ConditionControl.isIdComputerValid(computerID)) {
 			System.out.println("l'ID rentré n'existe pas ou n'est pas sous le bon format, merci de reessayer");
 			computerID = sc.nextLine();
 		}
