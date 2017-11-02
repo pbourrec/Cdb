@@ -28,7 +28,7 @@ public class ComputerDAO {
 	final static String selectAllComputer= "SELECT * FROM computer ";
 	private final static String selectAllComputerPagination= "SELECT * FROM computer LIMIT ? OFFSET ?";
 
-	final static String selectCount= "SELECT count(*)FROM c ";
+	final static String selectCount= "SELECT count(*)FROM computer ";
 
 	/**
 	 * 
@@ -151,7 +151,7 @@ public class ComputerDAO {
 				listCompany.add(CompanyMapper.rsToCompany(rs));
 			}
 		} catch (SQLException e) {
-			CompanyDAO.logger.error(e.getMessage());
+//			CompanyDAO.logger.error(e.getMessage());
 		}
 		return listCompany;
 	
@@ -160,13 +160,14 @@ public class ComputerDAO {
 	/**
 	 * 
 	 * @param conn Connection
-	 * @returnint sizeTable Taille de la table "computer"
+	 * @return int sizeTable Taille de la table "computer"
 	 */
 	public static int databaseGetSizeComputer() {
 		ResultSet rs = null;
 		int sizeTable = 0;
 		try(PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(selectCount)) {
 			rs = prepstmt.executeQuery();
+			rs.next();
 			sizeTable = rs.getInt(1);
 			prepstmt.execute();
 		} catch (SQLException e) {

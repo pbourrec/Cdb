@@ -84,7 +84,7 @@ Creating test classes implies to take into account ALL possibilities: Illegal ca
 Add and configure the Maven checktyle plugin with  the checkstyle.xml and suppressions.xml provided in config/checkstyle/
 
 #### 4.3.2. Implement listing and computer add features in the web-ui
-Using the provided template https://github.com/excilys/training-java/tree/master/static, integrate the previous features using Servlets, JSPs, JSTL, and Tags.  
+Using the provided template	, integrate the previous features using Servlets, JSPs, JSTL, and Tags.  
 Use DTOs (Data Transfer Object) to transport only relevant data to the JSPs.  
 Implement Computer listing (paginated), and add features.  
 Create two tags (In your own Taglib): one for the pagination module, one for links.  

@@ -14,6 +14,13 @@ public class DatabaseConn {
 	//connection à la database
 	public static Connection databaseConnection() {
 		try {
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+			
 			DriverManager.registerDriver(new Driver());
 			return DriverManager.getConnection(ComputerDAO.url, ComputerDAO.username, ComputerDAO.password);
 		} catch (SQLException e) {

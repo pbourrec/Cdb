@@ -16,6 +16,8 @@ public class CompanyDAO {
 	static Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
 
 	final static String selectAllCompany= "SELECT * FROM company";
+	final static String selectCount= "SELECT count(*)FROM company ";
+
 	/**
 	 * 
 	 * @param conn Connection
@@ -26,6 +28,7 @@ public class CompanyDAO {
 		ResultSet rs = null;
 		try(PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(selectAllCompany)) {
 			rs = prepstmt.executeQuery();
+			logger.error("query succeded,  " + databaseGetSizeCompany() +"results returned");
 			while (rs.next()){
 				listCompany.add(CompanyMapper.rsToCompany(rs));
 			}
@@ -35,5 +38,22 @@ public class CompanyDAO {
 		return listCompany;
 		
 	}
+	
+	public static int databaseGetSizeCompany() {
+		ResultSet rs = null;
+		int sizeTable = 0;
+		try(PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(selectCount)) {
+			rs = prepstmt.executeQuery();
+			rs.next();
+			sizeTable = rs.getInt(1);
+			prepstmt.execute();
+		} catch (SQLException e) {
+			logger.error(e.getMessage());
+
+		}
+		return sizeTable;
+
+	}
+
 
 }

@@ -44,9 +44,7 @@ public class Main {
 				break;
 				//Edition d'un ordinateur
 			case "2":
-				while(repeat){
-					repeat = ComputerService.edit(sc, listComputer, listCompany);					
-				}
+					ComputerService.edit(sc, listComputer, listCompany);					
 				break;
 				//Retour de la liste des ordinateurs
 			case "3":
