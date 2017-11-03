@@ -1,6 +1,6 @@
 package com.excilys.cdb.database.service;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
@@ -33,9 +33,9 @@ public class ComputerService {
 	
 		Long idCompany = ComputerMapper.enterCompanyId(sc);
 	
-		Date dateStart = ComputerMapper.enterIntroductionDate(sc);
+		LocalDate dateStart = ComputerMapper.enterIntroductionDate(sc);
 		
-		Date dateEnd = ComputerMapper.enterDiscontinuedDate(sc);
+		LocalDate dateEnd = ComputerMapper.enterDiscontinuedDate(sc);
 	
 		// *******************
 		Computer newComputer = new Computer(computerName,idCompany, dateStart, dateEnd);	
@@ -105,9 +105,9 @@ public class ComputerService {
 	
 		Long idCompany = ComputerMapper.enterCompanyId(sc);
 	
-		Date dateStart = ComputerMapper.enterIntroductionDate(sc);
+		LocalDate dateStart = ComputerMapper.enterIntroductionDate(sc);
 		
-		Date dateEnd = ComputerMapper.enterDiscontinuedDate(sc);
+		LocalDate dateEnd = ComputerMapper.enterDiscontinuedDate(sc);
 	
 		// Creation d'un nouvel ordinateur et confirmation des données
 		Computer newComputerUpdate = new Computer(computerName, idCompany, dateStart, dateEnd);

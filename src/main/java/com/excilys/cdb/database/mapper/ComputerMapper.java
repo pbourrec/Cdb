@@ -1,8 +1,8 @@
 package com.excilys.cdb.database.mapper;
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 import com.excilys.cdb.database.controller.ControlFormat;
@@ -18,8 +18,10 @@ public class ComputerMapper {
 
 			computerConvert.setId(rsComputer.getLong(1));
 			computerConvert.setComputerName(rsComputer.getString(2));
-			computerConvert.setDateIntroduced(rsComputer.getDate(3));
-			computerConvert.setDateDiscontinued(rsComputer.getDate(4));
+			java.sql.Date dateIntroduced = rsComputer.getDate(3);
+			java.sql.Date datediscontinued= rsComputer.getDate(4);
+			computerConvert.setDateIntroduced(dateIntroduced!= null ? dateIntroduced.toLocalDate() : null);
+			computerConvert.setDateDiscontinued(datediscontinued!= null ? datediscontinued.toLocalDate() : null);
 			computerConvert.setComputerManufacturer(rsComputer.getLong(5));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -30,9 +32,9 @@ public class ComputerMapper {
 		return computerConvert;		
 	}
 
-	public static Date enterDiscontinuedDate(Scanner sc) {
-		System.out.println("Date de mise en retraite de l'ordinateur (format dd/MM/yyyy)");	
-		Date dateEnd= null;
+	public static LocalDate enterDiscontinuedDate(Scanner sc) {
+		System.out.println("LocalDate de mise en retraite de l'ordinateur (format dd/MM/yyyy)");	
+		LocalDate dateEnd= null;
 		while(dateEnd==null) {
 			String computerEndDate = sc.nextLine();
 			//Condition sur le remplissage du champ "date", l'utilisateur peut le laisser vide
@@ -43,9 +45,9 @@ public class ComputerMapper {
 		return dateEnd;
 	}
 
-	public static Date enterIntroductionDate(Scanner sc) {
-		System.out.println("Date de mise en service de l'ordinateur (format dd/MM/yyyy)");
-		Date dateStart = null;
+	public static LocalDate enterIntroductionDate(Scanner sc) {
+		System.out.println("LocalDate de mise en service de l'ordinateur (format dd/MM/yyyy)");
+		LocalDate dateStart = null;
 		while(dateStart==null) {
 			String computerStartingDate = sc.nextLine();
 			//Condition sur le remplissage du champ "date", l'utilisateur peut le laisser vide

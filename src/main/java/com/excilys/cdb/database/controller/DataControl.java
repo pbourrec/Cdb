@@ -1,9 +1,9 @@
 package com.excilys.cdb.database.controller;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 import org.slf4j.Logger;
@@ -76,26 +76,22 @@ public class DataControl {
 
 	/**
 	 * 
-	 * @param str_date String à convertir en date
-	 * @return java.sql.Date Date issue de la string
+	 * @param str_date String à convertir en LocalDate
+	 * @return java.sql.LocalDate LocalDate issue de la string
 	 */
-	public static java.sql.Date convertStringToTimestamp(String str_date) {
-		java.sql.Date timeStampDate = null;
-		try {
-			//creation du format de la date
-			DateFormat formatter;
-			formatter = new SimpleDateFormat("dd/MM/yyyy");
-			// you can change format of date
-			Date date = formatter.parse(str_date);
-			System.out.println(str_date);
-			timeStampDate = new java.sql.Date(date.getTime());
-			System.out.println(timeStampDate);
-			return timeStampDate;
-
-		} catch (ParseException e) {
-			System.out.println("Mauvais format de date, veuillez recommencer");
-			return timeStampDate;
+	public static LocalDate convertStringToTimestamp(String str_date) {
+		//creation du format de la LocalDate
+		LocalDate localDate = null;
+		if(str_date!=null || str_date.equals("")) {
+			try{DateTimeFormatter formatter;
+			formatter = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
+			// you can change format of LocalDate
+			localDate =LocalDate.parse(str_date, formatter);
+		}catch (DateTimeParseException e ) {
+			e.getMessage();
 		}
+		}
+		return localDate;
 	}
 
 }

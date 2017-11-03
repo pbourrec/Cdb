@@ -1,20 +1,24 @@
 package com.excilys.cdb.database.datatype;
-//import java.util.Date;
+
 import java.sql.Date;
+import java.time.LocalDate;
+
+//import java.util.LocalDate;
+
 
 
 public class Computer {
 	
 	
 	private Long id;
-	private  String computerName;
-	private long ManufacturerID;
+	private String computerName;
+	private Long manufacturerID;
 	
-	private Date dateIntroduced;
-	private Date dateDiscontinued;
+	private LocalDate dateIntroduced;
+	private LocalDate dateDiscontinued;
 	
-	public long getComputerManufacturer() {
-		return ManufacturerID;
+	public Long getManufacturerID() {
+		return manufacturerID;
 	}
 	
 	public Long getId(){
@@ -28,24 +32,24 @@ public class Computer {
 	public String getComputerName() {
 		return computerName;
 	}
-	public Date getDateIntroduced() {
+	public LocalDate getDateIntroduced() {
 		return dateIntroduced;
 	}
-	public Date getDateDiscontinued() {
+	public LocalDate getDateDiscontinued() {
 		return dateDiscontinued;
 	}
 	public void setComputerName(String computerName) {
 		this.computerName = computerName;
 	}
-	public void setDateIntroduced(Date dateIntroduced) {
+	public void setDateIntroduced(LocalDate dateIntroduced) {
 		this.dateIntroduced = dateIntroduced;
 	}
-	public void setDateDiscontinued(Date dateDiscontinued) {
+	public void setDateDiscontinued(LocalDate dateDiscontinued) {
 		this.dateDiscontinued = dateDiscontinued;
 		
 	}
-	public void setComputerManufacturer(long computerManufacturer) {
-		this.ManufacturerID = computerManufacturer;
+	public void setComputerManufacturer(Long computerManufacturer) {
+		this.manufacturerID = computerManufacturer;
 	}
 
 	public Computer(String computerName) {
@@ -54,13 +58,13 @@ public class Computer {
 	}
 	
 	//constructeur si on a toutes les données
-	public Computer(String computerName, long computerManufacturer, Date dateIntroduced,
-			Date dateDiscontinued) {
+	public Computer(String computerName, Long computerManufacturer, LocalDate dateStart,
+			LocalDate dateEnd) {
 		super();
 		this.computerName = computerName;
-		this.ManufacturerID = computerManufacturer;
-		this.dateIntroduced = dateIntroduced;
-		this.dateDiscontinued = dateDiscontinued;
+		this.manufacturerID = computerManufacturer;
+		this.dateIntroduced = dateStart;
+		this.dateDiscontinued = dateEnd;
 	}
 	
 	//Constructeur si l'on n'a que le nom et le fabricant
@@ -69,9 +73,9 @@ public class Computer {
 	 * @param computerName
 	 * @param computerManufacturer
 	 */
-	public Computer(String computerName, long computerManufacturer) {
+	public Computer(String computerName, Long computerManufacturer) {
 		this.computerName = computerName;
-		this.ManufacturerID = computerManufacturer;
+		this.manufacturerID = computerManufacturer;
 	}
 
 	public Computer() {
@@ -81,8 +85,8 @@ public class Computer {
 	@Override
 	public String toString() {
 		return "id N°---" + id + "\n Nom de l'ordinateur ---" + computerName
-				+ "\n ID fabricant ---" + ManufacturerID + "\n Date mise en route ---"
-				+ dateIntroduced + "\n Date mise en retraite ---" + dateDiscontinued;
+				+ "\n ID fabricant ---" + manufacturerID + "\n LocalDate mise en route ---"
+				+ dateIntroduced + "\n LocalDate mise en retraite ---" + dateDiscontinued;
 	}
 	
 		

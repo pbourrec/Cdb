@@ -1,5 +1,6 @@
 package com.excilys.cdb.database.dao;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,9 +10,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.excilys.cdb.database.datatype.Company;
 import com.excilys.cdb.database.datatype.Computer;
-import com.excilys.cdb.database.mapper.CompanyMapper;
 import com.excilys.cdb.database.mapper.ComputerMapper;
 
 public class ComputerDAO {
@@ -40,9 +39,9 @@ public class ComputerDAO {
 		try (PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(insertComputer)) {
 			//Creation de la string a utiliser dans la query
 			prepstmt.setString(1,computer.getComputerName());
-			prepstmt.setDate(2,computer.getDateIntroduced());
-			prepstmt.setDate(3,computer.getDateDiscontinued());
-			prepstmt.setLong(4, computer.getComputerManufacturer());
+			prepstmt.setDate(2,Date.valueOf(computer.getDateIntroduced()));
+			prepstmt.setDate(3,Date.valueOf(computer.getDateDiscontinued()));
+			prepstmt.setLong(4, computer.getManufacturerID());
 			logger.debug(prepstmt.toString());
 			prepstmt.execute();
 			return true;
@@ -63,9 +62,9 @@ public class ComputerDAO {
 		try (PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(updateComputer)) {
 			//Creation de la string a utiliser dans la query
 			prepstmt.setString(1,newComputer.getComputerName());
-			prepstmt.setDate(2,newComputer.getDateIntroduced());
-			prepstmt.setDate(3,newComputer.getDateDiscontinued());
-			prepstmt.setLong(4, newComputer.getComputerManufacturer());
+			prepstmt.setDate(2,Date.valueOf(newComputer.getDateIntroduced()));
+			prepstmt.setDate(3,Date.valueOf(newComputer.getDateDiscontinued()));
+			prepstmt.setLong(4, newComputer.getManufacturerID());
 			prepstmt.setLong(5,idComputer);
 			logger.debug(prepstmt.toString());
 
@@ -104,6 +103,7 @@ public class ComputerDAO {
 	public static Computer databaseQueryOne(Long computerID){
 		ResultSet rs = null;
 		Computer computerQueried = new Computer();
+		if (computerID!=0L) {
 		try (PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(queryComputer)){
 			prepstmt.setLong(1,computerID);
 			rs = prepstmt.executeQuery();
@@ -112,6 +112,7 @@ public class ComputerDAO {
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
 
+		}
 		}
 		return computerQueried;
 
@@ -139,22 +140,22 @@ public class ComputerDAO {
 
 	}
 
-	public static List<Company> databaseGetComputer(Long offSet, Long limit) {
-		List <Company> listCompany = new ArrayList<>();
+	public static List<Computer> databaseGetComputer(Long offSet, Long limit) {
+		List <Computer> listComputer = new ArrayList<>();
 		ResultSet rs = null;
-	
+
 		try(PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(selectAllComputerPagination)) {
 			prepstmt.setLong(1, limit);
 			prepstmt.setLong(2, offSet);
 			rs = prepstmt.executeQuery();
 			while (rs.next()){
-				listCompany.add(CompanyMapper.rsToCompany(rs));
+				listComputer.add(ComputerMapper.rsToComputer(rs));
 			}
 		} catch (SQLException e) {
-//			CompanyDAO.logger.error(e.getMessage());
+			//			CompanyDAO.logger.error(e.getMessage());
 		}
-		return listCompany;
-	
+		return listComputer;
+
 	}
 
 	/**
