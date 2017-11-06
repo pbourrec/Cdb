@@ -46,7 +46,9 @@ public class EditComputerServlet extends HttpServlet {
 		String computerId = request.getParameter("computerid");
 		String computerName = request.getParameter("computerName");
 		String introduced = request.getParameter("introduced");
+		System.out.println("la date intro est  :  "+ introduced);
 		String discontinued = request.getParameter("discontinued");
+		System.out.println("la date fin est  :  " + discontinued);
 		String companyId = request.getParameter("companyId");
 		
 		Computer computerToAdd = new Computer();

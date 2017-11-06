@@ -27,19 +27,19 @@ public class AddComputerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Company> listCompanies= CompanyDAO.databaseGetCompany();
 		request.setAttribute( "listcompanies", listCompanies);
-		
+
 		this.getServletContext().getRequestDispatcher( "/addComputer.jsp" ).forward( request, response );
 	}
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
 		String computerName = request.getParameter("computerName");
 		String introduced = request.getParameter("introduced");
 		String discontinued = request.getParameter("discontinued");
 		String companyId = request.getParameter("companyId");
-		
+
 		Computer computerToAdd = new Computer();
 		computerToAdd = ComputerMapper.computerBuilder(computerName, companyId, introduced, discontinued);
 		System.out.println(computerToAdd.toString());

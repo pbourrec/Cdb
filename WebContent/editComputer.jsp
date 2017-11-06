@@ -29,7 +29,7 @@
 
 					<form action="editComputer" method="POST">
 						<input type="hidden"
-							value="<c:out value="${computer.id}" default="default value of c:out" />"
+							value="<c:out value="${computer.id}" default="No actual value" />"
 							id="id" name="computerid" />
 						<!-- TODO: Change this value with the computer id -->
 						<fieldset>
@@ -38,27 +38,30 @@
 								<label for="computerName">Computer name</label> <input
 									type="text" class="form-control" id="computerName"
 									name="computerName"
-									placeholder="<c:out value="${computer.computerName}" default="default value of c:out" />">
+									placeholder="<c:out value="${computer.computerName}" default="No actual value" />"
+									value="<c:out value="${computer.computerName}" default=""/> ">
 							</div>
 							<div class="form-group">
 								<label for="introduced">Introduced date</label> <input
 									type="date" class="form-control" id="introduced"
 									name="introduced"
-									placeholder="<c:out value="${computer.dateIntroduced}" default="default value of c:out" />"
-									value="">
+									placeholder="<c:out value="${computer.dateIntroduced}" default="yyyy-MM-dd OR dd/MM/yyyy" />"
+									value="<c:out value="${computer.dateIntroduced}" default=""/>" >
 							</div>
 							<div class="form-group">
 								<label for="discontinued">Discontinued date</label> <input
 									type="date" class="form-control" id="discontinued"
 									name="discontinued"
-									placeholder="<c:out value="${computer.dateDiscontinued}" default="default value of c:out" />"
-									value="">
+									placeholder="<c:out value="${computer.dateDiscontinued}" default="yyyy-MM-dd OR dd/MM/yyyy" />"
+									value="<c:out value="${computer.dateDiscontinued}" default=""/>">
 							</div>
 							<div class="form-group">
 								<label for="companyId">Company</label> <select
 									class="form-control" id="companyId" name="companyId">
 									<c:forEach items="${listcompanies}" var="company">
-										<option value="${company.id}">${company.name}</option>
+									
+										<c:if test="${company.id == computer.company.id }"><option selected value="${company.id}">${company.name}</option></c:if>
+										<c:if test="${company.id != computer.company.id }"><option value="${company.id}">${company.name}</option></c:if>
 									</c:forEach>
 								</select>
 							</div>

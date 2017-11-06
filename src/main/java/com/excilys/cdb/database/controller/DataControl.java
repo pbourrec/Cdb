@@ -87,9 +87,15 @@ public class DataControl {
 			formatter = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
 			// you can change format of LocalDate
 			localDate =LocalDate.parse(str_date, formatter);
-		}catch (DateTimeParseException e ) {
-			e.getMessage();
-		}
+			}catch (DateTimeParseException e ) {
+				try{DateTimeFormatter formatter;
+				formatter = new DateTimeFormatterBuilder().appendPattern("yyyy-MM-dd").toFormatter();
+				// you can change format of LocalDate
+				localDate =LocalDate.parse(str_date, formatter);
+				}catch (DateTimeParseException e2 ) {
+					logger.error(e.getMessage());
+				}
+			}
 		}
 		return localDate;
 	}

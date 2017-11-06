@@ -12,15 +12,33 @@ public class Computer {
 	
 	private Long id;
 	private String computerName;
-	private Long manufacturerID;
 	
+	
+	private Company company;
+
 	private LocalDate dateIntroduced;
 	private LocalDate dateDiscontinued;
 	
-	public Long getManufacturerID() {
-		return manufacturerID;
+	public Company getCompany() {
+		return company;
 	}
-	
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+//
+//	public String getCompanyName() {
+//		return companyName;
+//	}
+//
+//	public void setCompanyName(String companyName) {
+//		this.companyName = companyName;
+//	}
+//
+//	public Long getManufacturerID() {
+//		return manufacturerID;
+//	}
+//	
 	public Long getId(){
 		return id;
 	}
@@ -48,9 +66,9 @@ public class Computer {
 		this.dateDiscontinued = dateDiscontinued;
 		
 	}
-	public void setComputerManufacturer(Long computerManufacturer) {
-		this.manufacturerID = computerManufacturer;
-	}
+//	public void setComputerManufacturer(Long computerManufacturer) {
+//		this.manufacturerID = computerManufacturer;
+//	}
 
 	public Computer(String computerName) {
 		super();
@@ -62,7 +80,7 @@ public class Computer {
 			LocalDate dateEnd) {
 		super();
 		this.computerName = computerName;
-		this.manufacturerID = computerManufacturer;
+		this.company.id = computerManufacturer;
 		this.dateIntroduced = dateStart;
 		this.dateDiscontinued = dateEnd;
 	}
@@ -75,7 +93,7 @@ public class Computer {
 	 */
 	public Computer(String computerName, Long computerManufacturer) {
 		this.computerName = computerName;
-		this.manufacturerID = computerManufacturer;
+		this.company.id = computerManufacturer;
 	}
 
 	public Computer() {
@@ -85,7 +103,7 @@ public class Computer {
 	@Override
 	public String toString() {
 		return "id N°---" + id + "\n Nom de l'ordinateur ---" + computerName
-				+ "\n ID fabricant ---" + manufacturerID + "\n LocalDate mise en route ---"
+				+ "\n ID fabricant ---" + this.company.id + "\n LocalDate mise en route ---"
 				+ dateIntroduced + "\n LocalDate mise en retraite ---" + dateDiscontinued;
 	}
 	

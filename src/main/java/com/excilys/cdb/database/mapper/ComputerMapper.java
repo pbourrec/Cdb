@@ -5,14 +5,20 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Scanner;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.cdb.database.controller.ControlFormat;
 import com.excilys.cdb.database.controller.DataControl;
+import com.excilys.cdb.database.dao.ComputerDAO;
+import com.excilys.cdb.database.datatype.Company;
 import com.excilys.cdb.database.datatype.Computer;
 
 public class ComputerMapper {
 
 
 	public static Computer rsToComputer(ResultSet rsComputer){
+		final Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 		Computer computerConvert = new Computer();
 		try {
 
@@ -22,10 +28,10 @@ public class ComputerMapper {
 			java.sql.Date datediscontinued= rsComputer.getDate(4);
 			computerConvert.setDateIntroduced(dateIntroduced!= null ? dateIntroduced.toLocalDate() : null);
 			computerConvert.setDateDiscontinued(datediscontinued!= null ? datediscontinued.toLocalDate() : null);
-			computerConvert.setComputerManufacturer(rsComputer.getLong(5));
+			computerConvert.setCompany(new Company(rsComputer.getLong(5),(rsComputer.getString(7)) != null ?rsComputer.getString(7) : null ));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			return null;
 		}
 

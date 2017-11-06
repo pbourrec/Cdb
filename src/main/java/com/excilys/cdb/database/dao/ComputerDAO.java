@@ -22,10 +22,10 @@ public class ComputerDAO {
 	final static String insertComputer = "INSERT INTO computer(name,introduced, discontinued, company_id) VALUES (?,?,?,?)";
 	private final static String updateComputer = "UPDATE computer SET name =?,introduced= ?, discontinued= ?, company_id = ? WHERE id=?";
 	final static String deleteComputer = "DELETE FROM computer  WHERE id=?";
-	private final static String queryComputer = "SELECT * FROM computer WHERE id=?";
+	private final static String queryComputer = "SELECT * FROM computer LEFT JOIN company ON computer.company_id=company.id WHERE computer.id=?";
 
 	final static String selectAllComputer= "SELECT * FROM computer ";
-	private final static String selectAllComputerPagination= "SELECT * FROM computer LIMIT ? OFFSET ?";
+	private final static String selectAllComputerPagination= "SELECT * FROM computer LEFT JOIN company ON computer.company_id=company.id LIMIT ? OFFSET ?";
 
 	final static String selectCount= "SELECT count(*)FROM computer ";
 
@@ -41,7 +41,7 @@ public class ComputerDAO {
 			prepstmt.setString(1,computer.getComputerName());
 			prepstmt.setDate(2,Date.valueOf(computer.getDateIntroduced()));
 			prepstmt.setDate(3,Date.valueOf(computer.getDateDiscontinued()));
-			prepstmt.setLong(4, computer.getManufacturerID());
+			prepstmt.setLong(4, computer.getCompany().getId());
 			logger.debug(prepstmt.toString());
 			prepstmt.execute();
 			return true;
@@ -62,9 +62,9 @@ public class ComputerDAO {
 		try (PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(updateComputer)) {
 			//Creation de la string a utiliser dans la query
 			prepstmt.setString(1,newComputer.getComputerName());
-			prepstmt.setDate(2,Date.valueOf(newComputer.getDateIntroduced()));
-			prepstmt.setDate(3,Date.valueOf(newComputer.getDateDiscontinued()));
-			prepstmt.setLong(4, newComputer.getManufacturerID());
+			prepstmt.setDate(2,(newComputer.getDateIntroduced()!=null ?  Date.valueOf(newComputer.getDateIntroduced()) : null ));
+			prepstmt.setDate(3, (newComputer.getDateDiscontinued()!=null ?  Date.valueOf(newComputer.getDateDiscontinued()) : null ));
+			prepstmt.setLong(4, newComputer.getCompany().getId());
 			prepstmt.setLong(5,idComputer);
 			logger.debug(prepstmt.toString());
 

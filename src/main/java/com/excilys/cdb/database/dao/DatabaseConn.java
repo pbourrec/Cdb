@@ -6,10 +6,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mysql.jdbc.Driver;
 
 public class DatabaseConn {
-	
+	static Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
+
 
 	//connection à la database
 	public static Connection databaseConnection() {
@@ -37,9 +41,8 @@ public class DatabaseConn {
 			prepstmt = conn.prepareStatement(sql);
 	
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			logger.error(e.getMessage());
+			}
 		return prepstmt;
 	
 	}
