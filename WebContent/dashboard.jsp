@@ -28,12 +28,16 @@
 			</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
-					<form id="searchForm" action="#" method="GET" class="form-inline">
+					<form id="searchForm" action="#" method="POST" class="form-inline">
 
 						<input type="search" id="searchbox" name="search"
 							class="form-control" placeholder="Search name" /> <input
 							type="submit" id="searchsubmit" value="Filter by name"
-							class="btn btn-primary" />
+							class="btn btn-primary" name="actionType"/>
+							<input
+							type="submit" id="searchsubmitCompany" value="Filter by company"
+							class="btn btn-primary" name="actionType"/> 
+					</form>
 					</form>
 				</div>
 				<div class="pull-right">
@@ -114,8 +118,8 @@
 					<li><a href="?page=${page-1}"><c:out value="${page}"
 								default="" /></a></li>
 				</c:if>
-				<li><a  style="font-size:20px" href="?page=${page}"><c:out value="${page+1}"
-							default="" /></a></li>
+				<li><a style="font-size: 20px" href="?page=${page}"><c:out
+							value="${page+1}" default="" /></a></li>
 				<c:if test="${nextPage>=1}">
 					<li><a href="?page=${page+1}"><c:out value="${page+2}"
 								default="" /></a></li>

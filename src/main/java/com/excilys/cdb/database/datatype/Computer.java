@@ -13,8 +13,7 @@ public class Computer {
 	private Long id;
 	private String computerName;
 	
-	
-	private Company company;
+	private Company company = new Company();
 
 	private LocalDate dateIntroduced;
 	private LocalDate dateDiscontinued;
@@ -26,19 +25,7 @@ public class Computer {
 	public void setCompany(Company company) {
 		this.company = company;
 	}
-//
-//	public String getCompanyName() {
-//		return companyName;
-//	}
-//
-//	public void setCompanyName(String companyName) {
-//		this.companyName = companyName;
-//	}
-//
-//	public Long getManufacturerID() {
-//		return manufacturerID;
-//	}
-//	
+	
 	public Long getId(){
 		return id;
 	}
@@ -63,12 +50,8 @@ public class Computer {
 		this.dateIntroduced = dateIntroduced;
 	}
 	public void setDateDiscontinued(LocalDate dateDiscontinued) {
-		this.dateDiscontinued = dateDiscontinued;
-		
+		this.dateDiscontinued = dateDiscontinued;		
 	}
-//	public void setComputerManufacturer(Long computerManufacturer) {
-//		this.manufacturerID = computerManufacturer;
-//	}
 
 	public Computer(String computerName) {
 		super();
@@ -79,21 +62,11 @@ public class Computer {
 	public Computer(String computerName, Long computerManufacturer, LocalDate dateStart,
 			LocalDate dateEnd) {
 		super();
+
 		this.computerName = computerName;
-		this.company.id = computerManufacturer;
+		this.company.setId(computerManufacturer);
 		this.dateIntroduced = dateStart;
 		this.dateDiscontinued = dateEnd;
-	}
-	
-	//Constructeur si l'on n'a que le nom et le fabricant
-	/**
-	 * @deprecated
-	 * @param computerName
-	 * @param computerManufacturer
-	 */
-	public Computer(String computerName, Long computerManufacturer) {
-		this.computerName = computerName;
-		this.company.id = computerManufacturer;
 	}
 
 	public Computer() {
@@ -103,7 +76,7 @@ public class Computer {
 	@Override
 	public String toString() {
 		return "id N°---" + id + "\n Nom de l'ordinateur ---" + computerName
-				+ "\n ID fabricant ---" + this.company.id + "\n LocalDate mise en route ---"
+				+ "\n ID fabricant ---" + this.getCompany().getId() + "\n LocalDate mise en route ---"
 				+ dateIntroduced + "\n LocalDate mise en retraite ---" + dateDiscontinued;
 	}
 	

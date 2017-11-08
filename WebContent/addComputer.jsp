@@ -27,7 +27,7 @@
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
 									type="text" class="form-control" id="computerName" name="computerName"
-									placeholder="Computer name">
+									placeholder="<c:out value="${errorName}" default="Computer Name" />">
 							</div>
 							<div class="form-group">
 								<label for="introduced">Introduced date</label> <input
@@ -48,7 +48,6 @@
 								</select>
 							</div>
 						</fieldset>
-						<c:out value="${listcompanies.size()}"></c:out>
 						<div class="actions pull-right">
 							<input type="submit" value="Add" class="btn btn-primary">
 							or <a href="dashboard" class="btn btn-default">Cancel</a>

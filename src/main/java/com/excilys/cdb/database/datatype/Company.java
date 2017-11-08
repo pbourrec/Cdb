@@ -1,7 +1,7 @@
 package com.excilys.cdb.database.datatype;
 
 public class Company {
-	Long id;
+	private Long id;
 	private String name;
 	public Long getId() {
 		return id;

@@ -14,6 +14,7 @@ import com.excilys.cdb.database.dao.ComputerDAO;
 import com.excilys.cdb.database.datatype.Company;
 import com.excilys.cdb.database.datatype.Computer;
 import com.excilys.cdb.database.mapper.ComputerMapper;
+import com.excilys.cdb.database.service.ServletServices;
 
 /**
  * Servlet implementation class AddComputerServlet
@@ -21,11 +22,12 @@ import com.excilys.cdb.database.mapper.ComputerMapper;
 @WebServlet("/AddComputerServlet")
 public class AddComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static final String errorName = "Vous devez saisir un nom pour l'ordinateur à créer";
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Company> listCompanies= CompanyDAO.databaseGetCompany();
+		List<Company> listCompanies= ServletServices.getListCompany();
 		request.setAttribute( "listcompanies", listCompanies);
 
 		this.getServletContext().getRequestDispatcher( "/addComputer.jsp" ).forward( request, response );
@@ -39,12 +41,15 @@ public class AddComputerServlet extends HttpServlet {
 		String introduced = request.getParameter("introduced");
 		String discontinued = request.getParameter("discontinued");
 		String companyId = request.getParameter("companyId");
+		if (computerName.equals("")) {
+			request.setAttribute("errorName", errorName);
+			List<Company> listCompanies= ServletServices.getListCompany();
+			request.setAttribute( "listcompanies", listCompanies);
 
-		Computer computerToAdd = new Computer();
-		computerToAdd = ComputerMapper.computerBuilder(computerName, companyId, introduced, discontinued);
-		System.out.println(computerToAdd.toString());
-		ComputerDAO.databaseUpload(computerToAdd);
-		response.sendRedirect(this.getServletContext().getContextPath() + "/dashboard");
+			this.getServletContext().getRequestDispatcher( "/addComputer.jsp" ).forward( request, response );
+		}else {
+			ServletServices.addComputer(computerName, introduced, discontinued, companyId);
+			response.sendRedirect(this.getServletContext().getContextPath() + "/dashboard");
+		}
 	}
-
 }

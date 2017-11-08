@@ -15,6 +15,7 @@ import com.excilys.cdb.database.datatype.Company;
 import com.excilys.cdb.database.datatype.Computer;
 
 public class ComputerMapper {
+	static Scanner sc = new Scanner(System.in);
 
 
 	public static Computer rsToComputer(ResultSet rsComputer){
@@ -38,7 +39,7 @@ public class ComputerMapper {
 		return computerConvert;		
 	}
 
-	public static LocalDate enterDiscontinuedDate(Scanner sc) {
+	public static LocalDate enterDiscontinuedDate() {
 		System.out.println("LocalDate de mise en retraite de l'ordinateur (format dd/MM/yyyy)");	
 		LocalDate dateEnd= null;
 		while(dateEnd==null) {
@@ -51,7 +52,7 @@ public class ComputerMapper {
 		return dateEnd;
 	}
 
-	public static LocalDate enterIntroductionDate(Scanner sc) {
+	public static LocalDate enterIntroductionDate() {
 		System.out.println("LocalDate de mise en service de l'ordinateur (format dd/MM/yyyy)");
 		LocalDate dateStart = null;
 		while(dateStart==null) {
@@ -64,14 +65,7 @@ public class ComputerMapper {
 		return dateStart;
 	}
 
-	public static Long enterCompanyId(Scanner sc) {
-		System.out.println("Quel sera le constructeur de l'ordinateur (choisir un ID)" );
-		String computerManufacturer = sc.nextLine();
-		Long idCompany = DataControl.stringToLongIDCompany( computerManufacturer, sc);
-		return idCompany;
-	}
-
-	public static String enterName(Scanner sc) {
+	public static String enterName() {
 		System.out.println("Quel sera le nom de l'ordinateur");
 		String computerName = sc.nextLine();
 		while(computerName.isEmpty()){
@@ -81,7 +75,7 @@ public class ComputerMapper {
 		return computerName;
 	}
 
-	public static Long enterIdToFound(Scanner sc) {
+	public static Long enterIdToFound() {
 		System.out.println("Quel ordinateur voulez vous voir ? Entrez l'ID");
 		String computerIDToSee = sc.nextLine();
 		Long idComputerToSee = DataControl.stringToLongIDComputer(computerIDToSee, sc);

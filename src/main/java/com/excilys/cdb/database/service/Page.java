@@ -7,26 +7,53 @@ import com.excilys.cdb.database.dao.ComputerDAO;
 import com.excilys.cdb.database.datatype.Computer;
 
 public class Page {
-	
-	public static Long limit;
-	public static Long offset;
-	public static List<Computer> pageOfComputer = new ArrayList();
-	
+	Long computerPerPage=50L; 
+	Long offsetPage=0L;
+	int nextPageOK = 0;
+	public  List<Computer> pageOfComputer = listPage(offsetPage, computerPerPage);
+
+	public  Long getComputerPerPage() {
+		return computerPerPage;
+	}
+
+	public int getNextPageOK() {
+		return nextPageOK;
+	}
+
+	public void setNextPageOK(int nextPageOK) {
+		this.nextPageOK = nextPageOK;
+	}
+
+	public void setComputerPerPage(Long computerPerPage) {
+		this.computerPerPage = computerPerPage;
+	}
+
+	public  Long getOffsetPage() {
+		return offsetPage;
+	}
+
+	public  void setOffsetPage(Long offsetPage) {
+		this.offsetPage = offsetPage;
+	}
+
 	public Page(Long limit, Long offset) {
 		super();
-		this.limit = limit;
-		this.offset = offset;
+		this.computerPerPage = limit;
+		this.offsetPage = offset;
 		this.pageOfComputer = ComputerDAO.databaseGetComputer(offset, limit);
 	}
 
-	public static List<Computer> getPageOfComputer() {
+	public Page() {
+	}
+
+	public  List<Computer> getPageOfComputer() {
 		return pageOfComputer;
 	}
 
-	public static void setPageOfComputer(List<Computer> pageOfComputer) {
-		Page.pageOfComputer = pageOfComputer;
+	public  void setPageOfComputer(List<Computer> pageOfComputer) {
+		this.pageOfComputer = pageOfComputer;
 	}
-	
+
 	public static List<Computer>  listPage(Long offset, Long limit) {
 		List<Computer> listComputer = ComputerDAO.databaseGetComputer(offset, limit);
 		return listComputer;

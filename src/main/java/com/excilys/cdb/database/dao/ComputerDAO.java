@@ -23,7 +23,8 @@ public class ComputerDAO {
 	private final static String updateComputer = "UPDATE computer SET name =?,introduced= ?, discontinued= ?, company_id = ? WHERE id=?";
 	final static String deleteComputer = "DELETE FROM computer  WHERE id=?";
 	private final static String queryComputer = "SELECT * FROM computer LEFT JOIN company ON computer.company_id=company.id WHERE computer.id=?";
-
+	private final static String queryComputerByName = "SELECT * FROM computer LEFT JOIN company ON computer.company_id=company.id WHERE computer.name LIKE ?";
+	private final static String queryComputerByCompany = "SELECT * FROM computer LEFT JOIN company ON computer.company_id=company.id WHERE company.name LIKE ?";
 	final static String selectAllComputer= "SELECT * FROM computer ";
 	private final static String selectAllComputerPagination= "SELECT * FROM computer LEFT JOIN company ON computer.company_id=company.id LIMIT ? OFFSET ?";
 
@@ -39,8 +40,8 @@ public class ComputerDAO {
 		try (PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(insertComputer)) {
 			//Creation de la string a utiliser dans la query
 			prepstmt.setString(1,computer.getComputerName());
-			prepstmt.setDate(2,Date.valueOf(computer.getDateIntroduced()));
-			prepstmt.setDate(3,Date.valueOf(computer.getDateDiscontinued()));
+			prepstmt.setDate(2,(computer.getDateIntroduced()!=null ?  Date.valueOf(computer.getDateIntroduced()) : null ));
+			prepstmt.setDate(3, (computer.getDateDiscontinued()!=null ?  Date.valueOf(computer.getDateDiscontinued()) : null ));
 			prepstmt.setLong(4, computer.getCompany().getId());
 			logger.debug(prepstmt.toString());
 			prepstmt.execute();
@@ -172,11 +173,51 @@ public class ComputerDAO {
 			sizeTable = rs.getInt(1);
 			prepstmt.execute();
 		} catch (SQLException e) {
-			logger.error(e.getMessage());
+			logger.error(
+					e.getMessage());
 
 		}
 		return sizeTable;
 
+	}
+
+	public static List<Computer> databaseGetComputerByName(String nameToFind) {
+		
+		ResultSet rs = null;
+		List<Computer> listComputer = new ArrayList<>(); 
+		try(PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(queryComputerByName)) {
+			nameToFind="%"+nameToFind+"%";
+			prepstmt.setString(1, nameToFind);
+			rs = prepstmt.executeQuery();
+			logger.debug(prepstmt.toString());
+			while(rs.next()){
+				listComputer.add(ComputerMapper.rsToComputer(rs));
+				
+			}
+		} catch (SQLException e) {
+			logger.error("Erreur dans la query par nom");
+		}
+		return listComputer;
+	}
+
+	public static List<Computer> databaseGetComputerByCompany(String companyToFind) {
+
+		
+		ResultSet rs = null;
+		List<Computer> listComputer = new ArrayList<>(); 
+		try(PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(queryComputerByCompany)) {
+			companyToFind="%"+companyToFind+"%";
+			prepstmt.setString(1, companyToFind);
+			rs = prepstmt.executeQuery();
+			logger.debug(prepstmt.toString());
+			while(rs.next()){
+				listComputer.add(ComputerMapper.rsToComputer(rs));
+				
+			}
+		} catch (SQLException e) {
+			logger.error("Erreur dans la query par nom");
+		}
+		return listComputer;
 	}
 
 
