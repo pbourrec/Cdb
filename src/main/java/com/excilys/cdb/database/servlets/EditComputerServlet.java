@@ -25,12 +25,12 @@ public class EditComputerServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Company> listCompanies= CompanyDAO.databaseGetCompany();
+		List<Company> listCompanies= CompanyDAO.getCompany();
 		request.setAttribute( "listcompanies", listCompanies);
 		
 		String computerId = request.getParameter("computerid");
 		
-		Computer computerToEdit = ComputerDAO.databaseQueryOne(computerId !=null ? Long.valueOf(computerId) : 0L);
+		Computer computerToEdit = ComputerDAO.queryOne(computerId !=null ? Long.valueOf(computerId) : 0L);
 		request.setAttribute( "computer",computerToEdit);
 		System.out.println(computerToEdit.toString());
 		this.getServletContext().getRequestDispatcher( "/editComputer.jsp" ).forward( request, response );
@@ -54,7 +54,7 @@ public class EditComputerServlet extends HttpServlet {
 		Computer computerToAdd = new Computer();
 		computerToAdd = ComputerMapper.computerBuilder(computerName, companyId, introduced, discontinued);
 		System.out.println(computerToAdd.toString());
-		ComputerDAO.databaseUpdate(computerToAdd, Long.valueOf(computerId));
+		ComputerDAO.update(computerToAdd, Long.valueOf(computerId));
 		response.sendRedirect(this.getServletContext().getContextPath() + "/dashboard");
 	}
 

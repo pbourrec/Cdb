@@ -14,7 +14,6 @@ public class DataControl {
 
 	/**
 	 * 
-	 * @param conn Connection établie au début
 	 * @param computerManufacturer ID du fabricant
 	 * @param sc Scanner input clavier
 	 * @return Long ValueOf ID du fabricant
@@ -34,7 +33,6 @@ public class DataControl {
 	}
 	/**
 	 * 
-	 * @param conn Connection établie au début
 	 * @param computerID ID de l'ordinateur
 	 * @param sc Scanner input clavier
 	 * @return Long valueOf ID de l'ordinateur

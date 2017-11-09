@@ -1,5 +1,6 @@
 package com.excilys.cdb.database.dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,42 +18,63 @@ public class CompanyDAO {
 
 	final static String selectAllCompany= "SELECT * FROM company";
 	final static String selectCount= "SELECT count(*)FROM company ";
+	final static String deleteCompany = "DELETE FROM company WHERE id=?";
 
 	/**
 	 * 
-	 * @param conn Connection
 	 * @return ResultSet rs Resultat de la query sur la table "company"
 	 */
-	public static List<Company> databaseGetCompany() {
+	public static List<Company> getCompany() {
 		List <Company> listCompany = new ArrayList<>();
 		ResultSet rs = null;
-		try(PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(selectAllCompany)) {
+		try(		Connection conn =DatabaseConn.databaseConnection(); PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(conn, selectAllCompany)) {
 			rs = prepstmt.executeQuery();
-			logger.error("query succeded,  " + databaseGetSizeCompany() +"results returned");
 			while (rs.next()){
 				listCompany.add(CompanyMapper.rsToCompany(rs));
 			}
+			rs.close();
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
 		}
 		return listCompany;
-		
+
 	}
-	
-	public static int databaseGetSizeCompany() {
+
+	public static int getSizeCompany() {
 		ResultSet rs = null;
 		int sizeTable = 0;
-		try(PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(selectCount)) {
+		try(Connection conn =DatabaseConn.databaseConnection(); PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(conn,selectCount)) {
 			rs = prepstmt.executeQuery();
 			rs.next();
 			sizeTable = rs.getInt(1);
 			prepstmt.execute();
+			rs.close();
+
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
 
 		}
 		return sizeTable;
 
+	}
+
+	public static void deleteCompany(Long companyId) throws SQLException {
+		Connection conn =DatabaseConn.databaseConnection(); 
+
+		try(PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(conn,deleteCompany)) {
+			conn.setAutoCommit(false);
+			ComputerDAO.deleteWithCompany(conn,companyId);
+			prepstmt.setLong(1,companyId);
+			prepstmt.execute();
+			conn.commit();
+			logger.error("reussite de la suppression, il n'y a plus que " + getSizeCompany() + "companies ");
+		} catch (SQLException e) {
+			logger.error(e.getMessage());
+			conn.rollback();
+			throw e;
+		}finally {
+			conn.close();
+		}
 	}
 
 

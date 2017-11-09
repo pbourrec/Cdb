@@ -17,8 +17,6 @@ public class UserInterface {
 
 	public static String cliChoice() {
 		System.out.println("*******************************************************************");
-		//Connection a la database et query sur les tables "computer" et "coexcmpany"
-
 		System.out.println("Que voulez vous faire : ");
 		System.out.println("1. Ajouter un ordinateur");
 		System.out.println("2. Modifier un ordinateur");
@@ -83,7 +81,6 @@ public class UserInterface {
 	/**
 	 * 
 	 * @param sc Scanner input clavier, on le ferme
-	 * @param conn Fermeture de la connection
 	 * @param rsComputer fermeture de la query sur la table "computer"
 	 * @param rsCompany fermeture de la query sur la table "Company"
 	 * @return String endOfSession pour quitter la boucle while du main

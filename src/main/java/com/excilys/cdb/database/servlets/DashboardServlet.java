@@ -40,7 +40,7 @@ public class DashboardServlet extends HttpServlet {
 	@SuppressWarnings("static-access")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String actionType = request.getParameter("actionType");
-		int sizeTable= ComputerDAO.databaseGetSizeComputer();
+		int sizeTable= ComputerDAO.getSizeComputer();
 		String operation;
 		if(actionType.equals("delete")) {
 			String idToDelete = request.getParameter("selection");
@@ -57,7 +57,7 @@ public class DashboardServlet extends HttpServlet {
 			List<Computer> computersToFind = ServletServices.findComputersByCompany(CompanyToFind);
 			request.setAttribute("listComputer", computersToFind );
 		}
-		sizeTable= ComputerDAO.databaseGetSizeComputer();
+		sizeTable= ComputerDAO.getSizeComputer();
 		request.setAttribute( "size", sizeTable);
 		this.getServletContext().getRequestDispatcher( "/dashboard.jsp" ).forward( request, response );
 

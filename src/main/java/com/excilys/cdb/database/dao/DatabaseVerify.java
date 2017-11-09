@@ -1,5 +1,6 @@
 package com.excilys.cdb.database.dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,7 +25,7 @@ public class DatabaseVerify {
 		boolean isOK = false;
 		// si computerManufacturer est null, on considère que l'utilisateur ne veut pas déclarer le fabricant de l'ordinateur
 		if(computerManufacturer != null){
-			try (PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(selectCountCompany)){
+			try(Connection conn =DatabaseConn.databaseConnection(); PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(conn,selectCountCompany)){
 				//On regarde la TAILLE de la query. Si on a 1 résultat, alors l'ID est bon
 				prepstmt.setLong(1,computerManufacturer);
 				ResultSet rs= prepstmt.executeQuery();
@@ -32,6 +33,7 @@ public class DatabaseVerify {
 				if(rs.getLong(1)==1){
 					isOK = true;
 				}	
+				rs.close();
 			} catch ( SQLException e2) {
 				logger.error(e2.getMessage());
 			}
@@ -49,7 +51,7 @@ public class DatabaseVerify {
 	 */
 	public static boolean isIdOkComputer(Long computerId){
 		boolean isOK = false;
-		try (PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(selectCountComputer)){
+		try(Connection conn =DatabaseConn.databaseConnection(); PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(conn,selectCountComputer)){
 			//On regarde la TAILLE de la query. Si on a 1 résultat, alors l'ID est bon
 			prepstmt.setLong(1,computerId);
 			ResultSet rs= prepstmt.executeQuery();
@@ -59,6 +61,7 @@ public class DatabaseVerify {
 			}else {
 				System.out.println("l'ID rentré n'existe pas, veuillez recommencer");
 			}
+			rs.close();
 		} catch (NumberFormatException e1) {
 			System.out.println("l'ID rentré n'est pas sous le bon format, veuillez recommencer");
 		} catch ( SQLException e2) {

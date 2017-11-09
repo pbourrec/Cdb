@@ -1,8 +1,10 @@
 package com.excilys.cdb.database.service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.excilys.cdb.database.controller.ControlFormat;
 import com.excilys.cdb.database.dao.CompanyDAO;
 import com.excilys.cdb.database.dao.ComputerDAO;
 import com.excilys.cdb.database.datatype.Company;
@@ -14,7 +16,7 @@ public class ServletServices {
 	@SuppressWarnings("static-access")
 	public static int changePageFormat (String computerPerPageReciever, String operation,String pageChange, String restart, Page page) {
 
-		int sizeTable= ComputerDAO.databaseGetSizeComputer();
+		int sizeTable= ComputerDAO.getSizeComputer();
 		if(computerPerPageReciever!=null) {
 			page.setComputerPerPage( Long.valueOf(computerPerPageReciever));
 			page.setOffsetPage(0L);
@@ -43,7 +45,7 @@ public class ServletServices {
 		String[] listIdToDelete = idToDelete.split(",");
 		String computersDeleted ="Les ordinateurs suivants on étés supprimés : \n";
 		for(int i=0; i< listIdToDelete.length; i++) {
-			ComputerDAO.databaseDelete(Long.valueOf(listIdToDelete[i]));
+			ComputerDAO.delete(Long.valueOf(listIdToDelete[i]));
 			computersDeleted+=" " +listIdToDelete[i] + ",";
 		}
 		computersDeleted = computersDeleted.substring(0, computersDeleted.length() - 1);
@@ -52,7 +54,7 @@ public class ServletServices {
 
 	
 	public static List<Company> getListCompany(){
-		return CompanyDAO.databaseGetCompany();
+		return CompanyDAO.getCompany();
 
 		
 	}
@@ -60,14 +62,21 @@ public class ServletServices {
 
 	public static List<Computer> findComputersByName(String nameToFind) {
 		List<Computer> computersToFind = new ArrayList<>();
-		computersToFind = ComputerDAO.databaseGetComputerByName(nameToFind);
+		computersToFind = ComputerDAO.getComputerByName(nameToFind);
 		return computersToFind;
 	}
 
-
+	
 	public static List<Computer> findComputersByCompany(String companyToFind) {
 		List<Computer> computersToFind = new ArrayList<>();
-		computersToFind = ComputerDAO.databaseGetComputerByCompany(companyToFind);
+		computersToFind = ComputerDAO.getComputerByCompany(companyToFind);
+		return computersToFind;
+	}
+	
+
+	public static List<Computer> findComputersByCompanyId(Long companyIdToFind) {
+		List<Computer> computersToFind = new ArrayList<>();
+		computersToFind = ComputerDAO.getComputerByCompanyId(companyIdToFind);
 		return computersToFind;
 	}
 	
@@ -75,7 +84,11 @@ public class ServletServices {
 		Computer computerToAdd = new Computer();
 		computerToAdd = ComputerMapper.computerBuilder(computerName, companyId, introduced, discontinued);
 		System.out.println(computerToAdd.toString());
-		ComputerDAO.databaseUpload(computerToAdd);
+		ComputerDAO.upload(computerToAdd);
+	}
+
+	public static void servletDeleteComputerAndCompany(Long companyId) throws SQLException {
+		CompanyService.deleteCompany(companyId);
 	}
 
 }

@@ -40,7 +40,7 @@ public class Page {
 		super();
 		this.computerPerPage = limit;
 		this.offsetPage = offset;
-		this.pageOfComputer = ComputerDAO.databaseGetComputer(offset, limit);
+		this.pageOfComputer = ComputerDAO.getComputerPagination(offset, limit);
 	}
 
 	public Page() {
@@ -55,7 +55,7 @@ public class Page {
 	}
 
 	public static List<Computer>  listPage(Long offset, Long limit) {
-		List<Computer> listComputer = ComputerDAO.databaseGetComputer(offset, limit);
+		List<Computer> listComputer = ComputerDAO.getComputerPagination(offset, limit);
 		return listComputer;
 
 	}

@@ -19,7 +19,6 @@ public class ComputerService {
 
 	/**
 	 * 
-	 * @param conn Connection intialisée au début
 	 * @param  Scanner d'entrée utilisateur
 	 * @param rsCompany ResultSet de la query à la table "companies"
 	 * @param rsComputer ResultSet de la query à la table "computer"
@@ -37,12 +36,11 @@ public class ComputerService {
 
 		Computer newComputer = new Computer(computerName,idCompany, dateStart, dateEnd);	
 		if(UserInterface.confirmActionUpload(newComputer)){
-			ComputerDAO.databaseUpload(newComputer);
+			ComputerDAO.upload(newComputer);
 		}
 	}
 
 	/**
-	 * @param conn Connection intialisée au début
 	 * @param  Scanner d'entrée utilisateur
 	 * @param rsCompany ResultSet de la query à la table "companies"
 	 * @param rsComputer ResultSet de la query à la table "computer"
@@ -51,7 +49,7 @@ public class ComputerService {
 	public static void edit (){
 		//controle validité de l'ID
 		Long idComputer = ComputerMapper.enterIdToFound();
-		Computer computerToEdit = ComputerDAO.databaseQueryOne( idComputer);
+		Computer computerToEdit = ComputerDAO.queryOne( idComputer);
 		System.out.println(computerToEdit.toString());
 		
 		String computerName = ComputerMapper.enterName();
@@ -62,14 +60,14 @@ public class ComputerService {
 		// Creation d'un nouvel ordinateur et confirmation des données
 		Computer newComputerUpdate = new Computer(computerName, idCompany, dateStart, dateEnd);
 		if(UserInterface.confirmActionUpdate(newComputerUpdate)) {
-			ComputerDAO.databaseUpdate(newComputerUpdate, idComputer);
+			ComputerDAO.update(newComputerUpdate, idComputer);
 		}		
 	}
 
 	
 	public static void viewAll(){
 		//Demande du nombre d'ordinateurs par "page"
-		List<Computer> listComputer= ComputerDAO.databaseGetComputer();
+		List<Computer> listComputer= ComputerDAO.getAllComputer();
 
 		for (Computer comp : listComputer){
 			System.out.println(comp.toString());
@@ -80,13 +78,12 @@ public class ComputerService {
 	/**
 	 * 	
 	 * @param  Scanner input
-	 * @param conn Connection établie au débubt
 	 * @param rsComputer Resultat de la query sur la table "computer"
 	 * @return
 	 */
 	public static void viewOne (){
 		Long idComputerToSee = ComputerMapper.enterIdToFound();
-		Computer computerToShow = ComputerDAO.databaseQueryOne( idComputerToSee);
+		Computer computerToShow = ComputerDAO.queryOne( idComputerToSee);
 		System.out.println(computerToShow.toString());
 
 	}
@@ -94,16 +91,15 @@ public class ComputerService {
 	/**
 	 * 
 	 * @param  scanner input clavier
-	 * @param conn connection établie au début
 	 * @param rsComputer Resultat de la Query sur la table "computer"
 	 * @return
 	 */
 	public static void delete(){
 		Long idComputerToDelete= ComputerMapper.enterIdToFound();
-		Computer computerToDelete = ComputerDAO.databaseQueryOne( idComputerToDelete);
+		Computer computerToDelete = ComputerDAO.queryOne( idComputerToDelete);
 
 		if(UserInterface.confirmActionDelete(computerToDelete)) {
-			ComputerDAO.databaseDelete(idComputerToDelete);
+			ComputerDAO.delete(idComputerToDelete);
 		}
 	}
 

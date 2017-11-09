@@ -44,6 +44,8 @@
 					<a class="btn btn-success" id="addComputer" href="addComputer">Add
 						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
 						onclick="$.fn.toggleEditMode();">Edit</a>
+						<a class="btn btn-warning" id="deleteCompany" href="deleteCompany">delete
+						company</a>
 				</div>
 			</div>
 		</div>
