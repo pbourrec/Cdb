@@ -26,7 +26,7 @@ import com.excilys.cdb.database.service.ServletServices;
  * Servlet implementation class deleteCompany$
  */
 @Controller
-@WebServlet("/deleteCompany$")
+@WebServlet("/deleteCompany")
 public class DeleteCompanyServlet extends HttpServlet {
 
 	@Autowired

@@ -23,7 +23,7 @@ import com.excilys.cdb.database.service.ServletServices;
 /**
  * Servlet implementation class AddComputerServlet
  */
-@WebServlet("/EditComputerServlet")
+@WebServlet("/editComputer")
 @Controller
 public class EditComputerServlet extends HttpServlet {
 	

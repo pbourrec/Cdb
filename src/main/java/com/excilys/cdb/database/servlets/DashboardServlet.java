@@ -22,6 +22,7 @@ import com.excilys.cdb.database.service.ServletServices;
 
 
 @Controller
+@WebServlet("/dashboard")
 public class DashboardServlet extends HttpServlet {
 	/**
 	 * 

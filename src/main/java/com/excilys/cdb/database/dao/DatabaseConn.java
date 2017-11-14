@@ -6,16 +6,46 @@ import java.sql.SQLException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-@Component
+@Configuration
+@PropertySource("classpath:spring.properties")
 public class DatabaseConn {
-	 HikariConfig config = new HikariConfig("/hikari.properties");
-	 HikariDataSource ds = new HikariDataSource(config);
-	 Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
+
+	@Value("${spring.datasource.url}")
+	private String datasourceURl;
+	@Value("${spring.datasource.username}")
+	private  String username;
+	@Value("${spring.datasource.password}")
+	private String password;
+	@Value("${spring.datasource.driver-class-name}")
+	private String driverClass;
+
+	
+	@Autowired
+	HikariDataSource ds;
+	
+	
+	@Bean
+	public HikariDataSource dataSource() {
+		HikariConfig config = new HikariConfig();
+		config.setDriverClassName(driverClass);
+		config.setUsername(username);
+		config.setPassword(password);
+		config.setJdbcUrl( datasourceURl);
+		ds = new HikariDataSource(config);
+		return ds;
+	}
+
+	
+	Logger logger = LoggerFactory.getLogger(DatabaseConn.class);
 	//connection à la database
 	public  Connection databaseConnection() {
 		try {

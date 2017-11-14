@@ -27,7 +27,7 @@ import com.excilys.cdb.database.service.ServletServices;
  * Servlet implementation class AddComputerServlet
  */
 @Controller
-@WebServlet("/AddComputerServlet")
+@WebServlet("/addComputer")
 public class AddComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String errorName = "Vous devez saisir un nom pour l'ordinateur à créer";
