@@ -9,28 +9,37 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.database.datatype.Company;
 import com.excilys.cdb.database.mapper.CompanyMapper;
 
+@Component
 public class CompanyDAO {
-	static Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
+	 Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
 
-	final static String selectAllCompany= "SELECT * FROM company";
-	final static String selectCount= "SELECT count(*)FROM company ";
-	final static String deleteCompany = "DELETE FROM company WHERE id=?";
+	  String selectAllCompany= "SELECT * FROM company";
+	  String selectCount= "SELECT count(*)FROM company ";
+	  String deleteCompany = "DELETE FROM company WHERE id=?";
+	@Autowired
+	private  ComputerDAO computerDao;
+	@Autowired
+	private  CompanyMapper companyMapper;
+	@Autowired
+	private  DatabaseConn databaseConn;
 
 	/**
 	 * 
 	 * @return ResultSet rs Resultat de la query sur la table "company"
 	 */
-	public static List<Company> getCompany() {
+	public  List<Company> getCompany() {
 		List <Company> listCompany = new ArrayList<>();
 		ResultSet rs = null;
-		try(		Connection conn =DatabaseConn.databaseConnection(); PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(conn, selectAllCompany)) {
+		try(		Connection conn =databaseConn.databaseConnection(); PreparedStatement prepstmt = databaseConn.databasePrepStatement(conn, selectAllCompany)) {
 			rs = prepstmt.executeQuery();
 			while (rs.next()){
-				listCompany.add(CompanyMapper.rsToCompany(rs));
+				listCompany.add(companyMapper.rsToCompany(rs));
 			}
 			rs.close();
 		} catch (SQLException e) {
@@ -40,10 +49,10 @@ public class CompanyDAO {
 
 	}
 
-	public static int getSizeCompany() {
+	public  int getSizeCompany() {
 		ResultSet rs = null;
 		int sizeTable = 0;
-		try(Connection conn =DatabaseConn.databaseConnection(); PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(conn,selectCount)) {
+		try(Connection conn =databaseConn.databaseConnection(); PreparedStatement prepstmt = databaseConn.databasePrepStatement(conn,selectCount)) {
 			rs = prepstmt.executeQuery();
 			rs.next();
 			sizeTable = rs.getInt(1);
@@ -58,12 +67,12 @@ public class CompanyDAO {
 
 	}
 
-	public static void deleteCompany(Long companyId) throws SQLException {
-		Connection conn =DatabaseConn.databaseConnection(); 
+	public void deleteCompany(Long companyId) throws SQLException {
+		Connection conn =databaseConn.databaseConnection(); 
 
-		try(PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(conn,deleteCompany)) {
+		try(PreparedStatement prepstmt = databaseConn.databasePrepStatement(conn,deleteCompany)) {
 			conn.setAutoCommit(false);
-			ComputerDAO.deleteWithCompany(conn,companyId);
+			computerDao.deleteWithCompany(conn,companyId);
 			prepstmt.setLong(1,companyId);
 			prepstmt.execute();
 			conn.commit();

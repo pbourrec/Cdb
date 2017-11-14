@@ -2,20 +2,33 @@ package com.excilys.cdb.database.service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Scanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import com.excilys.cdb.database.dao.CompanyDAO;
 import com.excilys.cdb.database.dao.ComputerDAO;
-import com.excilys.cdb.database.datatype.Company;
 import com.excilys.cdb.database.datatype.Computer;
 import com.excilys.cdb.database.ihm.UserInterface;
 import com.excilys.cdb.database.mapper.CompanyMapper;
 import com.excilys.cdb.database.mapper.ComputerMapper;
-
+@Component
 public class ComputerService {
-	private static Logger logger = LoggerFactory.getLogger(ComputerService.class);
+	private  Logger logger = LoggerFactory.getLogger(ComputerService.class);
+
+	
+	@Autowired
+	private ComputerDAO computerDao;
+	@Autowired
+	private ComputerMapper computerMapper;
+	@Autowired
+	private CompanyMapper companyMapper;
+	@Autowired
+	private CompanyService companyService;
+	@Autowired
+	private UserInterface userInterface;
 
 	/**
 	 * 
@@ -25,18 +38,18 @@ public class ComputerService {
 	 * @return 
 	 * @return boolean repeat doit on enter à nouveau un ordinateur
 	 */
-	public static  void add(){
+	public   void add(){
 		logger.debug("Entrée dans ComputerService.add");
 
-		String computerName = ComputerMapper.enterName();
-		CompanyService.viewAllCompany();
-		Long idCompany = CompanyMapper.enterCompanyId();
-		LocalDate dateStart = ComputerMapper.enterIntroductionDate();
-		LocalDate dateEnd = ComputerMapper.enterDiscontinuedDate();
+		String computerName = computerMapper.enterName();
+		companyService.viewAllCompany();
+		Long idCompany = companyMapper.enterCompanyId();
+		LocalDate dateStart = computerMapper.enterIntroductionDate();
+		LocalDate dateEnd = computerMapper.enterDiscontinuedDate();
 
 		Computer newComputer = new Computer(computerName,idCompany, dateStart, dateEnd);	
-		if(UserInterface.confirmActionUpload(newComputer)){
-			ComputerDAO.upload(newComputer);
+		if(userInterface.confirmActionUpload(newComputer)){
+			computerDao.upload(newComputer);
 		}
 	}
 
@@ -46,28 +59,28 @@ public class ComputerService {
 	 * @param rsComputer ResultSet de la query à la table "computer"
 	 * @return
 	 */
-	public static void edit (){
+	public  void edit (){
 		//controle validité de l'ID
-		Long idComputer = ComputerMapper.enterIdToFound();
-		Computer computerToEdit = ComputerDAO.queryOne( idComputer);
+		Long idComputer = computerMapper.enterIdToFound();
+		Computer computerToEdit = computerDao.queryOne( idComputer);
 		System.out.println(computerToEdit.toString());
 		
-		String computerName = ComputerMapper.enterName();
-		CompanyService.viewAllCompany();
-		Long idCompany = CompanyMapper.enterCompanyId();
-		LocalDate dateStart = ComputerMapper.enterIntroductionDate();
-		LocalDate dateEnd = ComputerMapper.enterDiscontinuedDate();
+		String computerName = computerMapper.enterName();
+		companyService.viewAllCompany();
+		Long idCompany = companyMapper.enterCompanyId();
+		LocalDate dateStart = computerMapper.enterIntroductionDate();
+		LocalDate dateEnd = computerMapper.enterDiscontinuedDate();
 		// Creation d'un nouvel ordinateur et confirmation des données
 		Computer newComputerUpdate = new Computer(computerName, idCompany, dateStart, dateEnd);
-		if(UserInterface.confirmActionUpdate(newComputerUpdate)) {
-			ComputerDAO.update(newComputerUpdate, idComputer);
+		if(userInterface.confirmActionUpdate(newComputerUpdate)) {
+			computerDao.update(newComputerUpdate, idComputer);
 		}		
 	}
 
 	
-	public static void viewAll(){
+	public  void viewAll(){
 		//Demande du nombre d'ordinateurs par "page"
-		List<Computer> listComputer= ComputerDAO.getAllComputer();
+		List<Computer> listComputer= computerDao.getAllComputer();
 
 		for (Computer comp : listComputer){
 			System.out.println(comp.toString());
@@ -81,9 +94,9 @@ public class ComputerService {
 	 * @param rsComputer Resultat de la query sur la table "computer"
 	 * @return
 	 */
-	public static void viewOne (){
-		Long idComputerToSee = ComputerMapper.enterIdToFound();
-		Computer computerToShow = ComputerDAO.queryOne( idComputerToSee);
+	public  void viewOne (){
+		Long idComputerToSee = computerMapper.enterIdToFound();
+		Computer computerToShow = computerDao.queryOne( idComputerToSee);
 		System.out.println(computerToShow.toString());
 
 	}
@@ -94,12 +107,12 @@ public class ComputerService {
 	 * @param rsComputer Resultat de la Query sur la table "computer"
 	 * @return
 	 */
-	public static void delete(){
-		Long idComputerToDelete= ComputerMapper.enterIdToFound();
-		Computer computerToDelete = ComputerDAO.queryOne( idComputerToDelete);
+	public  void delete(){
+		Long idComputerToDelete= computerMapper.enterIdToFound();
+		Computer computerToDelete = computerDao.queryOne( idComputerToDelete);
 
-		if(UserInterface.confirmActionDelete(computerToDelete)) {
-			ComputerDAO.delete(idComputerToDelete);
+		if(userInterface.confirmActionDelete(computerToDelete)) {
+			computerDao.delete(idComputerToDelete);
 		}
 	}
 

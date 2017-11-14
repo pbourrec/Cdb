@@ -4,11 +4,13 @@ package com.excilys.cdb.database.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ControlFormat {
-	static Logger logger = LoggerFactory.getLogger(ControlFormat.class);
+	 Logger logger = LoggerFactory.getLogger(ControlFormat.class);
 
-		public static Long stringTolong(String stringToConv) {
+		public  Long stringTolong(String stringToConv) {
 			Long longConverted=null;
 			try{
 			 longConverted = Long.valueOf(stringToConv);

@@ -4,13 +4,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.excilys.cdb.database.controller.DataControl;
 import com.excilys.cdb.database.datatype.Company;
 
-public class CompanyMapper {
-	static Scanner sc = new Scanner(System.in);
 
-	public static Company rsToCompany(ResultSet rsCompany){
+@Component
+public class CompanyMapper {
+	 Scanner sc = new Scanner(System.in);
+	 @Autowired
+	 private  DataControl dataControl;
+
+	public  Company rsToCompany(ResultSet rsCompany){
 		Company companyConvert = new Company();
 		try {
 			companyConvert.setId(rsCompany.getLong(1));
@@ -24,10 +31,10 @@ public class CompanyMapper {
 		return companyConvert;		
 	}
 
-	public static Long enterCompanyId() {
+	public  Long enterCompanyId() {
 		System.out.println("Quel sera le constructeur de l'ordinateur (choisir un ID)" );
 		String computerManufacturer = sc.nextLine();
-		Long idCompany = DataControl.stringToLongIDCompany( computerManufacturer, sc);
+		Long idCompany = dataControl.stringToLongIDCompany( computerManufacturer, sc);
 		return idCompany;
 	}
 

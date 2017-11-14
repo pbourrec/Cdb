@@ -5,23 +5,29 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.database.controller.ControlFormat;
 import com.excilys.cdb.database.dao.CompanyDAO;
 import com.excilys.cdb.database.dao.ComputerDAO;
 import com.excilys.cdb.database.datatype.Company;
 
+@Component
 public class CompanyService {
-	static Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
+	 Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
+
+	 @Autowired
+	 private CompanyDAO companyDAO;
 
 	/**
 	 * 
 	 * @param sc Scanner input
 	 * @param rsComputer Resultat de la query
 	 */
-	public static void viewAllCompany(){
+	public  void viewAllCompany(){
 		//Demande du nombre d'ordinateurs par "page"
-		List<Company> listCompany= CompanyDAO.getCompany();
+		List<Company> listCompany= companyDAO.getCompany();
 
 		for (Company comp : listCompany){
 			System.out.println(comp.toString());
@@ -29,7 +35,7 @@ public class CompanyService {
 
 		}
 	}
-	public static void deleteCompany(Long companyToDelete) throws SQLException {
-			CompanyDAO.deleteCompany(companyToDelete);
+	public  void deleteCompany(Long companyToDelete) throws SQLException {
+		companyDAO.deleteCompany(companyToDelete);
 	}
 }

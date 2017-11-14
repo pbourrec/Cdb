@@ -2,21 +2,22 @@ package com.excilys.cdb.database.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+@Component
 public class DatabaseConn {
-	static HikariConfig config = new HikariConfig("/hikari.properties");
-	static HikariDataSource ds = new HikariDataSource(config);
-	static Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
+	 HikariConfig config = new HikariConfig("/hikari.properties");
+	 HikariDataSource ds = new HikariDataSource(config);
+	 Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 	//connection à la database
-	public static Connection databaseConnection() {
+	public  Connection databaseConnection() {
 		try {
 
 			return ds.getConnection();
@@ -26,7 +27,7 @@ public class DatabaseConn {
 	}
 
 	//Création d'un statement
-	public static PreparedStatement databasePrepStatement(Connection conn, String sql) {
+	public  PreparedStatement databasePrepStatement(Connection conn, String sql) {
 		PreparedStatement prepstmt = null;
 		try{
 			prepstmt = conn.prepareStatement(sql);

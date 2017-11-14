@@ -21,6 +21,7 @@
 		<taglibs>1.1.2</taglibs>
 		<javax.servlet>1.2</javax.servlet>
 		<com.zaxxer>2.7.2</com.zaxxer>
+		<org.springframework>5.0.1.RELEASE</org.springframework>
 	</properties>
 	<reporting>
 		<plugins>
@@ -102,6 +103,12 @@
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
 			<version>3.7.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${org.springframework}</version>
 		</dependency>
 	</dependencies>
 

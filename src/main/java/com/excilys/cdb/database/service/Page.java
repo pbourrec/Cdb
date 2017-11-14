@@ -3,14 +3,30 @@ package com.excilys.cdb.database.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.excilys.cdb.database.dao.ComputerDAO;
 import com.excilys.cdb.database.datatype.Computer;
 
+
+@Component
 public class Page {
 	Long computerPerPage=50L; 
 	Long offsetPage=0L;
 	int nextPageOK = 0;
-	public  List<Computer> pageOfComputer = listPage(offsetPage, computerPerPage);
+	public  List<Computer> pageOfComputer;
+	
+	@Autowired
+	private final ComputerDAO computerDao;
+	@Autowired
+	private final ServletServices servletServices;
+	
+	public Page(ComputerDAO computerDao, ServletServices servletServices) {
+		this.computerDao = computerDao;
+		this.servletServices = servletServices;
+		this.pageOfComputer = servletServices.listPage(offsetPage, computerPerPage);
+	}
 
 	public  Long getComputerPerPage() {
 		return computerPerPage;
@@ -36,16 +52,6 @@ public class Page {
 		this.offsetPage = offsetPage;
 	}
 
-	public Page(Long limit, Long offset) {
-		super();
-		this.computerPerPage = limit;
-		this.offsetPage = offset;
-		this.pageOfComputer = ComputerDAO.getComputerPagination(offset, limit);
-	}
-
-	public Page() {
-	}
-
 	public  List<Computer> getPageOfComputer() {
 		return pageOfComputer;
 	}
@@ -54,9 +60,5 @@ public class Page {
 		this.pageOfComputer = pageOfComputer;
 	}
 
-	public static List<Computer>  listPage(Long offset, Long limit) {
-		List<Computer> listComputer = ComputerDAO.getComputerPagination(offset, limit);
-		return listComputer;
 
-	}
 }

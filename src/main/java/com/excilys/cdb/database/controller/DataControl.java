@@ -8,9 +8,15 @@ import java.util.Scanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+
+@Component
 public class DataControl {
-	static Logger logger = LoggerFactory.getLogger(DataControl.class);
+	 Logger logger = LoggerFactory.getLogger(DataControl.class);
+	 @Autowired
+	private  ConditionControl conditionControl;
 
 	/**
 	 * 
@@ -18,12 +24,12 @@ public class DataControl {
 	 * @param sc Scanner input clavier
 	 * @return Long ValueOf ID du fabricant
 	 */
-	public static Long stringToLongIDCompany(String computerManufacturer, Scanner sc ){
+	public  Long stringToLongIDCompany(String computerManufacturer, Scanner sc ){
 		logger.debug("Conversion String vers id");
 		//dans le cas ou l'entrée est nulle, on ne prendra pas de constructeur
 		if(!computerManufacturer.equals("")){
 			//tant que l'ID n'existe pas ou n'est pas valide
-			while (!ConditionControl.isIdCompanyValid(computerManufacturer)) {
+			while (!conditionControl.isIdCompanyValid(computerManufacturer)) {
 				System.out.println("l'ID rentré n'existe pas ou n'est pas sous le bon format, merci de reessayer");
 				computerManufacturer = sc.nextLine();
 			}
@@ -37,10 +43,10 @@ public class DataControl {
 	 * @param sc Scanner input clavier
 	 * @return Long valueOf ID de l'ordinateur
 	 */
-	public static Long stringToLongIDComputer(String computerID, Scanner sc ){
+	public  Long stringToLongIDComputer(String computerID, Scanner sc ){
 
 		//tant que l'ID n'existe pas ou n'est pas valide
-		while (!ConditionControl.isIdComputerValid(computerID)) {
+		while (!conditionControl.isIdComputerValid(computerID)) {
 			System.out.println("l'ID rentré n'existe pas ou n'est pas sous le bon format, merci de reessayer");
 			computerID = sc.nextLine();
 		}
@@ -54,7 +60,7 @@ public class DataControl {
 	 * @param sc Scanner input clavier
 	 * @return Integer intReturned nombre d'ordinateurs affiché par "page"
 	 */
-	public static Integer stringToInt(String stringToInt, Scanner sc ){
+	public  Integer stringToInt(String stringToInt, Scanner sc ){
 		boolean isOK= false;
 		//On affiche 50 pages par défaut
 		Integer intReturned=50 ;
@@ -77,7 +83,7 @@ public class DataControl {
 	 * @param str_date String à convertir en LocalDate
 	 * @return java.sql.LocalDate LocalDate issue de la string
 	 */
-	public static LocalDate convertStringToTimestamp(String str_date) {
+	public  LocalDate convertStringToTimestamp(String str_date) {
 		//creation du format de la LocalDate
 		LocalDate localDate = null;
 		if(str_date!=null || str_date.equals("")) {

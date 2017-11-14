@@ -6,12 +6,20 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class TestControlFormat {
+	private final ControlFormat controlFormat;
+	
+	
+	public TestControlFormat(ControlFormat controlFormat) {
+		super();
+		this.controlFormat = controlFormat;
+	}
+
 
 	@Test
 	public void test() {
 		
-		assertEquals(ControlFormat.stringTolong("10"),Long.valueOf(10));
-		assertEquals(ControlFormat.stringTolong("dix"),null);
+		assertEquals(controlFormat.stringTolong("10"),Long.valueOf(10));
+		assertEquals(controlFormat.stringTolong("dix"),null);
 	}
 
 }

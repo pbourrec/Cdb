@@ -38,7 +38,6 @@
 							type="submit" id="searchsubmitCompany" value="Filter by company"
 							class="btn btn-primary" name="actionType"/> 
 					</form>
-					</form>
 				</div>
 				<div class="pull-right">
 					<a class="btn btn-success" id="addComputer" href="addComputer">Add

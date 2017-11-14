@@ -7,13 +7,20 @@ import java.sql.SQLException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DatabaseVerify {
 
 
-	private final static String selectCountCompany ="SELECT COUNT(*) from company WHERE id=?";
-	private final static String selectCountComputer ="SELECT COUNT(*) from computer WHERE id=?";
-	static Logger logger = LoggerFactory.getLogger(DatabaseVerify.class);
+	private final  String selectCountCompany ="SELECT COUNT(*) from company WHERE id=?";
+	private final  String selectCountComputer ="SELECT COUNT(*) from computer WHERE id=?";
+	Logger logger = LoggerFactory.getLogger(DatabaseVerify.class);
+
+	
+	@Autowired
+	private  DatabaseConn databaseConn;
 
 	/**
 	 * 
@@ -21,11 +28,11 @@ public class DatabaseVerify {
 	 * @param computerManufacturer ID du fabricant voulu
 	 * @return boolean isOK le boolean sera vrai si la table "company" contient bien l'ID du fabricant voulu
 	 */
-	public static boolean isIdOkCompany(Long computerManufacturer){
+	public  boolean isIdOkCompany(Long computerManufacturer){
 		boolean isOK = false;
 		// si computerManufacturer est null, on considère que l'utilisateur ne veut pas déclarer le fabricant de l'ordinateur
 		if(computerManufacturer != null){
-			try(Connection conn =DatabaseConn.databaseConnection(); PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(conn,selectCountCompany)){
+			try(Connection conn =databaseConn.databaseConnection(); PreparedStatement prepstmt = databaseConn.databasePrepStatement(conn,selectCountCompany)){
 				//On regarde la TAILLE de la query. Si on a 1 résultat, alors l'ID est bon
 				prepstmt.setLong(1,computerManufacturer);
 				ResultSet rs= prepstmt.executeQuery();
@@ -49,9 +56,9 @@ public class DatabaseVerify {
 	 * @param computer ID ID de l'ordinateur voulu
 	 * @return boolean isOK le boolean sera vrai si la table "computer" contient bien l'ID de l'ordinateur voulu
 	 */
-	public static boolean isIdOkComputer(Long computerId){
+	public  boolean isIdOkComputer(Long computerId){
 		boolean isOK = false;
-		try(Connection conn =DatabaseConn.databaseConnection(); PreparedStatement prepstmt = DatabaseConn.databasePrepStatement(conn,selectCountComputer)){
+		try(Connection conn =databaseConn.databaseConnection(); PreparedStatement prepstmt = databaseConn.databasePrepStatement(conn,selectCountComputer)){
 			//On regarde la TAILLE de la query. Si on a 1 résultat, alors l'ID est bon
 			prepstmt.setLong(1,computerId);
 			ResultSet rs= prepstmt.executeQuery();

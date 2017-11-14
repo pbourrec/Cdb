@@ -5,17 +5,19 @@ import java.util.Scanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.database.dao.ComputerDAO;
 import com.excilys.cdb.database.datatype.Company;
 import com.excilys.cdb.database.datatype.Computer;
 import com.excilys.cdb.database.service.ComputerService;
 
+@Component
 public class UserInterface {
-	static Scanner sc = new Scanner(System.in);
-	private static Logger logger = LoggerFactory.getLogger(ComputerService.class);
+	 Scanner sc = new Scanner(System.in);
+	private  Logger logger = LoggerFactory.getLogger(ComputerService.class);
 
-	public static String cliChoice() {
+	public  String cliChoice() {
 		System.out.println("*******************************************************************");
 		System.out.println("Que voulez vous faire : ");
 		System.out.println("1. Ajouter un ordinateur");
@@ -30,7 +32,7 @@ public class UserInterface {
 
 	}
 
-	public static boolean confirmActionUpload(Computer computerToShow) {
+	public  boolean confirmActionUpload(Computer computerToShow) {
 		boolean uploadOK = false;
 		System.out.println("Voulez vous bien créer l'ordinateur suivant : Y/N");
 		System.out.println(computerToShow.toString());
@@ -51,7 +53,7 @@ public class UserInterface {
 	}
 
 
-	public static boolean confirmActionUpdate(Computer computerToShow) {
+	public  boolean confirmActionUpdate(Computer computerToShow) {
 		System.out.println("Voulez vous bien créer l'ordinateur suivant : Y/N");
 		System.out.println(computerToShow.toString());
 		String updateComputer = sc.nextLine();
@@ -63,7 +65,7 @@ public class UserInterface {
 		}
 
 	}
-	public static boolean confirmActionDelete(Computer computerToShow) {
+	public  boolean confirmActionDelete(Computer computerToShow) {
 
 		System.out.println(computerToShow.toString());
 		System.out.println("Voulez vous supprimer cet ordinateur ?");
@@ -85,7 +87,7 @@ public class UserInterface {
 	 * @param rsCompany fermeture de la query sur la table "Company"
 	 * @return String endOfSession pour quitter la boucle while du main
 	 */
-	public static String exitProgram (){
+	public  String exitProgram (){
 		System.out.println("Quitter la machine ? Y/N");
 		String choice = sc.nextLine();
 		String endOfSession = "";

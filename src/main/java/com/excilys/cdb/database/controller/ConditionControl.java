@@ -5,31 +5,38 @@ package com.excilys.cdb.database.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.database.dao.DatabaseVerify;
 
+@Component
 public class ConditionControl {
-	static Logger logger = LoggerFactory.getLogger(ConditionControl.class);
-	
-	public static boolean isIdCompanyValid(String id){
+	Logger logger = LoggerFactory.getLogger(ConditionControl.class);
+	@Autowired
+	private  ControlFormat controlFormat;
+	@Autowired
+	private  DatabaseVerify databaseVerify;
+
+	public  boolean isIdCompanyValid(String id){
 		boolean isOK=false;
-		Long longOK = ControlFormat.stringTolong(id);
+		Long longOK = controlFormat.stringTolong(id);
 		if (longOK==null){
 			isOK=false;
 		}else{
-			isOK=DatabaseVerify.isIdOkCompany(longOK);
-			
+			isOK=databaseVerify.isIdOkCompany(longOK);
+
 		}
 		return isOK;
 	}
-	
-	public static boolean isIdComputerValid(String id){
+
+	public  boolean isIdComputerValid(String id){
 		boolean isOK=false;
-		Long longOK = ControlFormat.stringTolong(id);
+		Long longOK = controlFormat.stringTolong(id);
 		if (longOK==null){
 			isOK=false;
 		}else{
-			isOK=DatabaseVerify.isIdOkComputer(longOK);
+			isOK=databaseVerify.isIdOkComputer(longOK);
 
 		}
 		return isOK;
