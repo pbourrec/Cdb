@@ -8,6 +8,7 @@ import java.util.Scanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.database.controller.ControlFormat;
@@ -18,7 +19,33 @@ import com.excilys.cdb.database.datatype.Computer;
 
 
 @Component
-public class ComputerMapper {
+public class ComputerMapper{
+	
+	public class RowMapperComputer implements RowMapper{
+		@Override
+		public Computer mapRow(ResultSet rsComputer, int arg1) throws SQLException {
+			final Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
+			Computer computerConvert = new Computer();
+			try {
+
+				computerConvert.setId(rsComputer.getLong(1));
+				computerConvert.setComputerName(rsComputer.getString(2));
+				java.sql.Date dateIntroduced = rsComputer.getDate(3);
+				java.sql.Date datediscontinued= rsComputer.getDate(4);
+				computerConvert.setDateIntroduced(dateIntroduced!= null ? dateIntroduced.toLocalDate() : null);
+				computerConvert.setDateDiscontinued(datediscontinued!= null ? datediscontinued.toLocalDate() : null);
+				computerConvert.setCompany(new Company(rsComputer.getLong(5),(rsComputer.getString(7)) != null ?rsComputer.getString(7) : null ));
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				logger.error(e.getMessage());
+				return null;
+			}
+			return computerConvert;
+		}
+		
+	}
+	
+	
 	 Scanner sc = new Scanner(System.in);
 
 	 @Autowired
