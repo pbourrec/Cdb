@@ -1,13 +1,12 @@
 package com.excilys.cdb.database.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.database.dao.ComputerDAO;
-import com.excilys.cdb.database.datatype.Computer;
+import com.excilys.cdb.database.datatype.ComputerDTO;
 
 
 @Component
@@ -15,7 +14,7 @@ public class Page {
 	Long computerPerPage=50L; 
 	Long offsetPage=0L;
 	int nextPageOK = 0;
-	public  List<Computer> pageOfComputer;
+	public  List<ComputerDTO> pageOfComputer;
 	
 	@Autowired
 	private final ComputerDAO computerDao;
@@ -52,11 +51,11 @@ public class Page {
 		this.offsetPage = offsetPage;
 	}
 
-	public  List<Computer> getPageOfComputer() {
+	public  List<ComputerDTO> getPageOfComputer() {
 		return pageOfComputer;
 	}
 
-	public  void setPageOfComputer(List<Computer> pageOfComputer) {
+	public  void setPageOfComputer(List<ComputerDTO> pageOfComputer) {
 		this.pageOfComputer = pageOfComputer;
 	}
 

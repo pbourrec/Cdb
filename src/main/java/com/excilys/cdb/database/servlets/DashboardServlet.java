@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 
 import com.excils.cdb.database.config.ConfigSpring;
 import com.excilys.cdb.database.datatype.Computer;
+import com.excilys.cdb.database.datatype.ComputerDTO;
 import com.excilys.cdb.database.service.Page;
 import com.excilys.cdb.database.service.ServletServices;
 
@@ -68,11 +69,11 @@ public class DashboardServlet extends HttpServlet {
 			request.setAttribute("listComputer", page.pageOfComputer );
 		} else if (actionType.equals("Filter by name")) {
 			String nameToFind = request.getParameter("search");
-			List<Computer> computersToFind = servletServices.findComputersByName(nameToFind);
+			List<ComputerDTO> computersToFind = servletServices.findComputersByName(nameToFind);
 			request.setAttribute("listComputer", computersToFind );
 		} else if (actionType.equals("Filter by company")) {
 			String CompanyToFind = request.getParameter("search");
-			List<Computer> computersToFind = servletServices.findComputersByCompany(CompanyToFind);
+			List<ComputerDTO> computersToFind = servletServices.findComputersByCompany(CompanyToFind);
 			request.setAttribute("listComputer", computersToFind );
 		}
 		sizeTable= servletServices.getSizeComputer();

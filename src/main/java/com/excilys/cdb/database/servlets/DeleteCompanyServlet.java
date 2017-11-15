@@ -19,7 +19,9 @@ import org.springframework.stereotype.Controller;
 import com.excils.cdb.database.config.ConfigSpring;
 import com.excilys.cdb.database.controller.ControlFormat;
 import com.excilys.cdb.database.datatype.Company;
+import com.excilys.cdb.database.datatype.CompanyDTO;
 import com.excilys.cdb.database.datatype.Computer;
+import com.excilys.cdb.database.datatype.ComputerDTO;
 import com.excilys.cdb.database.service.ServletServices;
 
 /**
@@ -46,7 +48,7 @@ public class DeleteCompanyServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Company> listCompanies= servletServices.getListCompany();
+		List<CompanyDTO> listCompanies= servletServices.getListCompany();
 		request.setAttribute( "listcompanies", listCompanies);
 
 		this.getServletContext().getRequestDispatcher( "/deleteCompany.jsp" ).forward( request, response );
@@ -60,9 +62,9 @@ public class DeleteCompanyServlet extends HttpServlet {
 
 			String companyIdString = request.getParameter("companyId");
 			companyId=controlFormat.stringTolong(companyIdString);
-			List<Computer> computersToFind = servletServices.findComputersByCompanyId(companyId);
+			List<ComputerDTO> computersToFind = servletServices.findComputersByCompanyId(companyId);
 			request.setAttribute("listComputer", computersToFind );
-			List<Company> listCompanies= servletServices.getListCompany();
+			List<CompanyDTO> listCompanies= servletServices.getListCompany();
 			request.setAttribute( "listcompanies", listCompanies);
 			this.getServletContext().getRequestDispatcher( "/deleteCompany.jsp" ).forward( request, response );
 
@@ -73,10 +75,10 @@ public class DeleteCompanyServlet extends HttpServlet {
 
 			} catch (SQLException e) {
 				request.setAttribute( "errorMessage", errorMessage+"\n"+e.getMessage());
-				List<Computer> computersToFind = servletServices.findComputersByCompanyId(companyId);
+				List<ComputerDTO> computersToFind = servletServices.findComputersByCompanyId(companyId);
 				request.setAttribute("listComputer", computersToFind );
 				System.out.println(computersToFind.size());
-				List<Company> listCompanies= servletServices.getListCompany();
+				List<CompanyDTO> listCompanies= servletServices.getListCompany();
 				request.setAttribute( "listcompanies", listCompanies);
 				this.getServletContext().getRequestDispatcher( "/deleteCompany.jsp" ).forward( request, response );
 			}

@@ -19,6 +19,7 @@ import com.excils.cdb.database.config.ConfigSpring;
 import com.excilys.cdb.database.dao.CompanyDAO;
 import com.excilys.cdb.database.dao.ComputerDAO;
 import com.excilys.cdb.database.datatype.Company;
+import com.excilys.cdb.database.datatype.CompanyDTO;
 import com.excilys.cdb.database.datatype.Computer;
 import com.excilys.cdb.database.mapper.ComputerMapper;
 import com.excilys.cdb.database.service.ServletServices;
@@ -43,7 +44,7 @@ public class AddComputerServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Company> listCompanies= servletService.getListCompany();
+		List<CompanyDTO> listCompanies= servletService.getListCompany();
 		request.setAttribute( "listcompanies", listCompanies);
 		this.getServletContext().getRequestDispatcher( "/addComputer.jsp" ).forward( request, response );
 	}
@@ -58,7 +59,7 @@ public class AddComputerServlet extends HttpServlet {
 		String companyId = request.getParameter("companyId");
 		if (computerName.equals("")) {
 			request.setAttribute("errorName", errorName);
-			List<Company> listCompanies= servletService.getListCompany();
+			List<CompanyDTO> listCompanies= servletService.getListCompany();
 			request.setAttribute( "listcompanies", listCompanies);
 
 			this.getServletContext().getRequestDispatcher( "/addComputer.jsp" ).forward( request, response );

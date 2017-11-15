@@ -16,6 +16,7 @@ import com.excilys.cdb.database.controller.DataControl;
 import com.excilys.cdb.database.dao.ComputerDAO;
 import com.excilys.cdb.database.datatype.Company;
 import com.excilys.cdb.database.datatype.Computer;
+import com.excilys.cdb.database.datatype.ComputerDTO;
 
 
 @Component
@@ -122,6 +123,27 @@ public class ComputerMapper{
 		Computer computer = new Computer(name, controlFormat.stringTolong(companyId), dataControl.convertStringToTimestamp(introduced),dataControl.convertStringToTimestamp(discontinued));		
 		return computer;
 	}
+	
+	public ComputerDTO computerToDTO(Computer computer) {
+		ComputerDTO computerDto = new ComputerDTO(computer.getComputerName(),
+												  computer.getCompany().getName(),
+												  computer.getCompany().getId(),
+												  (computer.getDateIntroduced()!=null? String.valueOf(computer.getDateIntroduced()) :""),
+												  (computer.getDateDiscontinued()!=null?  String.valueOf(computer.getDateDiscontinued()): "")
+												  );		
+		return computerDto;
+		
+	}
 
 
+//	public ComputerDTO(String computerName, String companyName, long companyId, String dateIntroduced,
+//			String dateDiscontinued) {
+//		super();
+//		this.id = id;
+//		this.computerName = computerName;
+//		this.companyName = companyName;
+//		this.companyId = companyId;
+//		this.dateIntroduced = dateIntroduced;
+//		this.dateDiscontinued = dateDiscontinued;
+//	}
 }

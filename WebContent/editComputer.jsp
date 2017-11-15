@@ -60,8 +60,8 @@
 									class="form-control" id="companyId" name="companyId">
 									<c:forEach items="${listcompanies}" var="company">
 									
-										<c:if test="${company.id == computer.company.id }"><option selected value="${company.id}">${company.name}</option></c:if>
-										<c:if test="${company.id != computer.company.id }"><option value="${company.id}">${company.name}</option></c:if>
+										<c:if test="${company.id == computer.companyId }"><option selected value="${company.id}">${company.name}</option></c:if>
+										<c:if test="${company.id != computer.companyId }"><option value="${company.id}">${company.name}</option></c:if>
 									</c:forEach>
 								</select>
 							</div>

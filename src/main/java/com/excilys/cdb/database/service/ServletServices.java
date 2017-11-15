@@ -10,7 +10,10 @@ import org.springframework.stereotype.Component;
 import com.excilys.cdb.database.dao.CompanyDAO;
 import com.excilys.cdb.database.dao.ComputerDAO;
 import com.excilys.cdb.database.datatype.Company;
+import com.excilys.cdb.database.datatype.CompanyDTO;
 import com.excilys.cdb.database.datatype.Computer;
+import com.excilys.cdb.database.datatype.ComputerDTO;
+import com.excilys.cdb.database.mapper.CompanyMapper;
 import com.excilys.cdb.database.mapper.ComputerMapper;
 
 @Component 
@@ -21,6 +24,8 @@ public class ServletServices {
 	private CompanyDAO companyDao;
 	@Autowired
 	private ComputerMapper computerMapper;
+	@Autowired
+	private CompanyMapper companyMapper;
 	@Autowired
 	private CompanyService companyService;
 
@@ -64,29 +69,48 @@ public class ServletServices {
 	}
 
 
-	public  List<Company> getListCompany(){
-		return companyDao.getCompany();
+	public  List<CompanyDTO> getListCompany(){
+		List<Company> listCompany = companyDao.getCompany();
+		List<CompanyDTO> listCompanyDTO=new ArrayList<>();
+		for(Company company : listCompany) {
+			listCompanyDTO.add(companyMapper.companyToDTO(company));
+		}
+		return listCompanyDTO;
 	}
 
 
-	public  List<Computer> findComputersByName(String nameToFind) {
+	public  List<ComputerDTO> findComputersByName(String nameToFind) {
 		List<Computer> computersToFind = new ArrayList<>();
+		List<ComputerDTO> computersDTOToFind = new ArrayList<>();
+
 		computersToFind = computerDao.getComputerByName(nameToFind);
-		return computersToFind;
+		for(Computer comp : computersToFind) {
+			computersDTOToFind.add(computerMapper.computerToDTO(comp));
+		}
+		return computersDTOToFind;
 	}
 
 
-	public  List<Computer> findComputersByCompany(String companyToFind) {
+	public  List<ComputerDTO> findComputersByCompany(String companyToFind) {
 		List<Computer> computersToFind = new ArrayList<>();
+		List<ComputerDTO> computersDTOToFind = new ArrayList<>();
+
 		computersToFind = computerDao.getComputerByCompany(companyToFind);
-		return computersToFind;
+		for(Computer comp : computersToFind) {
+			computersDTOToFind.add(computerMapper.computerToDTO(comp));
+		}
+		return computersDTOToFind;
 	}
 
 
-	public  List<Computer> findComputersByCompanyId(Long companyIdToFind) {
+	public  List<ComputerDTO> findComputersByCompanyId(Long companyIdToFind) {
 		List<Computer> computersToFind = new ArrayList<>();
+		List<ComputerDTO> computersDTOToFind = new ArrayList<>();
 		computersToFind = computerDao.getComputerByCompanyId(companyIdToFind);
-		return computersToFind;
+		for(Computer comp : computersToFind) {
+			computersDTOToFind.add(computerMapper.computerToDTO(comp));
+		}
+		return computersDTOToFind;
 	}
 
 	public  void addComputer(String computerName, String introduced, String discontinued, String companyId) {
@@ -100,9 +124,9 @@ public class ServletServices {
 		companyService.deleteCompany(companyId);
 	}
 
-	public Computer queryOne(String computerId) {
+	public ComputerDTO queryOne(String computerId) {
 		Computer computerToEdit = computerDao.queryOne(computerId !=null ? Long.valueOf(computerId) : 0L);
-		return computerToEdit;
+		return computerMapper.computerToDTO(computerToEdit);
 	}
 
 
@@ -114,9 +138,13 @@ public class ServletServices {
 		 int sizeTable= computerDao.getSizeComputer();
 		 return sizeTable;
 	}
-	public  List<Computer>  listPage(Long offset, Long limit) {
+	public  List<ComputerDTO>  listPage(Long offset, Long limit) {
+		List<ComputerDTO> listComputersDTO = new ArrayList<>();
 		List<Computer> listComputer = computerDao.getComputerPagination(offset, limit);
-		return listComputer;
+		for(Computer comp : listComputer) {
+			listComputersDTO.add(computerMapper.computerToDTO(comp));
+		}
+		return listComputersDTO;
 	}
 
 }

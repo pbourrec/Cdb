@@ -16,7 +16,9 @@ import org.springframework.stereotype.Controller;
 
 import com.excils.cdb.database.config.ConfigSpring;
 import com.excilys.cdb.database.datatype.Company;
+import com.excilys.cdb.database.datatype.CompanyDTO;
 import com.excilys.cdb.database.datatype.Computer;
+import com.excilys.cdb.database.datatype.ComputerDTO;
 import com.excilys.cdb.database.mapper.ComputerMapper;
 import com.excilys.cdb.database.service.ServletServices;
 
@@ -44,12 +46,12 @@ public class EditComputerServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Company> listCompanies= servletService.getListCompany();
+		List<CompanyDTO> listCompanies= servletService.getListCompany();
 		request.setAttribute( "listcompanies", listCompanies);
 
 		String computerId = request.getParameter("computerid");
 
-		Computer computerToEdit = servletService.queryOne(computerId);
+		ComputerDTO computerToEdit = servletService.queryOne(computerId);
 		request.setAttribute( "computer",computerToEdit);
 		System.out.println(computerToEdit.toString());
 		this.getServletContext().getRequestDispatcher( "/editComputer.jsp" ).forward( request, response );

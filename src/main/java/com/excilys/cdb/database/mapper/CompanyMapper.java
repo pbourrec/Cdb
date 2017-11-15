@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.database.controller.DataControl;
 import com.excilys.cdb.database.datatype.Company;
+import com.excilys.cdb.database.datatype.CompanyDTO;
+import com.excilys.cdb.database.datatype.ComputerDTO;
 
 
 @Component
@@ -37,5 +39,10 @@ public class CompanyMapper {
 		Long idCompany = dataControl.stringToLongIDCompany( computerManufacturer, sc);
 		return idCompany;
 	}
-
+	public CompanyDTO companyToDTO(Company company) {
+		CompanyDTO companyDto = new CompanyDTO((long)company.getId(), 
+												company.getName());
+		
+		return companyDto;
+	}
 }

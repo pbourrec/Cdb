@@ -63,7 +63,7 @@
 											<!-- Table header for Discontinued Date -->
 											<td>${computer.dateDiscontinued}</td>
 											<!-- Table header for Company -->
-											<td>${computer.company.name}</td>
+											<td>${computer.companyName}</td>
 										</tr>
 									</c:forEach>
 								</tbody>
