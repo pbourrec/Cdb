@@ -19,9 +19,11 @@
 		<junit.version>4.12</junit.version>
 		<org.assertj>3.8.0</org.assertj>
 		<taglibs>1.1.2</taglibs>
-		<javax.servlet>1.2</javax.servlet>
+		
+		<javax.servlet-api>3.1.0</javax.servlet-api>
+		<javax.servlet-jstl>1.2</javax.servlet-jstl>
 		<com.zaxxer>2.7.2</com.zaxxer>
-		<org.springframework>5.0.1.RELEASE</org.springframework>
+		<org.springframework>4.3.9.RELEASE</org.springframework>
 	</properties>
 	<reporting>
 		<plugins>
@@ -82,14 +84,15 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
-			<version>${javax.servlet}</version>
+			<version>${javax.servlet-jstl}</version>
 			<scope>compile</scope>
 
 		</dependency>
+	
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${javax.servlet-api}</version>
 			<scope>compile</scope>
 		</dependency>
 
@@ -108,6 +111,12 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${org.springframework}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>

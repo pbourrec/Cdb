@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -55,17 +54,5 @@ public class DatabaseConn {
 		} catch (SQLException e) {
 			throw new RuntimeException(e.getMessage() + " Error sql connection");
 		}
-	}
-
-	//Création d'un statement
-	public  PreparedStatement databasePrepStatement(Connection conn, String sql) {
-		PreparedStatement prepstmt = null;
-		try{
-			prepstmt = conn.prepareStatement(sql);
-		} catch (SQLException e) {
-			logger.error(e.getMessage());
-			logger.error("erreur durant la connection a la base");
-		}
-		return prepstmt;
 	}
 }

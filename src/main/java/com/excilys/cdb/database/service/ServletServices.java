@@ -33,14 +33,16 @@ public class ServletServices {
 	public  int changePageFormat (String computerPerPageReciever, String operation,String pageChange, String restart, Page page) {
 
 		int sizeTable= computerDao.getSizeComputer();
-		if(computerPerPageReciever!=null) {
+		if(computerPerPageReciever.equals("") && !computerPerPageReciever.equals("")) {
 			page.setComputerPerPage( Long.valueOf(computerPerPageReciever));
 			page.setOffsetPage(0L);
-		} else if (operation!=null && page.getOffsetPage()+Long.valueOf(operation)>=0 && ((page.getOffsetPage()+Long.valueOf(operation))*page.getComputerPerPage())<sizeTable){
+		} else if (!operation.equals("") && 
+				page.getOffsetPage()+Long.valueOf(operation)>=0 && 
+				((page.getOffsetPage()+Long.valueOf(operation))*page.getComputerPerPage())<sizeTable){
 			page.setOffsetPage((Long.valueOf(operation)+page.getOffsetPage()));
-		} else if (pageChange!=null && Long.valueOf(pageChange)*page.getComputerPerPage()<sizeTable){
+		} else if (!pageChange.equals("") && Long.valueOf(pageChange)*page.getComputerPerPage()<sizeTable){
 			page.setOffsetPage(Long.valueOf(pageChange));
-		}else if(restart!=null) {
+		}else if(!restart.equals("")) {
 			page.setComputerPerPage(50L);
 			page.setOffsetPage(0L);
 		}
@@ -125,7 +127,7 @@ public class ServletServices {
 	}
 
 	public ComputerDTO queryOne(String computerId) {
-		Computer computerToEdit = computerDao.queryOne(computerId !=null ? Long.valueOf(computerId) : 0L);
+		Computer computerToEdit = computerDao.queryOne(computerId.equals("") ? Long.valueOf(computerId) : 0L);
 		return computerMapper.computerToDTO(computerToEdit);
 	}
 
@@ -135,8 +137,8 @@ public class ServletServices {
 	}
 
 	public int getSizeComputer() {
-		 int sizeTable= computerDao.getSizeComputer();
-		 return sizeTable;
+		int sizeTable= computerDao.getSizeComputer();
+		return sizeTable;
 	}
 	public  List<ComputerDTO>  listPage(Long offset, Long limit) {
 		List<ComputerDTO> listComputersDTO = new ArrayList<>();
