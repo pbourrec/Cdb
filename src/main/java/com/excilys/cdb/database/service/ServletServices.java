@@ -118,7 +118,6 @@ public class ServletServices {
 	public  void addComputer(String computerName, String introduced, String discontinued, String companyId) {
 		Computer computerToAdd = new Computer();
 		computerToAdd = computerMapper.computerBuilder(computerName, companyId, introduced, discontinued);
-		System.out.println(computerToAdd.toString());
 		computerDao.upload(computerToAdd);
 	}
 
@@ -127,7 +126,7 @@ public class ServletServices {
 	}
 
 	public ComputerDTO queryOne(String computerId) {
-		Computer computerToEdit = computerDao.queryOne(computerId.equals("") ? Long.valueOf(computerId) : 0L);
+		Computer computerToEdit = computerDao.queryOne(Long.valueOf(computerId));
 		return computerMapper.computerToDTO(computerToEdit);
 	}
 

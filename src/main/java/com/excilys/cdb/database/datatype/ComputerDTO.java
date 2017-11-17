@@ -62,10 +62,10 @@ public class ComputerDTO {
 
 
 
-	public ComputerDTO(String computerName, String companyName, long companyId, String dateIntroduced,
+	public ComputerDTO(long computerId,String computerName, String companyName, long companyId, String dateIntroduced,
 			String dateDiscontinued) {
 		super();
-		this.id = id;
+		this.id = computerId;
 		this.computerName = computerName;
 		this.companyName = companyName;
 		this.companyId = companyId;

@@ -37,10 +37,8 @@ public class EditComputerServlet{
 		modelAndView.addObject( "listcompanies", listCompanies);
 
 		String computerId = parameters.get("computerid");
-
 		ComputerDTO computerToEdit = servletService.queryOne(computerId);
 		modelAndView.addObject( "computer",computerToEdit);
-		System.out.println(computerToEdit.toString());
 		return modelAndView;
 	}
 

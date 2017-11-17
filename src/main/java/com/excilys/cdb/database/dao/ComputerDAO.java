@@ -104,13 +104,15 @@ public class ComputerDAO {
 	 * @return Computer computerQueried
 	 */
 	public  Computer queryOne(Long computerID){
-		Computer computerQueried = new Computer();
+		List<Computer> listComputer = new ArrayList<>(); 
 		if (computerID!=0L) {
-			computerQueried = (Computer) jdbcTemplate.query(queryComputer,
+			listComputer = jdbcTemplate.query(queryComputer,
 					new Object[] {computerID}, 
 					new RowMapperComputer());
 
 		}
+		Computer computerQueried = listComputer.get(0);
+
 		return computerQueried;
 
 	}
@@ -144,14 +146,14 @@ public class ComputerDAO {
 		int sizeTable =jdbcTemplate.queryForObject(selectCount, Integer.class);
 		return sizeTable;
 	}
-	
+
 	public  int getSizeComputerId(Long computerId) {
 		int sizeTable =jdbcTemplate.queryForObject(selectCountComputer, 
-													new Object[] {computerId},
-													Integer.class);
+				new Object[] {computerId},
+				Integer.class);
 		return sizeTable;
 	}
-	
+
 
 
 	public  List<Computer> getComputerByName(String nameToFind) {

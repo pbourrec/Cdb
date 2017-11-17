@@ -24,12 +24,7 @@ import com.excilys.cdb.database.service.ServletServices;
 @Controller
 @RequestMapping("/dashboard")
 public class DashboardServlet {
-	/**
-	 * 
-	 */
-	/**
-	 * 
-	 */
+
 	private  Logger logger = LoggerFactory.getLogger(DashboardServlet.class);
 	@Autowired
 	private ServletServices servletServices;
@@ -45,7 +40,7 @@ public class DashboardServlet {
 		String operation = parameters.get("pageoperation")!=null ? parameters.get("pageoperation") : "";
 		String pageChange = parameters.get("page")!=null ? parameters.get("page") : "";
 		String restart =parameters.get("restart")!=null ? parameters.get("restart") : ""; 
-		System.out.println( computerPerPageReciever+"," +  operation+"," + pageChange+"," +  restart+"," );
+		logger.info( computerPerPageReciever+"," +  operation+"," + pageChange+"," +  restart+"," );
 
 
 		int sizeTable= servletServices.changePageFormat ( computerPerPageReciever,  operation, pageChange,  restart,  page) ;

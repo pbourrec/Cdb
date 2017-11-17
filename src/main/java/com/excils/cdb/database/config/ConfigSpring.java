@@ -26,23 +26,28 @@ import com.excilys.cdb.database.dao.DatabaseConn;
 "com.excilys.cdb.database.servlets"})
 
 public class ConfigSpring extends WebMvcConfigurerAdapter {
-	
+
 	@Autowired  
 	private DatabaseConn databaseConn;
-	
-	
+
+
 	@Bean
-	  public PlatformTransactionManager transactionManager() {
-	      DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
-	      transactionManager.setDataSource(databaseConn.ds);
-	      return transactionManager;
-	  }
-	
+	public PlatformTransactionManager transactionManager() {
+		DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
+		transactionManager.setDataSource(databaseConn.ds);
+		return transactionManager;
+	}
+
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/**").addResourceLocations("/");
+	}
+
 
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addRedirectViewController("/", "/dashboard");
-}
+	}
 
 	@Bean
 	public InternalResourceViewResolver viewResolver() {

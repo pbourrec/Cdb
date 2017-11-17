@@ -125,7 +125,9 @@ public class ComputerMapper{
 	}
 	
 	public ComputerDTO computerToDTO(Computer computer) {
-		ComputerDTO computerDto = new ComputerDTO(computer.getComputerName(),
+		System.out.println(computer.toString());
+		ComputerDTO computerDto = new ComputerDTO(computer.getId(),
+												  computer.getComputerName(),
 												  computer.getCompany().getName(),
 												  computer.getCompany().getId(),
 												  (computer.getDateIntroduced()!=null? String.valueOf(computer.getDateIntroduced()) :""),
