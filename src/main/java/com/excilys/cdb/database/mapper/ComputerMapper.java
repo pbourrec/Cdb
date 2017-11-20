@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.database.controller.ControlFormat;
 import com.excilys.cdb.database.controller.DataControl;
+import com.excilys.cdb.database.core.Company;
+import com.excilys.cdb.database.core.Computer;
+import com.excilys.cdb.database.core.ComputerDTO;
 import com.excilys.cdb.database.dao.ComputerDAO;
-import com.excilys.cdb.database.datatype.Company;
-import com.excilys.cdb.database.datatype.Computer;
-import com.excilys.cdb.database.datatype.ComputerDTO;
 
 
 @Component

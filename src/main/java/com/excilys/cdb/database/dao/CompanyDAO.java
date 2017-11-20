@@ -13,14 +13,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import com.excilys.cdb.database.datatype.Company;
+import com.excilys.cdb.database.core.Company;
 import com.excilys.cdb.database.mapper.CompanyMapper;
 
-@Component
+@Repository
 
 public class CompanyDAO {
 	Logger logger = LoggerFactory.getLogger(CompanyDAO.class);

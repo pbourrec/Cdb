@@ -16,12 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-import com.excilys.cdb.database.datatype.Company;
-import com.excilys.cdb.database.datatype.Computer;
+import com.excilys.cdb.database.core.Company;
+import com.excilys.cdb.database.core.Computer;
 import com.excilys.cdb.database.mapper.ComputerMapper;
 
-@Component
+@Repository
 @SuppressWarnings("unchecked")
 public class ComputerDAO {
 	Logger logger = LoggerFactory.getLogger(ComputerDAO.class);

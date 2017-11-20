@@ -7,9 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.excilys.cdb.database.core.Company;
+import com.excilys.cdb.database.core.Computer;
 import com.excilys.cdb.database.dao.ComputerDAO;
-import com.excilys.cdb.database.datatype.Company;
-import com.excilys.cdb.database.datatype.Computer;
 import com.excilys.cdb.database.service.ComputerService;
 
 @Component

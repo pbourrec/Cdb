@@ -4,19 +4,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.websocket.server.ServerEndpoint;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+import com.excilys.cdb.database.core.Company;
+import com.excilys.cdb.database.core.CompanyDTO;
+import com.excilys.cdb.database.core.Computer;
+import com.excilys.cdb.database.core.ComputerDTO;
+import com.excilys.cdb.database.core.Page;
 import com.excilys.cdb.database.dao.CompanyDAO;
 import com.excilys.cdb.database.dao.ComputerDAO;
-import com.excilys.cdb.database.datatype.Company;
-import com.excilys.cdb.database.datatype.CompanyDTO;
-import com.excilys.cdb.database.datatype.Computer;
-import com.excilys.cdb.database.datatype.ComputerDTO;
 import com.excilys.cdb.database.mapper.CompanyMapper;
 import com.excilys.cdb.database.mapper.ComputerMapper;
 
-@Component 
+@Service 
 public class ServletServices {
 	@Autowired
 	private ComputerDAO computerDao;

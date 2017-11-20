@@ -6,15 +6,14 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import com.excilys.cdb.database.dao.CompanyDAO;
+import com.excilys.cdb.database.core.Computer;
 import com.excilys.cdb.database.dao.ComputerDAO;
-import com.excilys.cdb.database.datatype.Computer;
 import com.excilys.cdb.database.ihm.UserInterface;
 import com.excilys.cdb.database.mapper.CompanyMapper;
 import com.excilys.cdb.database.mapper.ComputerMapper;
-@Component
+@Service
 public class ComputerService {
 	private  Logger logger = LoggerFactory.getLogger(ComputerService.class);
 
@@ -32,13 +31,9 @@ public class ComputerService {
 
 	/**
 	 * 
-	 * @param  Scanner d'entrée utilisateur
-	 * @param rsCompany ResultSet de la query à la table "companies"
-	 * @param rsComputer ResultSet de la query à la table "computer"
-	 * @return 
-	 * @return boolean repeat doit on enter à nouveau un ordinateur
 	 */
-	public   void add(){
+	 
+	  	public   void add(){
 		logger.debug("Entrée dans ComputerService.add");
 
 		String computerName = computerMapper.enterName();
@@ -88,7 +83,7 @@ public class ComputerService {
 		}
 	}
 
-	/**
+	/**	
 	 * 	
 	 * @param  Scanner input
 	 * @param rsComputer Resultat de la query sur la table "computer"

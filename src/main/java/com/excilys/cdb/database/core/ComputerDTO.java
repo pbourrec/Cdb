@@ -1,4 +1,4 @@
-package com.excilys.cdb.database.datatype;
+package com.excilys.cdb.database.core;
 
 import org.springframework.stereotype.Component;
 

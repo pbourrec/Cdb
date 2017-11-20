@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.database.controller.DataControl;
-import com.excilys.cdb.database.datatype.Company;
-import com.excilys.cdb.database.datatype.CompanyDTO;
-import com.excilys.cdb.database.datatype.ComputerDTO;
+import com.excilys.cdb.database.core.Company;
+import com.excilys.cdb.database.core.CompanyDTO;
+import com.excilys.cdb.database.core.ComputerDTO;
 
 
 @Component

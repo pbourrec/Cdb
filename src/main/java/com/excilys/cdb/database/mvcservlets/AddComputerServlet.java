@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.excilys.cdb.database.datatype.CompanyDTO;
+import com.excilys.cdb.database.core.CompanyDTO;
 import com.excilys.cdb.database.service.ServletServices;
 
 @Controller

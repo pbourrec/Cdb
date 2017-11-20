@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.excilys.cdb.database.datatype.CompanyDTO;
-import com.excilys.cdb.database.datatype.Computer;
-import com.excilys.cdb.database.datatype.ComputerDTO;
+import com.excilys.cdb.database.core.CompanyDTO;
+import com.excilys.cdb.database.core.Computer;
+import com.excilys.cdb.database.core.ComputerDTO;
 import com.excilys.cdb.database.mapper.ComputerMapper;
 import com.excilys.cdb.database.service.ServletServices;
 

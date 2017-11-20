@@ -6,14 +6,13 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import com.excilys.cdb.database.controller.ControlFormat;
+import com.excilys.cdb.database.core.Company;
 import com.excilys.cdb.database.dao.CompanyDAO;
 import com.excilys.cdb.database.dao.ComputerDAO;
-import com.excilys.cdb.database.datatype.Company;
 
-@Component
+@Service
 public class CompanyService {
 	 Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 

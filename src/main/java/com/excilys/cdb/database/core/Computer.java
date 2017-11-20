@@ -1,4 +1,4 @@
-package com.excilys.cdb.database.datatype;
+package com.excilys.cdb.database.core;
 
 import java.sql.Date;
 import java.time.LocalDate;

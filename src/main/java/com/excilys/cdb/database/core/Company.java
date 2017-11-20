@@ -1,14 +1,12 @@
-package com.excilys.cdb.database.datatype;
+package com.excilys.cdb.database.core;
 
-import org.springframework.stereotype.Component;
-
-public class CompanyDTO {
-	private long id;
+public class Company {
+	private Long id;
 	private String name;
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -17,16 +15,16 @@ public class CompanyDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public CompanyDTO(long id, String name) {
+	public Company(Long id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
 	}
-	public CompanyDTO(long id) {
+	public Company(Long id) {
 		super();
 		this.id = id;
 	}
-	public CompanyDTO() {
+	public Company() {
 	}
 	@Override
 	public String toString() {

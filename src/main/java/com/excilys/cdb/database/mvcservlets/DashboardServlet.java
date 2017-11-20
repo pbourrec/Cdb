@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.excils.cdb.database.config.ConfigSpring;
-import com.excilys.cdb.database.datatype.ComputerDTO;
-import com.excilys.cdb.database.service.Page;
+import com.excilys.cdb.database.core.ComputerDTO;
+import com.excilys.cdb.database.core.Page;
 import com.excilys.cdb.database.service.ServletServices;
 
 
