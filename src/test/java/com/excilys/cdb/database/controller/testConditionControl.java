@@ -3,11 +3,13 @@ package com.excilys.cdb.database.controller;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.excilys.cdb.database.validator.ConditionValidation;
+
 public class testConditionControl {
-	private final ConditionControl conditionControl;
+	private final ConditionValidation conditionControl;
 	
 	
-	public testConditionControl(ConditionControl conditionControl) {
+	public testConditionControl(ConditionValidation conditionControl) {
 		super();
 		this.conditionControl = conditionControl;
 	}

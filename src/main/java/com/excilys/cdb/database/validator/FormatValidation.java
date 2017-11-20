@@ -1,4 +1,4 @@
-package com.excilys.cdb.database.controller;
+package com.excilys.cdb.database.validator;
 
 
 
@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ControlFormat {
-	 Logger logger = LoggerFactory.getLogger(ControlFormat.class);
+public class FormatValidation {
+	 Logger logger = LoggerFactory.getLogger(FormatValidation.class);
 
 		public  Long stringTolong(String stringToConv) {
 			Long longConverted=null;

@@ -2,10 +2,10 @@ package com.excilys.cdb.database.core;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.database.dao.ComputerDAO;
+import com.excilys.cdb.database.mapperdto.ComputerDTOMapper;
 import com.excilys.cdb.database.service.ServletServices;
 
 
@@ -13,18 +13,18 @@ import com.excilys.cdb.database.service.ServletServices;
 public class Page {
 	Long computerPerPage=50L; 
 	Long offsetPage=0L;
-	int nextPageOK = 0;
 	public  List<ComputerDTO> pageOfComputer;
+	int nextPageOK = 0;
 	
-	@Autowired
+	private final ComputerDTOMapper computerDtoMapper;
 	private final ComputerDAO computerDao;
-	@Autowired
 	private final ServletServices servletServices;
 	
-	public Page(ComputerDAO computerDao, ServletServices servletServices) {
+	public Page(ComputerDAO computerDao, ServletServices servletServices, ComputerDTOMapper computerDtoMapper) {
 		this.computerDao = computerDao;
 		this.servletServices = servletServices;
-		this.pageOfComputer = servletServices.listPage(offsetPage, computerPerPage);
+		this.computerDtoMapper = computerDtoMapper;
+		this.pageOfComputer = computerDtoMapper.computerListToDTO(servletServices.listPage(offsetPage, computerPerPage));
 	}
 
 	public  Long getComputerPerPage() {

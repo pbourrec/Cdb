@@ -1,4 +1,4 @@
-package com.excilys.cdb.database.mapper;
+package com.excilys.cdb.database.mapperdao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,12 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import com.excilys.cdb.database.controller.ControlFormat;
-import com.excilys.cdb.database.controller.DataControl;
 import com.excilys.cdb.database.core.Company;
 import com.excilys.cdb.database.core.Computer;
 import com.excilys.cdb.database.core.ComputerDTO;
 import com.excilys.cdb.database.dao.ComputerDAO;
+import com.excilys.cdb.database.validator.FormatValidation;
+import com.excilys.cdb.database.validator.DataValidation;
 
 
 @Component
@@ -50,9 +50,9 @@ public class ComputerMapper{
 	 Scanner sc = new Scanner(System.in);
 
 	 @Autowired
-	 private DataControl dataControl;
+	 private DataValidation dataControl;
 	 @Autowired
-	 private ControlFormat controlFormat;
+	 private FormatValidation controlFormat;
 
 	public  Computer rsToComputer(ResultSet rsComputer){
 		final Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
@@ -76,7 +76,6 @@ public class ComputerMapper{
 	}
 
 	public  LocalDate enterDiscontinuedDate() {
-		System.out.println("LocalDate de mise en retraite de l'ordinateur (format dd/MM/yyyy)");	
 		LocalDate dateEnd= null;
 		while(dateEnd==null) {
 			String computerEndDate = sc.nextLine();
@@ -89,7 +88,6 @@ public class ComputerMapper{
 	}
 
 	public  LocalDate enterIntroductionDate() {
-		System.out.println("LocalDate de mise en service de l'ordinateur (format dd/MM/yyyy)");
 		LocalDate dateStart = null;
 		while(dateStart==null) {
 			String computerStartingDate = sc.nextLine();
@@ -102,50 +100,23 @@ public class ComputerMapper{
 	}
 
 	public  String enterName() {
-		System.out.println("Quel sera le nom de l'ordinateur");
 		String computerName = sc.nextLine();
 		while(computerName.isEmpty()){
-			System.out.println("Le nom de l'ordinateur ne peut être vide, merci de remplir ce champ");
 			computerName=sc.nextLine();
 		}
 		return computerName;
 	}
 
 	public  Long enterIdToFound() {
-		System.out.println("Quel ordinateur voulez vous voir ? Entrez l'ID");
 		String computerIDToSee = sc.nextLine();
 		Long idComputerToSee = dataControl.stringToLongIDComputer(computerIDToSee, sc);
 		return idComputerToSee;
 	}
 
 	public  Computer computerBuilder (String name, String companyId, String introduced, String discontinued) {
-		System.out.println("nom " + name +", companyId " + companyId +", introduced + " + introduced + ", discontinued" + discontinued);
 		Computer computer = new Computer(name, controlFormat.stringTolong(companyId), dataControl.convertStringToTimestamp(introduced),dataControl.convertStringToTimestamp(discontinued));		
 		return computer;
 	}
-	
-	public ComputerDTO computerToDTO(Computer computer) {
-		System.out.println(computer.toString());
-		ComputerDTO computerDto = new ComputerDTO(computer.getId(),
-												  computer.getComputerName(),
-												  computer.getCompany().getName(),
-												  computer.getCompany().getId(),
-												  (computer.getDateIntroduced()!=null? String.valueOf(computer.getDateIntroduced()) :""),
-												  (computer.getDateDiscontinued()!=null?  String.valueOf(computer.getDateDiscontinued()): "")
-												  );		
-		return computerDto;
-		
-	}
 
 
-//	public ComputerDTO(String computerName, String companyName, long companyId, String dateIntroduced,
-//			String dateDiscontinued) {
-//		super();
-//		this.id = id;
-//		this.computerName = computerName;
-//		this.companyName = companyName;
-//		this.companyId = companyId;
-//		this.dateIntroduced = dateIntroduced;
-//		this.dateDiscontinued = dateDiscontinued;
-//	}
 }

@@ -17,12 +17,14 @@ import com.excilys.cdb.database.dao.DatabaseConn;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan({"com.excilys.cdb.database.controller",
+@ComponentScan({"com.excilys.cdb.database.validator",
 	"com.excilys.cdb.database.dao",
 	"com.excilys.cdb.database.ihm",
-	"com.excilys.cdb.database.mapper",
+	"com.excilys.cdb.database.core",
+	"com.excilys.cdb.database.mapperdto",
+	"com.excilys.cdb.database.mapperdao",
 	"com.excilys.cdb.database.service",
-	"com.excilys.cdb.database.mvcservlets",
+	"com.excilys.cdb.database.controller",
 "com.excilys.cdb.database.servlets"})
 
 public class ConfigSpring extends WebMvcConfigurerAdapter {

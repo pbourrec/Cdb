@@ -1,4 +1,4 @@
-package com.excilys.cdb.database.mapper;
+package com.excilys.cdb.database.mapperdao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,17 +7,17 @@ import java.util.Scanner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.excilys.cdb.database.controller.DataControl;
 import com.excilys.cdb.database.core.Company;
 import com.excilys.cdb.database.core.CompanyDTO;
 import com.excilys.cdb.database.core.ComputerDTO;
+import com.excilys.cdb.database.validator.DataValidation;
 
 
 @Component
 public class CompanyMapper {
 	 Scanner sc = new Scanner(System.in);
 	 @Autowired
-	 private  DataControl dataControl;
+	 private  DataValidation dataControl;
 
 	public  Company rsToCompany(ResultSet rsCompany){
 		Company companyConvert = new Company();
@@ -34,15 +34,9 @@ public class CompanyMapper {
 	}
 
 	public  Long enterCompanyId() {
-		System.out.println("Quel sera le constructeur de l'ordinateur (choisir un ID)" );
 		String computerManufacturer = sc.nextLine();
 		Long idCompany = dataControl.stringToLongIDCompany( computerManufacturer, sc);
 		return idCompany;
 	}
-	public CompanyDTO companyToDTO(Company company) {
-		CompanyDTO companyDto = new CompanyDTO((long)company.getId(), 
-												company.getName());
-		
-		return companyDto;
-	}
+
 }

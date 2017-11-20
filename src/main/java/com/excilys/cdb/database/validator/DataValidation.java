@@ -1,4 +1,4 @@
-package com.excilys.cdb.database.controller;
+package com.excilys.cdb.database.validator;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class DataControl {
-	 Logger logger = LoggerFactory.getLogger(DataControl.class);
+public class DataValidation {
+	 Logger logger = LoggerFactory.getLogger(DataValidation.class);
 	 @Autowired
-	private  ConditionControl conditionControl;
+	private  ConditionValidation conditionControl;
 
 	/**
 	 * 
@@ -30,7 +30,7 @@ public class DataControl {
 		if(!computerManufacturer.equals("")){
 			//tant que l'ID n'existe pas ou n'est pas valide
 			while (!conditionControl.isIdCompanyValid(computerManufacturer)) {
-				System.out.println("l'ID rentré n'existe pas ou n'est pas sous le bon format, merci de reessayer");
+				logger.info("l'ID rentré n'existe pas ou n'est pas sous le bon format, merci de reessayer");
 				computerManufacturer = sc.nextLine();
 			}
 			return Long.valueOf(computerManufacturer);
@@ -47,7 +47,7 @@ public class DataControl {
 
 		//tant que l'ID n'existe pas ou n'est pas valide
 		while (!conditionControl.isIdComputerValid(computerID)) {
-			System.out.println("l'ID rentré n'existe pas ou n'est pas sous le bon format, merci de reessayer");
+			logger.info("l'ID rentré n'existe pas ou n'est pas sous le bon format, merci de reessayer");
 			computerID = sc.nextLine();
 		}
 		return Long.valueOf(computerID);
@@ -70,7 +70,7 @@ public class DataControl {
 				isOK = true;
 
 			} catch (NumberFormatException nfe) {
-				System.out.println("La valeur rentrée n'est pas valable, merci de recommencer");
+				logger.info("La valeur rentrée n'est pas valable, merci de recommencer");
 				stringToInt = sc.nextLine();
 				isOK=false;
 			}

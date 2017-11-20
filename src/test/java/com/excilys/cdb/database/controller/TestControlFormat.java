@@ -5,11 +5,13 @@ import static org.junit.Assert.*;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.excilys.cdb.database.validator.FormatValidation;
+
 public class TestControlFormat {
-	private final ControlFormat controlFormat;
+	private final FormatValidation controlFormat;
 	
 	
-	public TestControlFormat(ControlFormat controlFormat) {
+	public TestControlFormat(FormatValidation controlFormat) {
 		super();
 		this.controlFormat = controlFormat;
 	}

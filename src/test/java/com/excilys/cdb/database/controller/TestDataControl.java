@@ -6,13 +6,15 @@ import java.util.Scanner;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.excilys.cdb.database.validator.DataValidation;
+
 public class TestDataControl {
 
-	private final DataControl dataControl;
+	private final DataValidation dataControl;
 	
 	
 	
-	public TestDataControl(DataControl dataControl) {
+	public TestDataControl(DataValidation dataControl) {
 		super();
 		this.dataControl = dataControl;
 	}

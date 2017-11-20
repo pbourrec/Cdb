@@ -19,7 +19,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.excilys.cdb.database.core.Company;
-import com.excilys.cdb.database.mapper.CompanyMapper;
+import com.excilys.cdb.database.mapperdao.CompanyMapper;
 
 @Repository
 

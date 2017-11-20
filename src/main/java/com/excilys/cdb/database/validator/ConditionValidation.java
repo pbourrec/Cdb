@@ -1,4 +1,4 @@
-package com.excilys.cdb.database.controller;
+package com.excilys.cdb.database.validator;
 
 
 
@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 import com.excilys.cdb.database.dao.DatabaseVerify;
 
 @Component
-public class ConditionControl {
-	Logger logger = LoggerFactory.getLogger(ConditionControl.class);
+public class ConditionValidation {
+	Logger logger = LoggerFactory.getLogger(ConditionValidation.class);
 	@Autowired
-	private  ControlFormat controlFormat;
+	private  FormatValidation controlFormat;
 	@Autowired
 	private  DatabaseVerify databaseVerify;
 

@@ -1,6 +1,8 @@
 package com.excilys.cdb.database.service;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -11,8 +13,8 @@ import org.springframework.stereotype.Service;
 import com.excilys.cdb.database.core.Computer;
 import com.excilys.cdb.database.dao.ComputerDAO;
 import com.excilys.cdb.database.ihm.UserInterface;
-import com.excilys.cdb.database.mapper.CompanyMapper;
-import com.excilys.cdb.database.mapper.ComputerMapper;
+import com.excilys.cdb.database.mapperdao.CompanyMapper;
+import com.excilys.cdb.database.mapperdao.ComputerMapper;
 @Service
 public class ComputerService {
 	private  Logger logger = LoggerFactory.getLogger(ComputerService.class);
@@ -58,7 +60,6 @@ public class ComputerService {
 		//controle validité de l'ID
 		Long idComputer = computerMapper.enterIdToFound();
 		Computer computerToEdit = computerDao.queryOne( idComputer);
-		System.out.println(computerToEdit.toString());
 		
 		String computerName = computerMapper.enterName();
 		companyService.viewAllCompany();
@@ -78,8 +79,6 @@ public class ComputerService {
 		List<Computer> listComputer= computerDao.getAllComputer();
 
 		for (Computer comp : listComputer){
-			System.out.println(comp.toString());
-			System.out.println("----");
 		}
 	}
 
@@ -92,7 +91,6 @@ public class ComputerService {
 	public  void viewOne (){
 		Long idComputerToSee = computerMapper.enterIdToFound();
 		Computer computerToShow = computerDao.queryOne( idComputerToSee);
-		System.out.println(computerToShow.toString());
 
 	}
 
@@ -109,6 +107,61 @@ public class ComputerService {
 		if(userInterface.confirmActionDelete(computerToDelete)) {
 			computerDao.delete(idComputerToDelete);
 		}
+	}
+
+	public  void addComputer(String computerName, String introduced, String discontinued, String companyId) {
+		Computer computerToAdd = new Computer();
+		computerToAdd = computerMapper.computerBuilder(computerName, companyId, introduced, discontinued);
+		computerDao.upload(computerToAdd);
+	}
+
+	public  String deleteComputer(String idToDelete) {
+		String[] listIdToDelete = idToDelete.split(",");
+		String computersDeleted ="Les ordinateurs suivants on étés supprimés : \n";
+		for(int i=0; i< listIdToDelete.length; i++) {
+			computerDao.delete(Long.valueOf(listIdToDelete[i]));
+			computersDeleted+=" " +listIdToDelete[i] + ",";
+		}
+		computersDeleted = computersDeleted.substring(0, computersDeleted.length() - 1);
+		return computersDeleted;
+	}
+
+	public  void deleteComputerAndCompany(Long companyId) throws SQLException {
+		companyService.deleteCompany(companyId);
+	}
+
+	public  List<Computer> findComputersByCompany(String companyToFind) {
+		List<Computer> computersToFind = new ArrayList<>();
+	
+		computersToFind = computerDao.getComputerByCompany(companyToFind);
+	
+		return computersToFind;
+	}
+
+	public  List<Computer> findComputersByCompanyId(Long companyIdToFind) {
+		List<Computer> computersToFind = new ArrayList<>();
+		computersToFind = computerDao.getComputerByCompanyId(companyIdToFind);
+		return computersToFind;
+	}
+
+	public  List<Computer> findComputersByName(String nameToFind) {
+		List<Computer> computersToFind = new ArrayList<>();
+		computersToFind = computerDao.getComputerByName(nameToFind);
+		return computersToFind;
+	}
+
+	public int getSizeComputer() {
+		int sizeTable= computerDao.getSizeComputer();
+		return sizeTable;
+	}
+
+	public Computer queryOneComputer(String computerId) {
+		Computer computerToEdit = computerDao.queryOne(Long.valueOf(computerId));
+		return computerToEdit;
+	}
+
+	public void updateComputer(String computerId, Computer computerToAdd) {
+		computerDao.update(computerToAdd, Long.valueOf(computerId));
 	}
 
 }

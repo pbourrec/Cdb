@@ -37,4 +37,8 @@ public class CompanyService {
 	public  void deleteCompany(Long companyToDelete) throws SQLException {
 		companyDAO.deleteCompany(companyToDelete);
 	}
+	public  List<Company> getListCompany(){
+		List<Company> listCompany = companyDAO.getCompany();
+		return listCompany;
+	}
 }

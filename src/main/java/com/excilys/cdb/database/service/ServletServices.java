@@ -1,37 +1,29 @@
 package com.excilys.cdb.database.service;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.websocket.server.ServerEndpoint;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.excilys.cdb.database.core.Company;
-import com.excilys.cdb.database.core.CompanyDTO;
 import com.excilys.cdb.database.core.Computer;
-import com.excilys.cdb.database.core.ComputerDTO;
 import com.excilys.cdb.database.core.Page;
 import com.excilys.cdb.database.dao.CompanyDAO;
 import com.excilys.cdb.database.dao.ComputerDAO;
-import com.excilys.cdb.database.mapper.CompanyMapper;
-import com.excilys.cdb.database.mapper.ComputerMapper;
+import com.excilys.cdb.database.mapperdao.CompanyMapper;
+import com.excilys.cdb.database.mapperdao.ComputerMapper;
 
 @Service 
 public class ServletServices {
 	@Autowired
 	private ComputerDAO computerDao;
-	@Autowired
-	private CompanyDAO companyDao;
+	@Autowired CompanyDAO companyDao;
 	@Autowired
 	private ComputerMapper computerMapper;
 	@Autowired
 	private CompanyMapper companyMapper;
 	@Autowired
-	private CompanyService companyService;
+	public CompanyService companyService;
 
 
 	public  int changePageFormat (String computerPerPageReciever, String operation,String pageChange, String restart, Page page) {
@@ -63,93 +55,9 @@ public class ServletServices {
 	}
 
 
-	public  String deleteComputer(String idToDelete) {
-		String[] listIdToDelete = idToDelete.split(",");
-		String computersDeleted ="Les ordinateurs suivants on étés supprimés : \n";
-		for(int i=0; i< listIdToDelete.length; i++) {
-			computerDao.delete(Long.valueOf(listIdToDelete[i]));
-			computersDeleted+=" " +listIdToDelete[i] + ",";
-		}
-		computersDeleted = computersDeleted.substring(0, computersDeleted.length() - 1);
-		return computersDeleted;
-	}
-
-
-	public  List<CompanyDTO> getListCompany(){
-		List<Company> listCompany = companyDao.getCompany();
-		List<CompanyDTO> listCompanyDTO=new ArrayList<>();
-		for(Company company : listCompany) {
-			listCompanyDTO.add(companyMapper.companyToDTO(company));
-		}
-		return listCompanyDTO;
-	}
-
-
-	public  List<ComputerDTO> findComputersByName(String nameToFind) {
-		List<Computer> computersToFind = new ArrayList<>();
-		List<ComputerDTO> computersDTOToFind = new ArrayList<>();
-
-		computersToFind = computerDao.getComputerByName(nameToFind);
-		for(Computer comp : computersToFind) {
-			computersDTOToFind.add(computerMapper.computerToDTO(comp));
-		}
-		return computersDTOToFind;
-	}
-
-
-	public  List<ComputerDTO> findComputersByCompany(String companyToFind) {
-		List<Computer> computersToFind = new ArrayList<>();
-		List<ComputerDTO> computersDTOToFind = new ArrayList<>();
-
-		computersToFind = computerDao.getComputerByCompany(companyToFind);
-		for(Computer comp : computersToFind) {
-			computersDTOToFind.add(computerMapper.computerToDTO(comp));
-		}
-		return computersDTOToFind;
-	}
-
-
-	public  List<ComputerDTO> findComputersByCompanyId(Long companyIdToFind) {
-		List<Computer> computersToFind = new ArrayList<>();
-		List<ComputerDTO> computersDTOToFind = new ArrayList<>();
-		computersToFind = computerDao.getComputerByCompanyId(companyIdToFind);
-		for(Computer comp : computersToFind) {
-			computersDTOToFind.add(computerMapper.computerToDTO(comp));
-		}
-		return computersDTOToFind;
-	}
-
-	public  void addComputer(String computerName, String introduced, String discontinued, String companyId) {
-		Computer computerToAdd = new Computer();
-		computerToAdd = computerMapper.computerBuilder(computerName, companyId, introduced, discontinued);
-		computerDao.upload(computerToAdd);
-	}
-
-	public  void deleteComputerAndCompany(Long companyId) throws SQLException {
-		companyService.deleteCompany(companyId);
-	}
-
-	public ComputerDTO queryOne(String computerId) {
-		Computer computerToEdit = computerDao.queryOne(Long.valueOf(computerId));
-		return computerMapper.computerToDTO(computerToEdit);
-	}
-
-
-	public void updateComputer(String computerId, Computer computerToAdd) {
-		computerDao.update(computerToAdd, Long.valueOf(computerId));
-	}
-
-	public int getSizeComputer() {
-		int sizeTable= computerDao.getSizeComputer();
-		return sizeTable;
-	}
-	public  List<ComputerDTO>  listPage(Long offset, Long limit) {
-		List<ComputerDTO> listComputersDTO = new ArrayList<>();
+	public  List<Computer>  listPage(Long offset, Long limit) {
 		List<Computer> listComputer = computerDao.getComputerPagination(offset, limit);
-		for(Computer comp : listComputer) {
-			listComputersDTO.add(computerMapper.computerToDTO(comp));
-		}
-		return listComputersDTO;
+		return listComputer;
 	}
 
 }

@@ -20,7 +20,7 @@ import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.database.core.Company;
 import com.excilys.cdb.database.core.Computer;
-import com.excilys.cdb.database.mapper.ComputerMapper;
+import com.excilys.cdb.database.mapperdao.ComputerMapper;
 
 @Repository
 @SuppressWarnings("unchecked")
