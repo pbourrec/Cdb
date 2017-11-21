@@ -3,6 +3,7 @@
 <head>
 <title>Computer Database</title>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -22,15 +23,16 @@
 				<div class="col-xs-8 col-xs-offset-2 box">
 					<div class="label label-default pull-right">
 						id :
-						<c:out value="${computer.id}" default="default value of c:out" />
+						<c:out value="${computer.computerId}" default="default value of c:out" />
 					</div>
 					<h1>Edit Computer</h1>
 
 
-					<form action="editComputer" method="POST">
+					<form:form action="editComputer" modelAttribute="ComputerDTO"
+						method="POST">
 						<input type="hidden"
-							value="<c:out value="${computer.id}" default="No actual value" />"
-							id="id" name="computerid" />
+							value="<c:out value="${computer.computerId}" default="No actual value" />"
+							id="computerId" name="computerId" />
 						<!-- TODO: Change this value with the computer id -->
 						<fieldset>
 
@@ -42,16 +44,17 @@
 									value="<c:out value="${computer.computerName}" default=""/> ">
 							</div>
 							<div class="form-group">
+							
 								<label for="introduced">Introduced date</label> <input
 									type="date" class="form-control" id="introduced"
-									name="introduced"
+									name="dateIntroduced"
 									placeholder="<c:out value="${computer.dateIntroduced}" default="yyyy-MM-dd OR dd/MM/yyyy" />"
-									value="<c:out value="${computer.dateIntroduced}" default=""/>" >
+									value="<c:out value="${computer.dateIntroduced}" default=""/>">
 							</div>
 							<div class="form-group">
 								<label for="discontinued">Discontinued date</label> <input
 									type="date" class="form-control" id="discontinued"
-									name="discontinued"
+									name="dateDiscontinued"
 									placeholder="<c:out value="${computer.dateDiscontinued}" default="yyyy-MM-dd OR dd/MM/yyyy" />"
 									value="<c:out value="${computer.dateDiscontinued}" default=""/>">
 							</div>
@@ -59,9 +62,13 @@
 								<label for="companyId">Company</label> <select
 									class="form-control" id="companyId" name="companyId">
 									<c:forEach items="${listcompanies}" var="company">
-									
-										<c:if test="${company.id == computer.companyId }"><option selected value="${company.id}">${company.name}</option></c:if>
-										<c:if test="${company.id != computer.companyId }"><option value="${company.id}">${company.name}</option></c:if>
+
+										<c:if test="${company.id == computer.companyId }">
+											<option selected value="${company.id}">${company.name}</option>
+										</c:if>
+										<c:if test="${company.id != computer.companyId }">
+											<option value="${company.id}">${company.name}</option>
+										</c:if>
 									</c:forEach>
 								</select>
 							</div>
@@ -70,7 +77,7 @@
 							<input type="submit" value="Edit" class="btn btn-primary">
 							or <a href="dashboard" class="btn btn-default">Cancel</a>
 						</div>
-					</form>
+					</form:form>
 				</div>
 			</div>
 		</div>

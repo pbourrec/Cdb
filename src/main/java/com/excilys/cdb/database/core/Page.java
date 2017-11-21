@@ -24,7 +24,7 @@ public class Page {
 		this.computerDao = computerDao;
 		this.servletServices = servletServices;
 		this.computerDtoMapper = computerDtoMapper;
-		this.pageOfComputer = computerDtoMapper.computerListToDTO(servletServices.listPage(offsetPage, computerPerPage));
+		this.pageOfComputer = computerDtoMapper.computerListToDTO(servletServices.listPage(this));
 	}
 
 	public  Long getComputerPerPage() {

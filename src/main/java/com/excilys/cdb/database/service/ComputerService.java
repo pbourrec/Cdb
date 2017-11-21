@@ -160,8 +160,8 @@ public class ComputerService {
 		return computerToEdit;
 	}
 
-	public void updateComputer(String computerId, Computer computerToAdd) {
-		computerDao.update(computerToAdd, Long.valueOf(computerId));
+	public void updateComputer(Long computerId, Computer computerToAdd) {
+		computerDao.update(computerToAdd, computerId);
 	}
 
 }

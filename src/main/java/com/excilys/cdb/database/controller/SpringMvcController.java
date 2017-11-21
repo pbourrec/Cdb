@@ -4,18 +4,20 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.cdb.database.core.CompanyDTO;
-import com.excilys.cdb.database.core.Computer;
 import com.excilys.cdb.database.core.ComputerDTO;
 import com.excilys.cdb.database.core.Page;
 import com.excilys.cdb.database.mapperdao.ComputerMapper;
@@ -52,7 +54,6 @@ public class SpringMvcController {
 	@Autowired
 	private ComputerMapper computerMapper;
 	
-
 	@GetMapping("/dashboard")
 	public ModelAndView getDashboard ( @RequestParam Map<String, String> parameters){
 		logger.info("entrée dans la méthode doGet de DashboardServlet");
@@ -66,8 +67,7 @@ public class SpringMvcController {
 
 
 		int sizeTable= servletServices.changePageFormat ( computerPerPageReciever,  operation, pageChange,  restart,  page) ;
-		page.pageOfComputer = computerDtoMapper.computerListToDTO(servletServices.listPage(
-				page.getOffsetPage()*page.getComputerPerPage(),page.getComputerPerPage()));
+		page.pageOfComputer = computerDtoMapper.computerListToDTO(servletServices.listPage(page));
 		modelAndView.addObject("listComputer", page.pageOfComputer );
 		modelAndView.addObject( "nextPage", page.getNextPageOK());
 		modelAndView.addObject( "size", sizeTable);
@@ -78,26 +78,15 @@ public class SpringMvcController {
 	@PostMapping("/dashboard")
 	protected ModelAndView postDashboard( @RequestParam Map<String, String> parameters){
 		ModelAndView modelAndView = new ModelAndView("/dashboard");
-
-		String actionType = parameters.get("actionType");
 		int sizeTable = computerService.getSizeComputer();
-		logger.info("entrée dans la méthode doGet de DashboardServlet");
-
-		if(actionType.equals("delete")) {
-			String idToDelete = parameters.get("selection");
-			logger.info("Id to delete  " + idToDelete+", parameters.get()" + parameters.get("selection"));
-
-			String computersDeleted = computerService.deleteComputer(idToDelete);
-			modelAndView.addObject("deleted", computersDeleted);
-			page.pageOfComputer = computerDtoMapper.computerListToDTO(servletServices.listPage(
-					page.getOffsetPage()*page.getComputerPerPage(),page.getComputerPerPage()));
-			modelAndView.addObject("listComputer", page.pageOfComputer );
-		} else if (actionType.equals("Filter by name")) {
-			String nameToFind = parameters.get("search");
+		String actionType = parameters.get("actionType");
+		String nameToFind = parameters.get("search");
+		String CompanyToFind = parameters.get("search");
+		if (actionType.equals("Filter by name")) {
 			List<ComputerDTO> computersToFind = computerDtoMapper.computerListToDTO(computerService.findComputersByName(nameToFind));
 			modelAndView.addObject("listComputer", computersToFind );
+			
 		} else if (actionType.equals("Filter by company")) {
-			String CompanyToFind = parameters.get("search");
 			List<ComputerDTO> computersToFind = computerDtoMapper.computerListToDTO(computerService.findComputersByCompany(CompanyToFind));
 			modelAndView.addObject("listComputer", computersToFind );
 		}
@@ -108,36 +97,34 @@ public class SpringMvcController {
 	}
 
 	@GetMapping("/addComputer")
-	public ModelAndView getAdd( @RequestParam Map<String, String> parameters){
+	public ModelAndView getAdd(){
 		ModelAndView modelAndView = new ModelAndView("/addComputer");
-
 		List<CompanyDTO> listCompanies= companyDtoMapper.companyListToDTO(companyService.getListCompany());
 		modelAndView.addObject( "listcompanies", listCompanies);
 		return modelAndView;
 	}
 
 	@PostMapping("/addComputer")
-	protected ModelAndView postAdd( @RequestParam Map<String, String> parameters){
+	protected ModelAndView postAdd(@Valid ComputerDTO computerDto ){
 		ModelAndView modelAndView = new ModelAndView("/addComputer");
-
-		String computerName = parameters.get("computerName");
-		String introduced = parameters.get("introduced");
-		String discontinued = parameters.get("discontinued");
-		String companyId = parameters.get("companyId");
-		if (computerName.equals("")) {
+		logger.info("Ordinateur reçu :" + computerDto.toString());
+		if (computerDto.getComputerName().equals("")){
 			modelAndView.addObject("errorName", errorName);
 			List<CompanyDTO> listCompanies= companyDtoMapper.companyListToDTO(companyService.getListCompany());
 			modelAndView.addObject( "listcompanies", listCompanies);
 
 		}else {
-			computerService.addComputer(computerName, introduced, discontinued, companyId);
+			computerService.addComputer(computerDto.getComputerName(), 
+										computerDto.getDateIntroduced(),
+										computerDto.getDateDiscontinued(), 
+										String.valueOf(computerDto.getCompanyId()));
 		}
 		return modelAndView;
 	}
 
 	
 	@GetMapping("/deleteCompany")
-	protected ModelAndView getDelete( @RequestParam Map<String, String> parameters){
+	protected ModelAndView getDelete(){
 		ModelAndView modelAndView = new ModelAndView("/deleteCompany");		
 		List<CompanyDTO> listCompanies= companyDtoMapper.companyListToDTO(companyService.getListCompany());
 		modelAndView.addObject( "listcompanies", listCompanies);
@@ -151,7 +138,6 @@ public class SpringMvcController {
 		ModelAndView modelAndView = new ModelAndView("/deleteCompany");
 		String confirmation = parameters.get("confirmation");
 		if(confirmation==null) {	
-
 			String companyIdString = parameters.get("companyId");
 			companyId=controlFormat.stringTolong(companyIdString);
 			List<ComputerDTO> computersToFind = computerDtoMapper.computerListToDTO(computerService.findComputersByCompanyId(companyId));
@@ -159,6 +145,7 @@ public class SpringMvcController {
 			List<CompanyDTO> listCompanies= companyDtoMapper.companyListToDTO(companyService.getListCompany());
 			modelAndView.addObject( "listcompanies", listCompanies);
 			return modelAndView;
+			
 		}else if(confirmation.equals("Delete!")) {
 			try {
 				computerService.deleteComputerAndCompany(companyId);
@@ -177,33 +164,30 @@ public class SpringMvcController {
 	}	
 	
 	@GetMapping("/editComputer")
-	public ModelAndView getEdit ( @RequestParam Map<String, String> parameters){
+	public ModelAndView getEdit ( @RequestParam("computerid")String computerId){
 		ModelAndView modelAndView = new ModelAndView("/editComputer");
-
 		List<CompanyDTO> listCompanies= companyDtoMapper.companyListToDTO(companyService.getListCompany());
 		modelAndView.addObject( "listcompanies", listCompanies);
-
-		String computerId = parameters.get("computerid");
 		ComputerDTO computerToEdit = computerDtoMapper.computerToDTO(computerService.queryOneComputer(computerId));
 		modelAndView.addObject( "computer",computerToEdit);
 		return modelAndView;
 	}
 
 	@PostMapping("/editComputer")
-	public ModelAndView postEdit ( @RequestParam Map<String, String> parameters){
-		ModelAndView modelAndView = new ModelAndView("/editComputer");
-
-		String computerId = parameters.get("computerid");
-		String computerName = parameters.get("computerName");
-		String introduced = parameters.get("introduced");
-		String discontinued = parameters.get("discontinued");
-		String companyId = parameters.get("companyId");
-
-		Computer computerToAdd = new Computer();
-		computerToAdd = computerMapper.computerBuilder(computerName, companyId, introduced, discontinued);
+	public ModelAndView postEdit ( @Valid ComputerDTO computerDto ){
+		Long computerId = computerDto.getComputerId();
+		computerService.updateComputer(computerId, computerDtoMapper.computerDtoTocomputer(computerDto));
+		ModelAndView modelAndView = new ModelAndView("redirect:/dashboard");
+		return modelAndView ;
+	}
+	
+	@PostMapping("/deleteSelected")
+	public ModelAndView postDeleteSelected ( @RequestParam("selection")String idToDelete){
 		
-		computerService.updateComputer(computerId, computerToAdd);
-		return modelAndView;
+		ModelAndView modelAndView = new ModelAndView("redirect/dashboard");
+		page.pageOfComputer = computerDtoMapper.computerListToDTO(servletServices.listPage(page));
+		modelAndView.addObject("listComputer", page.pageOfComputer );
+		return modelAndView ;
 	}
 }
 

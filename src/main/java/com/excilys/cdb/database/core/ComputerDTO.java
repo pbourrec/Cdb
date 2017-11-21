@@ -1,23 +1,24 @@
 package com.excilys.cdb.database.core;
 
-import org.springframework.stereotype.Component;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Past;
 
 public class ComputerDTO {
-	private long id;
+	private long computerId;
+	@NotBlank
 	private String computerName;
 	private String companyName;
 	private long companyId;
-
 	private String dateIntroduced;
 	private String dateDiscontinued;
 
 
-	public Long getId() {
-		return id;
+	public Long getComputerId() {
+		return computerId;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setComputerId(Long id) {
+		this.computerId = id;
 	}
 
 	public String getComputerName() {
@@ -65,7 +66,7 @@ public class ComputerDTO {
 	public ComputerDTO(long computerId,String computerName, String companyName, long companyId, String dateIntroduced,
 			String dateDiscontinued) {
 		super();
-		this.id = computerId;
+		this.computerId = computerId;
 		this.computerName = computerName;
 		this.companyName = companyName;
 		this.companyId = companyId;
@@ -79,7 +80,7 @@ public class ComputerDTO {
 
 	@Override
 	public String toString() {
-		return "id N°---" + id + "\n Nom de l'ordinateur ---" + computerName
+		return "id N°---" + computerId + "\n Nom de l'ordinateur ---" + computerName
 				+ "\n ID fabricant ---" + this.companyId + "\n String mise en route ---"
 				+ dateIntroduced + "\n String mise en retraite ---" + dateDiscontinued;
 	}

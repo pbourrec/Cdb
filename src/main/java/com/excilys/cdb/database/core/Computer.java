@@ -62,7 +62,17 @@ public class Computer {
 	public Computer(String computerName, Long computerManufacturer, LocalDate dateStart,
 			LocalDate dateEnd) {
 		super();
-
+		
+		this.computerName = computerName;
+		this.company.setId(computerManufacturer);
+		this.dateIntroduced = dateStart;
+		this.dateDiscontinued = dateEnd;
+	}
+	//constructeur si on a toutes les données
+	public Computer(Long id,String computerName, Long computerManufacturer, LocalDate dateStart,
+			LocalDate dateEnd) {
+		super();
+		this.id =id;
 		this.computerName = computerName;
 		this.company.setId(computerManufacturer);
 		this.dateIntroduced = dateStart;

@@ -29,7 +29,7 @@ public class ServletServices {
 	public  int changePageFormat (String computerPerPageReciever, String operation,String pageChange, String restart, Page page) {
 
 		int sizeTable= computerDao.getSizeComputer();
-		if(computerPerPageReciever.equals("") && !computerPerPageReciever.equals("")) {
+		if(!computerPerPageReciever.equals("")) {
 			page.setComputerPerPage( Long.valueOf(computerPerPageReciever));
 			page.setOffsetPage(0L);
 		} else if (!operation.equals("") && 
@@ -55,7 +55,9 @@ public class ServletServices {
 	}
 
 
-	public  List<Computer>  listPage(Long offset, Long limit) {
+	public  List<Computer>  listPage(Page page) {
+		Long offset = page.getOffsetPage()*page.getComputerPerPage();
+		Long limit =page.getComputerPerPage();
 		List<Computer> listComputer = computerDao.getComputerPagination(offset, limit);
 		return listComputer;
 	}

@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DataValidation {
-	 Logger logger = LoggerFactory.getLogger(DataValidation.class);
-	 @Autowired
+	Logger logger = LoggerFactory.getLogger(DataValidation.class);
+	@Autowired
 	private  ConditionValidation conditionControl;
 
 	/**
@@ -84,20 +84,23 @@ public class DataValidation {
 	 * @return java.sql.LocalDate LocalDate issue de la string
 	 */
 	public  LocalDate convertStringToTimestamp(String str_date) {
+		logger.info("Conversion string to timestap with string" + str_date);
 		//creation du format de la LocalDate
 		LocalDate localDate = null;
-		if(str_date!=null || str_date.equals("")) {
-			try{DateTimeFormatter formatter;
-			formatter = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
-			// you can change format of LocalDate
-			localDate =LocalDate.parse(str_date, formatter);
-			}catch (DateTimeParseException e ) {
+		if(str_date!=null) {
+			if(!str_date.equals("")) {
 				try{DateTimeFormatter formatter;
-				formatter = new DateTimeFormatterBuilder().appendPattern("yyyy-MM-dd").toFormatter();
+				formatter = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy").toFormatter();
 				// you can change format of LocalDate
 				localDate =LocalDate.parse(str_date, formatter);
-				}catch (DateTimeParseException e2 ) {
-					logger.error(e.getMessage());
+				}catch (DateTimeParseException e ) {
+					try{DateTimeFormatter formatter;
+					formatter = new DateTimeFormatterBuilder().appendPattern("yyyy-MM-dd").toFormatter();
+					// you can change format of LocalDate
+					localDate =LocalDate.parse(str_date, formatter);
+					}catch (DateTimeParseException e2 ) {
+						logger.error(e.getMessage());
+					}
 				}
 			}
 		}

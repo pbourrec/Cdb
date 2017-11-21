@@ -33,25 +33,23 @@
 						<input type="search" id="searchbox" name="search"
 							class="form-control" placeholder="Search name" /> <input
 							type="submit" id="searchsubmit" value="Filter by name"
-							class="btn btn-primary" name="actionType"/>
-							<input
-							type="submit" id="searchsubmitCompany" value="Filter by company"
-							class="btn btn-primary" name="actionType"/> 
+							class="btn btn-primary" name="actionType" /> <input type="submit"
+							id="searchsubmitCompany" value="Filter by company"
+							class="btn btn-primary" name="actionType" />
 					</form>
 				</div>
 				<div class="pull-right">
 					<a class="btn btn-success" id="addComputer" href="addComputer">Add
 						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
-						onclick="$.fn.toggleEditMode();">Edit</a>
-						<a class="btn btn-warning" id="deleteCompany" href="deleteCompany">delete
+						onclick="$.fn.toggleEditMode();">Edit</a> <a
+						class="btn btn-warning" id="deleteCompany" href="deleteCompany">delete
 						company</a>
 				</div>
 			</div>
 		</div>
 
-		<form id="deleteForm" action="#" method="POST">
-			<input type="hidden" name="selection" value=""> <input
-				type="hidden" name="actionType" value="delete">
+		<form id="deleteForm" action="deleteSelected" method="POST">
+			<input type="hidden" name="selection" value=""> 
 		</form>
 		<c:if test="${deleted !=null}">
 			<div
@@ -66,13 +64,13 @@
 					<tr>
 						<!-- Variable declarations for passing labels as parameters -->
 						<!-- Table header for Computer Name -->
-
 						<th class="editMode" style="width: 60px; height: 22px;"><input
 							type="checkbox" id="selectall" /> <span
 							style="vertical-align: top;"> - <a href="#"
 								id="deleteSelected" onclick="$.fn.deleteSelected();"> <i
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
+
 						</span></th>
 						<th>Computer name</th>
 						<th>Introduced date</th>
@@ -88,8 +86,8 @@
 					<c:forEach items="${listComputer}" var="computer">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
-								class="cb" value="${computer.id}"></td>
-							<td><a href="editComputer?computerid=${computer.id}"
+								class="cb" value="${computer.computerId}"></td>
+							<td><a href="editComputer?computerid=${computer.computerId}"
 								onclick="">${computer.computerName}</a></td>
 							<!-- Variable declarations for passing labels as parameters -->
 							<!-- Table header for Computer Name -->

@@ -1,9 +1,11 @@
 package com.excilys.cdb.database.core;
 
-import org.springframework.stereotype.Component;
+import javax.validation.constraints.NotBlank;
 
 public class CompanyDTO {
+	@NotBlank
 	private long id;
+	@NotBlank
 	private String name;
 	public long getId() {
 		return id;
