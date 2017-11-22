@@ -1,13 +1,12 @@
 package com.excilys.cdb.database.dao;
 
-import java.sql.Connection;
 import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
@@ -15,12 +14,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.cdb.database.core.Company;
 import com.excilys.cdb.database.core.Computer;
+import com.excilys.cdb.database.core.QComputer;
 import com.excilys.cdb.database.mapperdao.ComputerMapper;
+import com.mysema.query.jpa.impl.JPAQuery;
 
 @Repository
 @SuppressWarnings("unchecked")
@@ -30,10 +29,14 @@ public class ComputerDAO {
 	private  ComputerMapper computerMapper;
 
 	private JdbcTemplate jdbcTemplate;
-
+	@Autowired
+	QComputer qcomputer ;
+	@Autowired
+	private EntityManager entityManager;
 	@Autowired 
-	public ComputerDAO(DataSource datasource) {
+	public ComputerDAO(DataSource datasource, QComputer qcomputer) {
 		this.jdbcTemplate = new JdbcTemplate(datasource);
+		this.qcomputer = QComputer.computer;
 	}
 
 
@@ -65,9 +68,6 @@ public class ComputerDAO {
 	 * @param computer Nouvel ordinateur à ajouter a la database
 	 */
 	public  boolean upload(Computer computer) {
-		//Try with ressource avec création d'un statement qui sera close a la fin du try
-
-		//Creation de la string a utiliser dans la query
 		jdbcTemplate.update(insertComputer, computer.getComputerName(),
 				(computer.getDateIntroduced()!=null ?  Date.valueOf(computer.getDateIntroduced()) : null ),
 				(computer.getDateDiscontinued()!=null ?  Date.valueOf(computer.getDateDiscontinued()) : null ),
@@ -81,8 +81,6 @@ public class ComputerDAO {
 	 * @param idComputer ID du de l'ordinateur a updater
 	 */
 	public  void update(Computer newComputer, Long idComputer){
-		//Try with ressource avec création d'un statement qui sera close a la fin du try
-		//Creation de la string a utiliser dans la query
 		jdbcTemplate.update(updateComputer, newComputer.getComputerName(),
 				(newComputer.getDateIntroduced()!=null ?  Date.valueOf(newComputer.getDateIntroduced()) : null ),
 				(newComputer.getDateDiscontinued()!=null ?  Date.valueOf(newComputer.getDateDiscontinued()) : null ),
@@ -100,7 +98,6 @@ public class ComputerDAO {
 	}
 
 	/**
-	 * 
 	 * @param computerID Id de l'ordinateur a rechercher
 	 * @return Computer computerQueried
 	 */
@@ -113,9 +110,7 @@ public class ComputerDAO {
 
 		}
 		Computer computerQueried = listComputer.get(0);
-
 		return computerQueried;
-
 	}
 
 
@@ -124,9 +119,8 @@ public class ComputerDAO {
 	 * @return ResultSet rs Resultat de la query sur la table "computer"
 	 */
 	public  List<Computer> getAllComputer() {
-		List<Computer> listComputer = new ArrayList<>(); 
-		listComputer = jdbcTemplate.query(selectAllComputer, new RowMapperComputer());
-
+		JPAQuery query = new JPAQuery(entityManager);
+		List<Computer> listComputer =query.from(qcomputer).list(qcomputer);
 		return listComputer;
 
 	}
