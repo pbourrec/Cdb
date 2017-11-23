@@ -5,10 +5,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
+import javax.inject.Provider;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +22,10 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.database.core.Computer;
+import com.excilys.cdb.database.core.QCompany;
 import com.excilys.cdb.database.core.QComputer;
 import com.excilys.cdb.database.mapperdao.ComputerMapper;
+import com.mysema.query.jpa.hibernate.HibernateQueryFactory;
 import com.mysema.query.jpa.impl.JPAQuery;
 
 @Repository
@@ -29,17 +36,27 @@ public class ComputerDAO {
 	private  ComputerMapper computerMapper;
 
 	private JdbcTemplate jdbcTemplate;
-	@Autowired
-	QComputer qcomputer ;
-	@Autowired
+	@PersistenceContext
 	private EntityManager entityManager;
+	
+    private static QCompany qCompany = QCompany.company;
+private static QComputer qComputer = QComputer.computer;
 	@Autowired 
-	public ComputerDAO(DataSource datasource, QComputer qcomputer) {
+	public ComputerDAO(DataSource datasource) {
 		this.jdbcTemplate = new JdbcTemplate(datasource);
-		this.qcomputer = QComputer.computer;
 	}
+	
 
+    private SessionFactory sessionFactory;
 
+    private Supplier<HibernateQueryFactory> queryFactory =
+            () -> new HibernateQueryFactory((Provider<Session>) sessionFactory.getCurrentSession());
+
+    @Autowired
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+}
+	
 	public class RowMapperComputer implements RowMapper{
 		@Override
 		public Computer mapRow(ResultSet rsComputer, int arg1) throws SQLException {
@@ -119,17 +136,23 @@ public class ComputerDAO {
 	 * @return ResultSet rs Resultat de la query sur la table "computer"
 	 */
 	public  List<Computer> getAllComputer() {
+		QComputer qComputer = QComputer.computer;
 		JPAQuery query = new JPAQuery(entityManager);
-		List<Computer> listComputer =query.from(qcomputer).list(qcomputer);
+		List<Computer> listComputer =query.from(qComputer).list(qComputer);
+		logger.info("JPAQuery passed");
 		return listComputer;
 
 	}
 
 	public  List<Computer> getComputerPagination(Long offSet, Long limit) {
-		List <Computer> listComputer = new ArrayList<>();
-		listComputer = jdbcTemplate.query(selectAllComputerPagination, 
-				new Object[] {limit,offSet},
-				new RowMapperComputer());
+		QComputer qComputer = QComputer.computer;
+		JPAQuery query = new JPAQuery(entityManager);
+		List <Computer> listComputer = query
+											.from(qComputer)
+											.innerJoin(qCompany.company, qCompany)
+											.offset(offSet)
+											.limit(limit)
+											.list(qComputer);
 		return listComputer;
 	}
 
@@ -138,7 +161,9 @@ public class ComputerDAO {
 	 * @return int sizeTable Taille de la table "computer"
 	 */
 	public  int getSizeComputer() {
-		int sizeTable =jdbcTemplate.queryForObject(selectCount, Integer.class);
+		QComputer qComputer = QComputer.computer;
+		JPAQuery query = new JPAQuery(entityManager);
+		int sizeTable =(int) query.from(qComputer).count();
 		return sizeTable;
 	}
 

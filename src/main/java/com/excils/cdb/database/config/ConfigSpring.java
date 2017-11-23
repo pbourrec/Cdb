@@ -1,12 +1,20 @@
 package com.excils.cdb.database.config;
 
+
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -70,8 +78,28 @@ public class ConfigSpring implements WebMvcConfigurer{
 	   public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 	      LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 	      em.setDataSource(ds);
+	      
 	      em.setPackagesToScan(new String[] { "com.excilys.cdb.database.core" });
 	      em.setPersistenceProviderClass(HibernatePersistenceProvider.class);
+	      JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+	      em.setJpaVendorAdapter(vendorAdapter);
 	      return em;
+	   }
+	  
+	   @Bean 
+	   public SessionFactory CreateSessionFactory() {
+		   SessionFactory sessionFactory;
+			   try {
+				StandardServiceRegistry standardRegistry = 
+			       new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
+				Metadata metaData = 
+			        new MetadataSources(standardRegistry).getMetadataBuilder().build();
+				 sessionFactory = metaData.getSessionFactoryBuilder().build();
+			   } catch (Throwable th) {
+				System.err.println("Enitial SessionFactory creation failed" + th);
+				throw new ExceptionInInitializerError(th);
+			  }
+			   return sessionFactory;
+			}
 	   }
 }

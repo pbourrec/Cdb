@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -11,16 +12,18 @@ import javax.persistence.ManyToOne;
 //import java.util.LocalDate;
 
 
-@Entity
+@Entity(name="computer")
 public class Computer {
 
 	@Id
 	private Long id;
 	@Column(name="name")
 	private String computerName;
-	@ManyToOne
-	@JoinColumn(name="company_id")
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "company_id")
 	private Company company = new Company();
+
 	@Column(name="introduced")
 	private LocalDate dateIntroduced;
 	@Column	(name="discontinued")
