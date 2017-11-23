@@ -36,27 +36,19 @@ public class ComputerDAO {
 	private  ComputerMapper computerMapper;
 
 	private JdbcTemplate jdbcTemplate;
-
+	
 	@PersistenceContext
 	private EntityManager entityManager;
 
 	private static QCompany qCompany = QCompany.company;
 	private static QComputer qComputer = QComputer.computer;
-
+	
 	@Autowired 
 	public ComputerDAO(DataSource datasource) {
 		this.jdbcTemplate = new JdbcTemplate(datasource);
 	}
+	
 
-    private SessionFactory sessionFactory;
-    Session session = entityManager.unwrap(Session.class);
-    private Supplier<HibernateQueryFactory> queryFactory =
-            () -> new HibernateQueryFactory((Provider<Session>) sessionFactory.getCurrentSession());
-
-    @Autowired
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-}
 	public class RowMapperComputer implements RowMapper{
 		@Override
 		public Computer mapRow(ResultSet rsComputer, int arg1) throws SQLException {
@@ -139,21 +131,20 @@ public class ComputerDAO {
 		QComputer qComputer = QComputer.computer;
 		JPAQuery query = new JPAQuery(entityManager);
 		List<Computer> listComputer =query.from(qComputer).list(qComputer);
-		List<Computer> listComputer2 =queryFactory.get().from(qComputer).list(qComputer);
 		logger.info("JPAQuery passed");
 		return listComputer;
 
 	}
 
 	public  List<Computer> getComputerPagination(Long offSet, Long limit) {
-		List<Computer> listComputer =  queryFactory.get()
-													.from(qComputer)
-													.leftJoin(qCompany)
-													.on(qCompany.id.eq(qComputer.company.id))
-													.limit(limit)
-													.offset(offSet)
-													.fetch()
-													.list(qComputer);
+		JPAQuery query = new JPAQuery(entityManager);
+		List <Computer> listComputer = query
+				.from(qComputer)
+				.innerJoin(qCompany.company, qCompany)
+				.offset(offSet)
+				.limit(limit)
+				.list(qComputer);
+		System.out.println(query.toString());
 		return listComputer;
 	}
 
