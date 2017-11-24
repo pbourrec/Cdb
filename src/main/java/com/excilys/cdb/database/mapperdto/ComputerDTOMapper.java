@@ -34,23 +34,19 @@ public class ComputerDTOMapper {
 	}
 
 	public List<ComputerDTO> computerListToDTO(List<Computer> computertoList) {
-		System.out.println(companyDao.getCompany());
 		List<ComputerDTO> listcomputerDtoDTO = new ArrayList<>();
 		int n=0;
 		for (Computer computer: computertoList) {
-			try {
 				n++;
 				ComputerDTO computerDtoDto = new ComputerDTO(computer.getId(),
 						computer.getComputerName(),
-						(computer.getCompany().getName()!=null? computer.getCompany().getName() :null),
-						(computer.getCompany().getId()!=null?  computer.getCompany().getId():null),
+						(computer.getCompany()!=null ? computer.getCompany().getName() :null),
+						(computer.getCompany()!=null ?  computer.getCompany().getId():0),
 						(computer.getDateIntroduced()!=null? String.valueOf(computer.getDateIntroduced()) :null),
 						(computer.getDateDiscontinued()!=null?  String.valueOf(computer.getDateDiscontinued()):null)
 						);		
 				listcomputerDtoDTO.add(computerDtoDto);
-			}catch (NullPointerException e) {
-				System.out.println("erreur lors de la "+ n + "operation, \n sur l'ordinateur suivant " + computer.getId());
-			}
+			
 		}
 		return listcomputerDtoDTO;
 	}

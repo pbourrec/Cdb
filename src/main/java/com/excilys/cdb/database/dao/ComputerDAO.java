@@ -43,6 +43,17 @@ public class ComputerDAO {
 	private static QCompany qCompany = QCompany.company;
 	private static QComputer qComputer = QComputer.computer;
 	
+    private SessionFactory sessionFactory;
+
+    private Supplier<HibernateQueryFactory> queryFactory =
+            () -> new HibernateQueryFactory((Provider<Session>) sessionFactory.getCurrentSession());
+
+    @Autowired
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+	
 	@Autowired 
 	public ComputerDAO(DataSource datasource) {
 		this.jdbcTemplate = new JdbcTemplate(datasource);
@@ -58,7 +69,7 @@ public class ComputerDAO {
 	}
 
 
-	String insertComputer = "INSERT INTO computer(name,introduced, discontinued, company_id) VALUES (?,?,?,?)";
+	private final String insertComputer = "INSERT INTO computer(name,introduced, discontinued, company_id) VALUES (?,?,?,?)";
 	private final String updateComputer = "UPDATE computer SET name =?,introduced= ?, discontinued= ?, company_id = ? WHERE id=?";
 	private final String  deleteComputer = "DELETE FROM computer  WHERE id=?";
 	private final String queryComputer = "SELECT * FROM computer LEFT JOIN company ON computer.company_id=company.id WHERE computer.id=?";
@@ -66,11 +77,10 @@ public class ComputerDAO {
 	private final String queryComputerByCompanyName = "SELECT * FROM computer LEFT JOIN company ON computer.company_id=company.id WHERE company.name LIKE ?";
 	private final String queryComputerByCompanyId = "SELECT * FROM computer LEFT JOIN company ON computer.company_id=company.id WHERE company.id=?";
 	private final String deleteComputerByCompanyId = "DELETE FROM computer WHERE computer.company_id=?";
-	private final  String selectCountComputer ="SELECT COUNT(*) from computer WHERE id=?";
-
-	String selectAllComputer= "SELECT * FROM computer ";
-	private   String selectAllComputerPagination= "SELECT * FROM computer LEFT JOIN company ON computer.company_id=company.id LIMIT ? OFFSET ?";
-	String selectCount= "SELECT count(*)FROM computer ";
+	private final String selectCountComputer ="SELECT COUNT(*) from computer WHERE id=?";
+	private final String selectAllComputer= "SELECT * FROM computer ";
+	private final String selectAllComputerPagination= "SELECT * FROM computer LEFT JOIN company ON computer.company_id=company.id LIMIT ? OFFSET ?";
+	private final String selectCount= "SELECT count(*)FROM computer ";
 
 	/**
 	 * 
@@ -113,9 +123,8 @@ public class ComputerDAO {
 	public  Computer queryOne(Long computerID){
 		List<Computer> listComputer = new ArrayList<>(); 
 		if (computerID!=0L) {
-			listComputer = jdbcTemplate.query(queryComputer,
-					new Object[] {computerID}, 
-					new RowMapperComputer());
+			JPAQuery query = new JPAQuery(entityManager);
+			listComputer =query.from(qComputer).where(qComputer.id.eq(computerID)).list(qComputer);
 
 		}
 		Computer computerQueried = listComputer.get(0);
@@ -140,11 +149,11 @@ public class ComputerDAO {
 		JPAQuery query = new JPAQuery(entityManager);
 		List <Computer> listComputer = query
 				.from(qComputer)
-				.innerJoin(qCompany.company, qCompany)
+				.leftJoin(qCompany)
+				.on(qComputer.company.id.eq(qCompany.id))
 				.offset(offSet)
 				.limit(limit)
 				.list(qComputer);
-		System.out.println(query.toString());
 		return listComputer;
 	}
 
@@ -153,16 +162,14 @@ public class ComputerDAO {
 	 * @return int sizeTable Taille de la table "computer"
 	 */
 	public  int getSizeComputer() {
-		QComputer qComputer = QComputer.computer;
 		JPAQuery query = new JPAQuery(entityManager);
 		int sizeTable =(int) query.from(qComputer).count();
 		return sizeTable;
 	}
 
 	public  int getSizeComputerId(Long computerId) {
-		int sizeTable =jdbcTemplate.queryForObject(selectCountComputer, 
-				new Object[] {computerId},
-				Integer.class);
+		JPAQuery query = new JPAQuery(entityManager);
+		int sizeTable =(int) query.from(qComputer).where(qComputer.id.eq(computerId)).count();
 		return sizeTable;
 	}
 
@@ -179,24 +186,26 @@ public class ComputerDAO {
 	}
 
 	public  List<Computer> getComputerByCompany(String companyToFind) {
-		companyToFind="%"+companyToFind+"%";
-		List<Computer> listComputer = new ArrayList<>(); 
-		listComputer = jdbcTemplate.query(queryComputerByCompanyName,
-				new Object[] {companyToFind},
-				new RowMapperComputer());
+		JPAQuery query = new JPAQuery(entityManager);
+		List<Computer> listComputer =query.from(qComputer)
+									      .where(qComputer.company.name.eq((companyToFind)))
+									      .list(qComputer);
 
 		return listComputer;
 	}
 
 	public  void deleteWithCompany( Long companyId) {
+		JPAQuery query = new JPAQuery(entityManager);
 		jdbcTemplate.update(deleteComputerByCompanyId, companyId);
 	}
 
 	public  List<Computer> getComputerByCompanyId(Long companyIdToFind) {
-		List<Computer> listComputer = new ArrayList<>(); 
-		listComputer = jdbcTemplate.query(queryComputerByCompanyId,
-				new Object[] {companyIdToFind},
-				new RowMapperComputer());
+		JPAQuery query = new JPAQuery(entityManager);
+		List<Computer> listComputer =query
+									.from(qComputer)
+									.where(qComputer.company.id.eq(Long.valueOf(companyIdToFind)))
+									.list(qComputer);
+
 		return listComputer;
 	}
 }
