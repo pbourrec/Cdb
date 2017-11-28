@@ -11,7 +11,6 @@ import com.excilys.cdb.database.dao.jpadata.CompanyRepository;
 import com.excilys.cdb.database.dao.jpadata.ComputerRepository;
 
 @Component
-@EnableJpaRepositories(basePackages="com.excilys.cdb.database.dao.jpadata")
 public class DatabaseVerify {
 	Logger logger = LoggerFactory.getLogger(DatabaseVerify.class);
 	@Autowired

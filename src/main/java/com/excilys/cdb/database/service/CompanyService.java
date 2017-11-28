@@ -13,7 +13,6 @@ import com.excilys.cdb.database.core.Company;
 import com.excilys.cdb.database.dao.jpadata.CompanyRepository;
 
 @Service("CompanyService")
-@EnableJpaRepositories (basePackages = "com.excilys.cdb.database.dao.jpadata")
 public class CompanyService {
 	 Logger logger = LoggerFactory.getLogger(CompanyService.class);
 

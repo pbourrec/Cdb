@@ -15,7 +15,6 @@ import com.excilys.cdb.database.dao.jpadata.ComputerRepository;
 import com.excilys.cdb.database.mapperdao.CompanyMapper;
 import com.excilys.cdb.database.mapperdao.ComputerMapper;
 @Service
-@EnableJpaRepositories (basePackages = "com.excilys.cdb.database.dao.jpadata")
 public class ComputerService {
 	private  Logger logger = LoggerFactory.getLogger(ComputerService.class);
 

@@ -14,11 +14,11 @@ import com.excilys.cdb.database.mapperdao.CompanyMapper;
 import com.excilys.cdb.database.mapperdao.ComputerMapper;
 
 @Service 
-@EnableJpaRepositories (basePackages = "com.excilys.cdb.database.dao.jpadata")
 public class ServletServices {
 	@Autowired
 	private ComputerRepository computerJpaDao;
-	@Autowired CompanyRepository companyJpaDao;
+	@Autowired
+	private CompanyRepository companyJpaDao;
 	@Autowired
 	private ComputerMapper computerMapper;
 	@Autowired

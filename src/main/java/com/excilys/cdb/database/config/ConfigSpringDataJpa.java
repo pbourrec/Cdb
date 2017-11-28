@@ -1,9 +1,10 @@
 package com.excilys.cdb.database.config;
 
-
 import java.util.Properties;
 
 import javax.annotation.Resource;
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
 
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.slf4j.Logger;
@@ -19,28 +20,22 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-
 @Configuration
 @EnableWebMvc
 @EnableTransactionManagement
 @PropertySource("../../../resources/spring.properties")
-@EnableJpaRepositories(basePackages="com.excilys.cdb.database.dao.jpadata",entityManagerFactoryRef="entityManagerFactory")
-@ComponentScan({"com.excilys.cdb.database.validator",
-	"com.excilys.cdb.database.dao",
-	"com.excilys.cdb.database.dao.jpadata",
-	"com.excilys.cdb.database.ihm",
-	"com.excilys.cdb.database.core",
-	"com.excilys.cdb.database.mapperdto",
-	"com.excilys.cdb.database.mapperdao",
-	"com.excilys.cdb.database.service",
-	"com.excilys.cdb.database.controller",
-"com.excilys.cdb.database.servlets"})
+@EnableJpaRepositories(basePackages = {"com.excilys.cdb.database.dao.jpadata"})
+@ComponentScan({ "com.excilys.cdb.database.validator", "com.excilys.cdb.database.dao",
+		"com.excilys.cdb.database.dao.jpadata", "com.excilys.cdb.database.ihm", "com.excilys.cdb.database.core",
+		"com.excilys.cdb.database.mapperdto", "com.excilys.cdb.database.mapperdao", "com.excilys.cdb.database.service",
+		"com.excilys.cdb.database.controller", "com.excilys.cdb.database.servlets" })
 public class ConfigSpringDataJpa {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConfigSpringDataJpa.class);
@@ -77,28 +72,33 @@ public class ConfigSpringDataJpa {
 		return ds;
 	}
 
-	@Bean(name = "entityManagerFactory")
-	@Primary
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-		final LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
-		entityManagerFactoryBean.setDataSource(dataSource());
-		entityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
+	@Bean
+	LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, Environment env) {
+		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
+		entityManagerFactoryBean.setDataSource(dataSource);
+		entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 		entityManagerFactoryBean.setPackagesToScan("com.excilys.cdb.database.core");
-		entityManagerFactoryBean.setJpaProperties(hibProperties());
+
+		Properties jpaProperties = new Properties();
+
+		// Configures the used database dialect. This allows Hibernate to create SQL
+		// that is optimized for the used database.
+		jpaProperties.put("hibernate.dialect", env.getRequiredProperty(PROPERTY_NAME_HIBERNATE_DIALECT));
+
+
+		// If the value of this property is true, Hibernate writes all SQL
+		// statements to the console.
+		jpaProperties.put(PROPERTY_NAME_HIBERNATE_SHOW_SQL, env.getRequiredProperty(PROPERTY_NAME_HIBERNATE_SHOW_SQL));
+
+
+		entityManagerFactoryBean.setJpaProperties(jpaProperties);
+
 		return entityManagerFactoryBean;
 	}
-
-	private Properties hibProperties() {
-		Properties properties = new Properties();
-		properties.put(PROPERTY_NAME_HIBERNATE_DIALECT, env.getRequiredProperty(PROPERTY_NAME_HIBERNATE_DIALECT));
-		properties.put(PROPERTY_NAME_HIBERNATE_SHOW_SQL, env.getRequiredProperty(PROPERTY_NAME_HIBERNATE_SHOW_SQL));
-		return properties;
-	}
-
-	@Bean
-	public JpaTransactionManager transactionManager() {
-		JpaTransactionManager transactionManager = new JpaTransactionManager();
-		transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
-		return transactionManager;
-	}
+    @Bean
+    JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(entityManagerFactory);
+        return transactionManager;
+    }
 }
