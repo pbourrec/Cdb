@@ -1,4 +1,4 @@
-package com.excils.cdb.database.config;
+package com.excilys.cdb.database.config;
 
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;

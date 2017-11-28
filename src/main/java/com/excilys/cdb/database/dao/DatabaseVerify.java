@@ -3,15 +3,23 @@ package com.excilys.cdb.database.dao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.stereotype.Component;
 
-@Repository
+import com.excilys.cdb.database.core.Company;
+import com.excilys.cdb.database.dao.jpadata.CompanyRepository;
+import com.excilys.cdb.database.dao.jpadata.ComputerRepository;
+
+@Component
+@EnableJpaRepositories(basePackages="com.excilys.cdb.database.dao.jpadata")
 public class DatabaseVerify {
 	Logger logger = LoggerFactory.getLogger(DatabaseVerify.class);
 	@Autowired
-	private CompanyDAO companyDao;
+	private ComputerRepository computerJpaDao;
+	
 	@Autowired
-	private ComputerDAO computerDao;
+	private CompanyRepository companyJpaDao;
+
 	/**
 	 * 
 	 * @param stmt Statement
@@ -21,8 +29,8 @@ public class DatabaseVerify {
 	public  boolean isIdOkCompany(Long companyId){
 		boolean isOK = false;
 		if(companyId != null){
-			int sizeTable = companyDao.getSizeCompanyId(companyId);
-			if(sizeTable==1){
+			Company company= companyJpaDao.getOne(companyId);
+			if(company!=null){
 				isOK = true;
 			}
 		}else{
@@ -40,7 +48,7 @@ public class DatabaseVerify {
 	public  boolean isIdOkComputer(Long computerId){
 		boolean isOK = false;
 		if(computerId != null){
-			int sizeTable = computerDao.getSizeComputerId(computerId);
+			int sizeTable = computerJpaDao.getSizeComputerIdJpa(computerId);
 			if(sizeTable==1){
 				isOK = true;
 			}

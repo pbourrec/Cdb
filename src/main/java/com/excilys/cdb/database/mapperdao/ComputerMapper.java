@@ -13,19 +13,18 @@ import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.database.core.Company;
 import com.excilys.cdb.database.core.Computer;
-import com.excilys.cdb.database.core.ComputerDTO;
-import com.excilys.cdb.database.dao.ComputerDAO;
-import com.excilys.cdb.database.validator.FormatValidation;
 import com.excilys.cdb.database.validator.DataValidation;
+import com.excilys.cdb.database.validator.FormatValidation;
 
 
 @Component
 public class ComputerMapper{
+	final Logger logger = LoggerFactory.getLogger(ComputerMapper.class);
+	
 	
 	public class RowMapperComputer implements RowMapper{
 		@Override
 		public Computer mapRow(ResultSet rsComputer, int arg1) throws SQLException {
-			final Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 			Computer computerConvert = new Computer();
 			try {
 
@@ -55,7 +54,7 @@ public class ComputerMapper{
 	 private FormatValidation controlFormat;
 
 	public  Computer rsToComputer(ResultSet rsComputer){
-		final Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
+		
 		Computer computerConvert = new Computer();
 		try {
 

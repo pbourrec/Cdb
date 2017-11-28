@@ -1,23 +1,34 @@
 package com.excilys.cdb.database.core;
 
-import java.sql.Date;
 import java.time.LocalDate;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 //import java.util.LocalDate;
 
 
-
+@Entity(name="computer")
 public class Computer {
-	
-	
+
+	@Id
 	private Long id;
+	@Column(name="name")
 	private String computerName;
-	
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "company_id")
 	private Company company = new Company();
 
+	@Column(name="introduced")
 	private LocalDate dateIntroduced;
+	@Column	(name="discontinued")
 	private LocalDate dateDiscontinued;
-	
+
 	public Company getCompany() {
 		return company;
 	}
@@ -25,15 +36,15 @@ public class Computer {
 	public void setCompany(Company company) {
 		this.company = company;
 	}
-	
+
 	public Long getId(){
 		return id;
 	}
-	
+
 	public void setId(Long id){
 		this.id=id;
 	}
-	
+
 	public String getComputerName() {
 		return computerName;
 	}
@@ -57,12 +68,12 @@ public class Computer {
 		super();
 		this.computerName = computerName;
 	}
-	
+
 	//constructeur si on a toutes les données
 	public Computer(String computerName, Long computerManufacturer, LocalDate dateStart,
 			LocalDate dateEnd) {
 		super();
-		
+
 		this.computerName = computerName;
 		this.company.setId(computerManufacturer);
 		this.dateIntroduced = dateStart;
@@ -89,8 +100,8 @@ public class Computer {
 				+ "\n ID fabricant ---" + this.getCompany().getId() + "\n LocalDate mise en route ---"
 				+ dateIntroduced + "\n LocalDate mise en retraite ---" + dateDiscontinued;
 	}
-	
-		
-	
+
+
+
 
 }

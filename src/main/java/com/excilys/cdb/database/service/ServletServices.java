@@ -3,21 +3,22 @@ package com.excilys.cdb.database.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Service;
 
-import com.excilys.cdb.database.core.Company;
 import com.excilys.cdb.database.core.Computer;
 import com.excilys.cdb.database.core.Page;
-import com.excilys.cdb.database.dao.CompanyDAO;
-import com.excilys.cdb.database.dao.ComputerDAO;
+import com.excilys.cdb.database.dao.jpadata.CompanyRepository;
+import com.excilys.cdb.database.dao.jpadata.ComputerRepository;
 import com.excilys.cdb.database.mapperdao.CompanyMapper;
 import com.excilys.cdb.database.mapperdao.ComputerMapper;
 
 @Service 
+@EnableJpaRepositories (basePackages = "com.excilys.cdb.database.dao.jpadata")
 public class ServletServices {
 	@Autowired
-	private ComputerDAO computerDao;
-	@Autowired CompanyDAO companyDao;
+	private ComputerRepository computerJpaDao;
+	@Autowired CompanyRepository companyJpaDao;
 	@Autowired
 	private ComputerMapper computerMapper;
 	@Autowired
@@ -28,7 +29,7 @@ public class ServletServices {
 
 	public  int changePageFormat (String computerPerPageReciever, String operation,String pageChange, String restart, Page page) {
 
-		int sizeTable= computerDao.getSizeComputer();
+		int sizeTable= (int) computerJpaDao.count();
 		if(!computerPerPageReciever.equals("")) {
 			page.setComputerPerPage( Long.valueOf(computerPerPageReciever));
 			page.setOffsetPage(0L);
@@ -58,7 +59,7 @@ public class ServletServices {
 	public  List<Computer>  listPage(Page page) {
 		Long offset = page.getOffsetPage()*page.getComputerPerPage();
 		Long limit =page.getComputerPerPage();
-		List<Computer> listComputer = computerDao.getComputerPagination(offset, limit);
+		List<Computer> listComputer = computerJpaDao.getComputerPaginationJpa(offset, limit);
 		return listComputer;
 	}
 

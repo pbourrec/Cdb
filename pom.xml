@@ -23,7 +23,7 @@
 		<javax.servlet-api>3.1.0</javax.servlet-api>
 		<javax.servlet-jstl>1.2</javax.servlet-jstl>
 		<com.zaxxer>2.7.2</com.zaxxer>
-		<org.springframework>4.3.9.RELEASE</org.springframework>
+		<org.springframework>5.0.1.RELEASE</org.springframework>
 	</properties>
 	<reporting>
 		<plugins>
@@ -116,6 +116,7 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>${org.hibernate}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
@@ -127,13 +128,30 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<!-- Dependances pour Spring Data JPA -->
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>5.2.12.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>2.0.1.RELEASE</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-jdbc</artifactId>
-			<version>${org.springframework}</version>
+			<artifactId>spring-tx</artifactId>
+			<version>5.0.1.RELEASE</version>
 		</dependency>
+
 	</dependencies>
+
+
+
 
 	<build>
 		<plugins>

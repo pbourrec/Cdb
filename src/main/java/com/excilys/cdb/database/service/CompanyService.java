@@ -6,18 +6,19 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Service;
 
 import com.excilys.cdb.database.core.Company;
-import com.excilys.cdb.database.dao.CompanyDAO;
-import com.excilys.cdb.database.dao.ComputerDAO;
+import com.excilys.cdb.database.dao.jpadata.CompanyRepository;
 
-@Service
+@Service("CompanyService")
+@EnableJpaRepositories (basePackages = "com.excilys.cdb.database.dao.jpadata")
 public class CompanyService {
-	 Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
+	 Logger logger = LoggerFactory.getLogger(CompanyService.class);
 
 	 @Autowired
-	 private CompanyDAO companyDAO;
+	 private CompanyRepository companyJpaDao;
 
 	/**
 	 * 
@@ -26,7 +27,7 @@ public class CompanyService {
 	 */
 	public  void viewAllCompany(){
 		//Demande du nombre d'ordinateurs par "page"
-		List<Company> listCompany= companyDAO.getCompany();
+		List<Company> listCompany= companyJpaDao.findAll();
 
 		for (Company comp : listCompany){
 			System.out.println(comp.toString());
@@ -35,10 +36,10 @@ public class CompanyService {
 		}
 	}
 	public  void deleteCompany(Long companyToDelete) throws SQLException {
-		companyDAO.deleteCompany(companyToDelete);
+		companyJpaDao.deleteById(companyToDelete);;
 	}
 	public  List<Company> getListCompany(){
-		List<Company> listCompany = companyDAO.getCompany();
+		List<Company> listCompany = companyJpaDao.findAll();
 		return listCompany;
 	}
 }

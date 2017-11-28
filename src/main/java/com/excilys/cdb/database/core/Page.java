@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.excilys.cdb.database.dao.ComputerDAO;
+import com.excilys.cdb.database.dao.jpadata.ComputerRepository;
 import com.excilys.cdb.database.mapperdto.ComputerDTOMapper;
 import com.excilys.cdb.database.service.ServletServices;
 
@@ -17,11 +17,11 @@ public class Page {
 	int nextPageOK = 0;
 	
 	private final ComputerDTOMapper computerDtoMapper;
-	private final ComputerDAO computerDao;
+	private final ComputerRepository computerJpaDao;
 	private final ServletServices servletServices;
 	
-	public Page(ComputerDAO computerDao, ServletServices servletServices, ComputerDTOMapper computerDtoMapper) {
-		this.computerDao = computerDao;
+	public Page( ComputerRepository computerJpaDao, ServletServices servletServices, ComputerDTOMapper computerDtoMapper) {
+		this.computerJpaDao = computerJpaDao;
 		this.servletServices = servletServices;
 		this.computerDtoMapper = computerDtoMapper;
 		this.pageOfComputer = computerDtoMapper.computerListToDTO(servletServices.listPage(this));
