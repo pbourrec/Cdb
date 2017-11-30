@@ -1,4 +1,4 @@
-package com.excilys.cdb.database.mapperdto;
+package org.webapp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,9 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.excilys.cdb.database.core.Computer;
-import com.excilys.cdb.database.core.ComputerDTO;
-import com.excilys.cdb.database.validator.DataValidation;
+import org.model.Computer;
+import org.model.ComputerDTO;
+import org.validator.DataValidation;
 
 @Component
 public class ComputerDTOMapper {

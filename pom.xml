@@ -1,14 +1,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
 	<groupId>com.excilys</groupId>
 	<artifactId>cdb</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>pom</packaging>
 
-	<name>cdb</name>
-	<url>http://maven.apache.org</url>
+	<modules>
+		<module>persistence</module>
+		<module>model</module>
+		<module>service</module>
+		<module>webapp</module>
+		<module>ui</module>
+		<module>mapper</module>
+		<module>validator</module>
+	</modules>
+
 
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
@@ -24,7 +31,10 @@
 		<javax.servlet-jstl>1.2</javax.servlet-jstl>
 		<com.zaxxer>2.7.2</com.zaxxer>
 		<org.springframework>5.0.1.RELEASE</org.springframework>
+		<maven-war-plugin.version>3.2.0</maven-war-plugin.version>
 	</properties>
+
+
 	<reporting>
 		<plugins>
 			<plugin>
@@ -43,135 +53,117 @@
 		</plugins>
 	</reporting>
 
-	<dependencies>
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>${driver.jdbc}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.zaxxer</groupId>
-			<artifactId>HikariCP</artifactId>
-			<version>${com.zaxxer}</version>
-		</dependency>
 
-		<dependency>
-			<groupId>org.assertj</groupId>
-			<artifactId>assertj-core</artifactId>
-			<version>${org.assertj}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.jboss.logging</groupId>
-			<artifactId>jboss-logging</artifactId>
-			<version>3.3.1.Final</version>
-		</dependency>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>${driver.jdbc}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.zaxxer</groupId>
+				<artifactId>HikariCP</artifactId>
+				<version>${com.zaxxer}</version>
+			</dependency>
 
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${org.slf4j}</version>
-		</dependency>
+			<dependency>
+				<groupId>org.assertj</groupId>
+				<artifactId>assertj-core</artifactId>
+				<version>${org.assertj}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.jboss.logging</groupId>
+				<artifactId>jboss-logging</artifactId>
+				<version>3.3.1.Final</version>
+			</dependency>
 
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>${org.slf4j}</version>
-		</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${org.slf4j}</version>
+			</dependency>
 
-		<dependency>
-			<groupId>taglibs</groupId>
-			<artifactId>standard</artifactId>
-			<version>${taglibs}</version>
-			<scope>compile</scope>
-		</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-simple</artifactId>
+				<version>${org.slf4j}</version>
+			</dependency>
 
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>${javax.servlet-jstl}</version>
-			<scope>compile</scope>
+			<dependency>
+				<groupId>taglibs</groupId>
+				<artifactId>standard</artifactId>
+				<version>${taglibs}</version>
+				<scope>compile</scope>
+			</dependency>
 
-		</dependency>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+				<version>${javax.servlet-api}</version>
+				<scope>compile</scope>
+			</dependency>
 
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>${javax.servlet-api}</version>
-			<scope>compile</scope>
-		</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.seleniumhq.selenium</groupId>
+				<artifactId>selenium-java</artifactId>
+				<version>3.7.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>${org.hibernate}</version>
+			</dependency>
 
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-java</artifactId>
-			<version>3.7.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<version>${org.hibernate}</version>
-		</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-webmvc</artifactId>
+				<version>${org.springframework}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<!-- Dependances pour Spring Data JPA -->
 
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-			<version>${org.springframework}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<!-- Dependances pour Spring Data JPA -->
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-entitymanager</artifactId>
+				<version>5.2.12.Final</version>
+			</dependency>
 
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>5.2.12.Final</version>
-		</dependency>
+			<dependency>
+				<groupId>org.springframework.data</groupId>
+				<artifactId>spring-data-jpa</artifactId>
+				<version>2.0.1.RELEASE</version>
+			</dependency>
 
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-jpa</artifactId>
-			<version>2.0.1.RELEASE</version>
-		</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-tx</artifactId>
+				<version>5.0.1.RELEASE</version>
+			</dependency>
 
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-tx</artifactId>
-			<version>5.0.1.RELEASE</version>
-		</dependency>
-
-	</dependencies>
-
-
+		</dependencies>
+	</dependencyManagement>
 
 
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.17</version>
-				<configuration>
-					<configLocation>config/checkstyle/checkstyle.xml</configLocation>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>3.2.0</version>
-				<configuration>
-					<webappDirectory>WebContent</webappDirectory>
-				</configuration>
+				<version>${maven-war-plugin.version}</version>
 			</plugin>
 		</plugins>
-
 	</build>
+
 </project>

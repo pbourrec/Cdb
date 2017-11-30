@@ -1,4 +1,4 @@
-package com.excilys.cdb.database.core;
+package org.model;
 
 import java.time.LocalDate;
 

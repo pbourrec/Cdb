@@ -4,6 +4,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.view.JstlView;
 	"com.excilys.cdb.database.service",
 	"com.excilys.cdb.database.controller",
 	})
+@Import(ConfigSpringDataJpa.class)
 public class ConfigSpring {
 
 	@Bean
@@ -34,7 +36,7 @@ public class ConfigSpring {
 	public ViewResolver internalResourceViewResolver() {
 		InternalResourceViewResolver bean = new InternalResourceViewResolver();
 		bean.setViewClass(JstlView.class);
-		bean.setPrefix("/views/");
+		bean.setPrefix("/");
 		bean.setSuffix(".jsp");
 		return bean;
 }

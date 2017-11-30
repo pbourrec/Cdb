@@ -1,4 +1,4 @@
-package com.excilys.cdb.database.dao.jpadata;
+package org.persistence;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.cdb.database.core.Computer;
+import org.model.Computer;
 
 @Repository
 public interface ComputerRepository extends CrudRepository<Computer, Long>{

@@ -30,12 +30,8 @@ import com.zaxxer.hikari.HikariDataSource;
 @Configuration
 @EnableWebMvc
 @EnableTransactionManagement
-@PropertySource("../../../resources/spring.properties")
+@PropertySource("classpath:spring.properties")
 @EnableJpaRepositories(basePackages = {"com.excilys.cdb.database.dao.jpadata"})
-@ComponentScan({ "com.excilys.cdb.database.validator", "com.excilys.cdb.database.dao",
-		"com.excilys.cdb.database.dao.jpadata", "com.excilys.cdb.database.ihm", "com.excilys.cdb.database.core",
-		"com.excilys.cdb.database.mapperdto", "com.excilys.cdb.database.mapperdao", "com.excilys.cdb.database.service",
-		"com.excilys.cdb.database.controller", "com.excilys.cdb.database.servlets" })
 public class ConfigSpringDataJpa {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConfigSpringDataJpa.class);
