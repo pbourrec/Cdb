@@ -2,11 +2,10 @@ package org.persistence;
 
 import java.util.List;
 
+import org.model.Computer;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-
-import org.model.Computer;
 
 @Repository
 public interface ComputerRepository extends CrudRepository<Computer, Long>{

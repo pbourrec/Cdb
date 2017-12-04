@@ -5,6 +5,7 @@ import java.util.List;
 import org.model.ComputerDTO;
 import org.persistence.ComputerRepository;
 import org.service.ServletServices;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
@@ -14,11 +15,6 @@ public class PageDto {
 	Long offsetPage=0L;
 	public  List<ComputerDTO> pageOfComputer;
 	int nextPageOK = 0;
-	
-	
-	public PageDto ( ComputerRepository computerJpaDao, ServletServices servletServices, List<ComputerDTO> computerDto) {
-		this.pageOfComputer = computerDto;
-	}
 
 	public  Long getComputerPerPage() {
 		return computerPerPage;

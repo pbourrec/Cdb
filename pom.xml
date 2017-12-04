@@ -11,10 +11,7 @@
 		<module>model</module>
 		<module>service</module>
 		<module>webapp</module>
-		<module>ui</module>
-		<module>mapper</module>
 		<module>validator</module>
-		<module>services</module>
 	</modules>
 
 

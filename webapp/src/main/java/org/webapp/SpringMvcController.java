@@ -3,7 +3,6 @@ package org.webapp;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import javax.validation.Valid;
 
@@ -13,6 +12,7 @@ import org.service.CompanyService;
 import org.service.ComputerService;
 import org.service.Page;
 import org.service.ServletServices;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,10 +26,9 @@ import org.validator.FormatValidation;
 
 
 @Controller
-@RequestMapping
 public class SpringMvcController {
 	private static final String errorName = "Vous devez saisir un nom pour l'ordinateur à créer";
-	private  Logger logger = (Logger) LoggerFactory.getLogger(SpringMvcController.class);
+	private  Logger logger = LoggerFactory.getLogger(SpringMvcController.class);
 	static Long companyId=0L;
 	private static final String errorMessageDelete ="Une erreur est survenue lors de la suppression de la companie. voir le message ci-dessous :" ;
 	@Autowired
@@ -52,7 +51,7 @@ public class SpringMvcController {
 	@GetMapping("/dashboard")
 	public ModelAndView getDashboard ( @RequestParam Map<String, String> parameters){
 		logger.info("entrée dans la méthode doGet de DashboardServlet");
-		ModelAndView modelAndView = new ModelAndView("/dashboard");
+		ModelAndView modelAndView = new ModelAndView("dashboard");
 		
 		String computerPerPageReciever = parameters.get("numberdisplay")!=null ? parameters.get("numberdisplay") : "";
 		String operation = parameters.get("pageoperation")!=null ? parameters.get("pageoperation") : "";
@@ -72,7 +71,7 @@ public class SpringMvcController {
 
 	@PostMapping("/dashboard")
 	protected ModelAndView postDashboard( @RequestParam Map<String, String> parameters){
-		ModelAndView modelAndView = new ModelAndView("/dashboard");
+		ModelAndView modelAndView = new ModelAndView("dashboard");
 		int sizeTable = computerService.getSizeComputer();
 		String actionType = parameters.get("actionType");
 		String nameToFind = parameters.get("search");

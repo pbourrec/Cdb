@@ -6,6 +6,7 @@ import org.model.Computer;
 import org.model.ComputerDTO;
 import org.persistence.ComputerRepository;
 import org.service.ServletServices;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
@@ -16,17 +17,6 @@ public class Page {
 	public  List<Computer> pageOfComputer;
 	int nextPageOK = 0;
 	
-	private final Computer computer;
-	private final ComputerRepository computerJpaDao;
-	private final ServletServices servletServices;
-	
-	public Page( ComputerRepository computerJpaDao, ServletServices servletServices, Computer computer) {
-		this.computerJpaDao = computerJpaDao;
-		this.servletServices = servletServices;
-		this.computer= computer;
-		this.pageOfComputer = listPage(servletServices);
-	}
-
 	public  Long getComputerPerPage() {
 		return computerPerPage;
 	}
