@@ -28,8 +28,9 @@
 		<org.assertj>3.8.0</org.assertj>
 		<taglibs>1.1.2</taglibs>
 		<org.hibernate>6.0.4.Final</org.hibernate>
-		<javax.servlet-api>3.1.0</javax.servlet-api>
-		<javax.servlet-jstl>1.2</javax.servlet-jstl>
+		<javax.servlet-api>4.0.0</javax.servlet-api>
+		<javax.jstl>1.2</javax.jstl>
+		<javax.validation>2.0.0.Final</javax.validation>
 		<com.zaxxer>2.7.2</com.zaxxer>
 		<org.springframework>5.0.1.RELEASE</org.springframework>
 		<maven-war-plugin.version>3.2.0</maven-war-plugin.version>
@@ -103,9 +104,19 @@
 				<groupId>javax.servlet</groupId>
 				<artifactId>javax.servlet-api</artifactId>
 				<version>${javax.servlet-api}</version>
-				<scope>compile</scope>
+    			<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>jstl</artifactId>
+				<version>${javax.jstl}</version>
 			</dependency>
 
+			<dependency>
+				<groupId>javax.validation</groupId>
+				<artifactId>validation-api</artifactId>
+				<version>${javax.validation}</version>
+			</dependency>
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
