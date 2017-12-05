@@ -30,6 +30,7 @@
 		<javax.validation>2.0.0.Final</javax.validation>
 		<com.zaxxer>2.7.2</com.zaxxer>
 		<org.springframework>5.0.1.RELEASE</org.springframework>
+		<spring.security>5.0.0.RELEASE</spring.security>
 		<maven-war-plugin.version>3.2.0</maven-war-plugin.version>
 	</properties>
 
@@ -101,7 +102,7 @@
 				<groupId>javax.servlet</groupId>
 				<artifactId>javax.servlet-api</artifactId>
 				<version>${javax.servlet-api}</version>
-    			<scope>provided</scope>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>javax.servlet</groupId>
@@ -159,6 +160,25 @@
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-tx</artifactId>
 				<version>5.0.1.RELEASE</version>
+			</dependency>
+			<!-- Spring security dependencies -->
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-core</artifactId>
+				<version>${spring.security}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-config</artifactId>
+				<version>${spring.security}</version>
+			</dependency>
+
+
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-web</artifactId>
+				<version>${spring.security}</version>
 			</dependency>
 
 		</dependencies>

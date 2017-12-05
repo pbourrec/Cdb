@@ -12,16 +12,14 @@ import org.springframework.web.servlet.DispatcherServlet;
 
 public class WebAppInitializer implements WebApplicationInitializer {
 
-
 	@Override
-	public void onStartup(ServletContext servletContext) throws ServletException {
-		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-		context.register(ConfigSpring.class);		
-		context.setServletContext(servletContext);
-		
-		ServletRegistration.Dynamic dispatcher2 = servletContext.addServlet("DispatcherServlet", new DispatcherServlet(context));
-		dispatcher2.setLoadOnStartup(1); 
-		dispatcher2.addMapping("/dashboard",
+	  public void onStartup(final ServletContext container) throws ServletException {
+	    final AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
+	    ctx.register(ConfigSpring.class);
+	    ctx.setServletContext(container);
+	    final ServletRegistration.Dynamic servlet = container.addServlet("dispatcherServlet", new DispatcherServlet(ctx));
+	    servlet.setLoadOnStartup(1);
+	    servlet.addMapping("/dashboard",
 				"/addComputer",
 				"/editComputer",
 				"/deleteCompany"
