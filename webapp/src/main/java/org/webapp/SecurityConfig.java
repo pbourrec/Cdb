@@ -1,38 +1,30 @@
 package org.webapp;
 
+import org.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-	  @Bean
-	  public UserDetailsService userDetailsService() {
-	 InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-	 manager.createUser(User.withDefaultPasswordEncoder().username("user").password("password").roles("USER").build());
-	 manager.createUser(User.withDefaultPasswordEncoder().username("admin").password("adminpassword").roles("ADMIN").build());
-	 manager.createUser(User.withDefaultPasswordEncoder().username("Don PAblo De la Vega").password("password").roles("ADMIN").build());
-	 return manager;
-	  }
+	private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfig.class);
+	
+	@Autowired 
+	private  UserService userService;
+	
+	
 	  @Override
-	  protected void configure(HttpSecurity http) throws Exception {
-		  http
-		  .authorizeRequests()
-		   .anyRequest().authenticated()
-		   .and()
-		  .formLogin()
-		   .and()
-		  .httpBasic();
+	  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		  auth.authenticationProvider(authenticationProvider());
 		}
 
 
@@ -40,4 +32,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	  public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
 	  }
+	  
+
+		@Override
+		@Bean
+		public UserDetailsService userDetailsServiceBean() throws Exception {
+			LOGGER.info("bean detail service");
+			return userService;
+		}
+
+		@Bean
+		public BCryptPasswordEncoder passwordEncoder() {
+			LOGGER.info("password encoder");
+			return new BCryptPasswordEncoder();
+		}
+		
+		@Bean
+		public DaoAuthenticationProvider authenticationProvider() {
+		    DaoAuthenticationProvider authProvider
+		      = new DaoAuthenticationProvider();
+		    authProvider.setUserDetailsService(userService);
+		    authProvider.setPasswordEncoder(passwordEncoder());
+		    return authProvider;
+	}
 }
