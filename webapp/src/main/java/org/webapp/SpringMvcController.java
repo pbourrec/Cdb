@@ -61,11 +61,16 @@ public class SpringMvcController {
 
 
 		int sizeTable= servletServices.changePageFormat ( computerPerPageReciever,  operation, pageChange,  restart,  page) ;
-		pageDto.pageOfComputer = computerDtoMapper.computerListToDTO(page.listPage(servletServices));
-		modelAndView.addObject("listComputer", pageDto.pageOfComputer );
+		logger.info(page.toString());
+		pageDto.setPageOfComputer(computerDtoMapper.computerListToDTO(page.listPage(servletServices)));
+		pageDto.setNextPageOK(page.getNextPageOK());
+		pageDto.setOffsetPage(page.getOffsetPage());
+		pageDto.setComputerPerPage(page.getComputerPerPage());
+		modelAndView.addObject("listComputer", pageDto.getPageOfComputer() );
 		modelAndView.addObject( "nextPage", pageDto.getNextPageOK());
 		modelAndView.addObject( "size", sizeTable);
 		modelAndView.addObject("page", pageDto.getOffsetPage());
+		logger.info(pageDto.toString());
 		return modelAndView;
 	}
 
@@ -179,8 +184,8 @@ public class SpringMvcController {
 	public ModelAndView postDeleteSelected ( @RequestParam("selection")String idToDelete){
 		
 		ModelAndView modelAndView = new ModelAndView("redirect/dashboard");
-		pageDto.pageOfComputer = computerDtoMapper.computerListToDTO(page.listPage(servletServices));
-		modelAndView.addObject("listComputer", pageDto.pageOfComputer );
+		pageDto.setPageOfComputer(computerDtoMapper.computerListToDTO(page.listPage(servletServices)));
+		modelAndView.addObject("listComputer", pageDto.getPageOfComputer() );
 		return modelAndView ;
 	}
 }
