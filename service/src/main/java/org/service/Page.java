@@ -3,10 +3,6 @@ package org.service;
 import java.util.List;
 
 import org.model.Computer;
-import org.model.ComputerDTO;
-import org.persistence.ComputerRepository;
-import org.service.ServletServices;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
@@ -54,6 +50,12 @@ public class Page {
 		Long limit =getComputerPerPage();
 		List<Computer> listComputer = servletServices.computerJpaDao.getComputerPaginationJpa(offset, limit);
 		return listComputer;
+	}
+
+	@Override
+	public String toString() {
+		return "Page [computerPerPage=" + computerPerPage + ", offsetPage=" + offsetPage + ", nextPageOK=" + nextPageOK
+				+ "]";
 	}
 
 

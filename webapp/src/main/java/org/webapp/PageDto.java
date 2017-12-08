@@ -3,17 +3,14 @@ package org.webapp;
 import java.util.List;
 
 import org.model.ComputerDTO;
-import org.persistence.ComputerRepository;
-import org.service.ServletServices;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
 @Component
 public class PageDto {
-	Long computerPerPage=50L; 
-	Long offsetPage=0L;
-	public  List<ComputerDTO> pageOfComputer;
+	private Long computerPerPage=50L; 
+	private Long offsetPage=0L;
+	private List<ComputerDTO> pageOfComputer;
 	int nextPageOK = 0;
 
 	public  Long getComputerPerPage() {
@@ -46,6 +43,11 @@ public class PageDto {
 
 	public  void setPageOfComputer(List<ComputerDTO> pageOfComputer) {
 		this.pageOfComputer = pageOfComputer;
+	}
+
+	@Override
+	public String toString() {
+		return "PageDto [computerPerPage=" + computerPerPage + ", offsetPage=" + offsetPage + "nextPageOK=" + nextPageOK + "]";
 	}
 
 

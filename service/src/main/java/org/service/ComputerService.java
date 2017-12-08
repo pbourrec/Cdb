@@ -28,9 +28,12 @@ public class ComputerService {
 	 private FormatValidation controlFormat;
 
 
-	public  void addComputer(String computerName, String introduced, String discontinued, String companyId) {
-		Computer computerToAdd = new Computer();
-		computerToAdd = computerBuilder(computerName, companyId, introduced, discontinued);
+	 public  void addComputer(String computerName, String introduced, String discontinued, String companyId) {
+		 Computer computerToAdd = new Computer();
+		 computerToAdd = computerBuilder(computerName, companyId, introduced, discontinued);
+		 computerJpaDao.save(computerToAdd);
+	 }
+	public  void addComputer(Computer computerToAdd) {
 		computerJpaDao.save(computerToAdd);
 	}
 
@@ -88,6 +91,10 @@ public class ComputerService {
 	public  Computer computerBuilder (String name, String companyId, String introduced, String discontinued) {
 		Computer computer = new Computer(name, controlFormat.stringTolong(companyId), dataControl.convertStringToTimestamp(introduced),dataControl.convertStringToTimestamp(discontinued));		
 		return computer;
+	}
+	
+	public List<Computer> getComputer(){
+		return (List<Computer>) computerJpaDao.findAll();
 	}
 
 }
